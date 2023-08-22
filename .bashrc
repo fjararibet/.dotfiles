@@ -136,8 +136,5 @@ writecmd () {
 #bind <C-f> to search home with fzf
 bind -x '"\C-f":"fd . '/home/ciruela' --hidden --follow --exclude .git | fzf | writecmd"'
 
-# Alias vim to nvim
-alias vim=nvim
-
 LS_COLORS=$LS_COLORS:'di=1;94:'
-alias dotfiles='/usr/bin/git --git-dir=/home/ciruela/.dotfiles/ --work-tree=/home/ciruela'
+source ~/.aliases
