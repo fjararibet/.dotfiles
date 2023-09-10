@@ -83,7 +83,7 @@ require('lazy').setup({
 
       -- Useful status updates for LSP
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim', tag = 'legacy', opts = {} },
+      -- { 'j-hui/fidget.nvim', tag = 'legacy', opts = {} },
 
       -- Additional lua configuration, makes nvim stuff amazing!
       'folke/neodev.nvim',
@@ -102,7 +102,7 @@ require('lazy').setup({
       'hrsh7th/cmp-nvim-lsp',
 
       -- Adds a number of user-friendly snippets
-      'rafamadriz/friendly-snippets',
+      -- 'rafamadriz/friendly-snippets',
     },
   },
 
@@ -134,14 +134,31 @@ require('lazy').setup({
     priority = 1000,
     opts =  {
       transparent = true
-    }
+    },
   },
   {
     'rose-pine/neovim',
+    priority = 1000,
     name = 'rose-pine',
-    -- config = function()
-    --   vim.cmd.colorscheme 'rose-pine'
-    -- end
+    opts =  {
+      transparent = true
+    },
+  },
+  {
+    'rebelot/kanagawa.nvim',
+    priority = 1000,
+    opts =  {
+      transparent = true,
+      colors = {
+        theme = {
+            all = {
+              ui = {
+                  bg_gutter = "none"
+              }
+            }
+        }
+      },
+    },
   },
   {
     -- Set lualine as statusline
@@ -150,7 +167,7 @@ require('lazy').setup({
     opts = {
       options = {
         icons_enabled = false,
-        theme = 'onedark',
+        theme = 'kanagawa',
         component_separators = '|',
         section_separators = '',
       },
@@ -158,14 +175,14 @@ require('lazy').setup({
   },
 
   {
-    -- Add indentation guides even on blank lines
-    'lukas-reineke/indent-blankline.nvim',
-    -- Enable `lukas-reineke/indent-blankline.nvim`
-    -- See `:help indent_blankline.txt`
-    opts = {
-      char = '┊',
-      show_trailing_blankline_indent = false,
-    },
+    -- -- Add indentation guides even on blank lines
+    -- 'lukas-reineke/indent-blankline.nvim',
+    -- -- Enable `lukas-reineke/indent-blankline.nvim`
+    -- -- See `:help indent_blankline.txt`
+    -- opts = {
+    --   char = '┊',
+    --   show_trailing_blankline_indent = false,
+    -- },
   },
 
   -- "gc" to comment visual regions/lines
@@ -265,6 +282,8 @@ vim.o.tabstop = 8
 vim.o.softtabstop = 0
 -- [[ Basic Keymaps ]]
 
+vim.keymap.set('n', '<C-b>', '')
+vim.keymap.set('n', '<C-f>', '')
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
@@ -450,6 +469,7 @@ end
 --
 --  If you want to override the default filetypes that your language server will attach to you can
 --  define the property 'filetypes' to the map in question.
+
 local servers = {
   -- clangd = {},
   -- gopls = {},
@@ -464,6 +484,8 @@ local servers = {
       telemetry = { enable = false },
     },
   },
+  -- tratando de configurar python_lsp_server
+  pylsp = {},
 }
 
 -- Setup neovim lua configuration
@@ -473,13 +495,20 @@ require('neodev').setup()
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
+
+-- racket_langserver
+local lspconfig = require('lspconfig')
+lspconfig.racket_langserver.setup {
+  capabilities = capabilities,
+  on_attach = on_attach,
+}
+
 -- Ensure the servers above are installed
 local mason_lspconfig = require 'mason-lspconfig'
 
 mason_lspconfig.setup {
   ensure_installed = vim.tbl_keys(servers),
 }
-
 mason_lspconfig.setup_handlers {
   function(server_name)
     require('lspconfig')[server_name].setup {
@@ -490,7 +519,7 @@ mason_lspconfig.setup_handlers {
     }
   end
 }
-
+    
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`
 local cmp = require 'cmp'
