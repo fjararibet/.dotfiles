@@ -140,8 +140,9 @@ bind -x '"\C-f":"fd . '$HOME' --type file --hidden --follow --exclude .git --exc
 bind -x '"\ed":"fd . '$HOME' -I --type directory --follow --exclude .git | fzf | writecmd"'
 
 # CTRL-R - Paste the selected command from history into the command line
-bind -x '"\er": __fzf_history__'
-bind -x '"\er": __fzf_history__'
+bind -m emacs-standard -x '"\eh": __fzf_history__'
+bind -m vi-command -x '"\eh": __fzf_history__'
+bind -m vi-insert -x '"\eh": __fzf_history__'
 
 
 LS_COLORS=$LS_COLORS:'di=1;94:'
