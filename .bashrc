@@ -125,7 +125,7 @@ eval "$(~/.rbenv/bin/rbenv init - bash)"
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # Setting fd as the default source for fzf
-export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git'
+export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git --exclude .venv'
 
 # To apply the command to CTRL-T as well
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -133,8 +133,34 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 writecmd () { 
   perl -e 'ioctl STDOUT, 0x5412, $_ for split //, do{ chomp($_ = <>); $_ }' ; 
 }
+
 #bind <C-f> to search home with fzf
-bind -x '"\C-f":"fd . '/home/ciruela' --hidden --follow --exclude .git | fzf | writecmd"'
+bind -x '"\C-f":"fd . '$HOME' --type file --hidden --follow --exclude .git --exclude .venv | fzf | writecmd"'
+# search all directories
+bind -x '"\ed":"fd . '$HOME' -I --type directory --follow --exclude .git | fzf | writecmd"'
+
+# CTRL-R - Paste the selected command from history into the command line
+bind -x '"\er": __fzf_history__'
+bind -x '"\er": __fzf_history__'
+
 
 LS_COLORS=$LS_COLORS:'di=1;94:'
 source ~/.aliases
+
+
+session_name="main"
+
+# 1. First you check if a tmux session exists with a given name.
+tmux has-session -t=$session_name 2> /dev/null
+
+# 2. Create the session if it doesn't exists.
+if [[ $? -ne 0 ]]; then
+  TMUX='' tmux new-session -d -s "$session_name"
+fi
+
+# 3. Attach if outside of tmux, switch if you're in tmux.
+if [[ -z "$TMUX" ]]; then
+  tmux attach -t "$session_name"
+else
+  tmux switch-client -t "$session_name"
+fi
