@@ -107,7 +107,7 @@ require('lazy').setup({
   },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim', opts = {} },
+  { 'folke/which-key.nvim',          opts = {} },
   {
     -- Adds git releated signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -121,7 +121,8 @@ require('lazy').setup({
         changedelete = { text = '~' },
       },
       on_attach = function(bufnr)
-        vim.keymap.set('n', '<leader>gp', require('gitsigns').prev_hunk, { buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
+        vim.keymap.set('n', '<leader>gp', require('gitsigns').prev_hunk,
+          { buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
         vim.keymap.set('n', '<leader>gn', require('gitsigns').next_hunk, { buffer = bufnr, desc = '[G]o to [N]ext Hunk' })
         vim.keymap.set('n', '<leader>ph', require('gitsigns').preview_hunk, { buffer = bufnr, desc = '[P]review [H]unk' })
       end,
@@ -132,7 +133,7 @@ require('lazy').setup({
     -- Theme inspired by Atom
     'navarasu/onedark.nvim',
     priority = 1000,
-    opts =  {
+    opts = {
       transparent = true
     },
   },
@@ -140,22 +141,22 @@ require('lazy').setup({
     'rose-pine/neovim',
     priority = 1000,
     name = 'rose-pine',
-    opts =  {
+    opts = {
       transparent = true
     },
   },
   {
     'rebelot/kanagawa.nvim',
     priority = 1000,
-    opts =  {
+    opts = {
       transparent = true,
       colors = {
         theme = {
-            all = {
-              ui = {
-                  bg_gutter = "none"
-              }
+          all = {
+            ui = {
+              bg_gutter = "none"
             }
+          }
         }
       },
     },
@@ -174,19 +175,19 @@ require('lazy').setup({
     },
   },
 
-  {
-    -- -- Add indentation guides even on blank lines
-    -- 'lukas-reineke/indent-blankline.nvim',
-    -- -- Enable `lukas-reineke/indent-blankline.nvim`
-    -- -- See `:help indent_blankline.txt`
-    -- opts = {
-    --   char = '┊',
-    --   show_trailing_blankline_indent = false,
-    -- },
-  },
+  -- {
+  --   -- -- Add indentation guides even on blank lines
+  --   'lukas-reineke/indent-blankline.nvim',
+  --   -- -- Enable `lukas-reineke/indent-blankline.nvim`
+  --   -- -- See `:help indent_blankline.txt`
+  --   opts = {
+  --     char = '┊',
+  --     show_trailing_blankline_indent = false,
+  --   },
+  -- },
 
   -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim', opts = {} },
+  { 'numToStr/Comment.nvim',         opts = {} },
 
   -- Fuzzy Finder (files, lsp, etc)
   { 'nvim-telescope/telescope.nvim', branch = '0.1.x', dependencies = { 'nvim-lua/plenary.nvim' } },
@@ -226,6 +227,33 @@ require('lazy').setup({
   --
   --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
   -- { import = 'custom.plugins' },
+  -- Lua
+  {
+    "folke/zen-mode.nvim",
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    }
+  },
+  {
+    "shortcuts/no-neck-pain.nvim",
+    version = "*",
+    opts = {
+      width = 120,
+      buffers = {
+        wo    = {
+          fillchars = "eob: ",
+        },
+        right = {
+          enabled = false
+        },
+      },
+    },
+  },
+  {
+    'smithbm2316/centerpad.nvim',
+  }
 }, {})
 
 
@@ -243,7 +271,7 @@ vim.wo.number = true
 vim.wo.relativenumber = true
 
 -- Enable mouse mode
-vim.o.mouse = 'a'
+vim.o.mouse = ''
 
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
@@ -297,7 +325,8 @@ vim.keymap.set('n', "<C-u>", "<C-u>zz")
 vim.keymap.set('n', "<C-d>", "<C-d>zz")
 vim.keymap.set('v', "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set('v', "K", ":m '<-2<CR>gv=gv")
-vim.keymap.set('n', '<leader>x',"<cmd>!chmod +x %<CR>", { silent = true, desc = 'Make file e[x]ecutable' })
+vim.keymap.set('n', '<leader>x', "<cmd>!chmod +x %<CR>", { silent = true, desc = 'Make file e[x]ecutable' })
+
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -459,6 +488,7 @@ local on_attach = function(_, bufnr)
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
     vim.lsp.buf.format()
   end, { desc = 'Format current buffer with LSP' })
+  nmap('<leader>ff', vim.lsp.buf.format, '[F]ormat Bu[f]fer')
 end
 
 -- Enable the following language servers
@@ -519,7 +549,7 @@ mason_lspconfig.setup_handlers {
     }
   end
 }
-    
+
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`
 local cmp = require 'cmp'
@@ -570,6 +600,10 @@ cmp.setup {
 
 require("colors")
 
+-- No-neck-pain
+-- vim.cmd('NoNeckPain')
+vim.o.laststatus = 3
+vim.keymap.set('n', '<leader>z', "<cmd>NoNeckPain<cr>", { silent = true, desc = "[Z]en Mode" })
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
-
