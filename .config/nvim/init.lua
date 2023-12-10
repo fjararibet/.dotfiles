@@ -154,7 +154,8 @@ require('lazy').setup({
         theme = {
           all = {
             ui = {
-              bg_gutter = "none"
+              bg_gutter = "none",
+              -- nontext = line number color
             }
           }
         }
@@ -237,25 +238,15 @@ require('lazy').setup({
     }
   },
   {
-    "shortcuts/no-neck-pain.nvim",
-    version = "*",
-    opts = {
-      width = 120,
-      buffers = {
-        wo    = {
-          fillchars = "eob: ",
-        },
-        right = {
-          enabled = false
-        },
-      },
-    },
+    'smithbm2316/centerpad.nvim',
   },
   {
-    'smithbm2316/centerpad.nvim',
-  }
+    'github/copilot.vim',
+  },
 }, {})
 
+vim.g.copilot_no_tab_map = true
+vim.keymap.set('i', '<C-J>', 'copilot#Accept("<CR>")', { expr = true, replace_keycodes = false})
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -269,9 +260,9 @@ vim.wo.number = true
 
 -- Enable relative line numbering
 vim.wo.relativenumber = true
-
+vim.wo.numberwidth = 12
 -- Enable mouse mode
-vim.o.mouse = ''
+vim.o.mouse = 'a'
 
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
@@ -326,6 +317,8 @@ vim.keymap.set('n', "<C-d>", "<C-d>zz")
 vim.keymap.set('v', "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set('v', "K", ":m '<-2<CR>gv=gv")
 vim.keymap.set('n', '<leader>x', "<cmd>!chmod +x %<CR>", { silent = true, desc = 'Make file e[x]ecutable' })
+vim.api.nvim_create_user_command('W', 'w', {nargs = 0})
+vim.api.nvim_create_user_command('Q', 'q', {nargs = 0})
 
 
 -- [[ Highlight on yank ]]
@@ -569,10 +562,10 @@ cmp.setup {
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete {},
-    ['<CR>'] = cmp.mapping.confirm {
-      behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
-    },
+    -- ['<CR>'] = cmp.mapping.confirm {
+    --   behavior = cmp.ConfirmBehavior.Replace,
+    --   select = true,
+    -- },
     ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
@@ -603,7 +596,7 @@ require("colors")
 -- No-neck-pain
 -- vim.cmd('NoNeckPain')
 vim.o.laststatus = 3
-vim.keymap.set('n', '<leader>z', "<cmd>NoNeckPain<cr>", { silent = true, desc = "[Z]en Mode" })
+-- vim.keymap.set('n', '<leader>z', '', { silent = true, desc = "[Z]en Mode" })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

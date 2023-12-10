@@ -57,8 +57,7 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    # PS1='${debian_chroot:+($debian_chroot)}\[\033[01;34m\]\w\[\033[00m\]\$ '
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;94m\]\W\[\033[00m\]\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;34m\]\W\[\033[00m\] \$ '
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
@@ -138,6 +137,7 @@ writecmd () {
 bind -x '"\C-f":"fd . '$HOME' --type file --hidden --follow --exclude .git --exclude .venv | fzf | writecmd"'
 # search all directories
 bind -x '"\ed":"fd . '$HOME' -I --type directory --follow --exclude .git | fzf | writecmd"'
+bind -x '"\ee":"fd -I --type directory --follow --exclude .git | fzf | writecmd"'
 
 # CTRL-R - Paste the selected command from history into the command line
 bind -m emacs-standard -x '"\eh": __fzf_history__'
@@ -145,7 +145,7 @@ bind -m vi-command -x '"\eh": __fzf_history__'
 bind -m vi-insert -x '"\eh": __fzf_history__'
 
 
-LS_COLORS=$LS_COLORS:'di=1;94:'
+# LS_COLORS=$LS_COLORS:'di=1;94:'
 source ~/.aliases
 
 
@@ -165,3 +165,5 @@ if [[ -z "$TMUX" ]]; then
 else
   tmux switch-client -t "$session_name"
 fi
+
+. "$HOME/.cargo/env"
