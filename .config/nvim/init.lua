@@ -1,4 +1,5 @@
 --[[
+print(
 
 =====================================================================
 ==================== READ THIS BEFORE CONTINUING ====================
@@ -102,7 +103,7 @@ require('lazy').setup({
       'hrsh7th/cmp-nvim-lsp',
 
       -- Adds a number of user-friendly snippets
-      -- 'rafamadriz/friendly-snippets',
+      'rafamadriz/friendly-snippets',
     },
   },
 
@@ -132,6 +133,7 @@ require('lazy').setup({
   {
     -- Theme inspired by Atom
     'navarasu/onedark.nvim',
+    lazy = true,
     priority = 1000,
     opts = {
       transparent = true
@@ -139,6 +141,7 @@ require('lazy').setup({
   },
   {
     'rose-pine/neovim',
+    lazy = true,
     priority = 1000,
     name = 'rose-pine',
     opts = {
@@ -147,6 +150,7 @@ require('lazy').setup({
   },
   {
     'rebelot/kanagawa.nvim',
+    lazy = true,
     priority = 1000,
     opts = {
       transparent = true,
@@ -155,7 +159,6 @@ require('lazy').setup({
           all = {
             ui = {
               bg_gutter = "none",
-              -- nontext = line number color
             }
           }
         }
@@ -231,22 +234,14 @@ require('lazy').setup({
   -- Lua
   {
     "folke/zen-mode.nvim",
-    opts = {
-      -- your configuration comes here
-      -- or leave it empty to use the default settings
-      -- refer to the configuration section below
-    }
   },
-  {
-    'smithbm2316/centerpad.nvim',
-  },
-  {
-    'github/copilot.vim',
-  },
+  -- {
+  --   'github/copilot.vim',
+  -- },
 }, {})
-
-vim.g.copilot_no_tab_map = true
-vim.keymap.set('i', '<C-J>', 'copilot#Accept("<CR>")', { expr = true, replace_keycodes = false})
+-- vim.g.copilot_no_tab_map = true
+-- vim.keymap.set('i', '<C-J>', 'copilot#Accept("<CR>")', { expr = true, replace_keycodes = false})
+vim.cmd.colorscheme "kanagawa"
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -260,14 +255,23 @@ vim.wo.number = true
 
 -- Enable relative line numbering
 vim.wo.relativenumber = true
-vim.wo.numberwidth = 12
+
+-- status line
+vim.o.laststatus = 2
+
+-- Number width. NO NECK PAIN
+local max_width = 16
+local flip_nuw = function()
+  if vim.wo.numberwidth == max_width then
+    vim.wo.numberwidth = 4
+  else
+    vim.wo.numberwidth = max_width
+  end
+end
+vim.wo.numberwidth = max_width
+vim.keymap.set('n', '<leader>z', flip_nuw, { silent = true, desc = 'Make file e[x]ecutable' })
 -- Enable mouse mode
 vim.o.mouse = 'a'
-
--- Sync clipboard between OS and Neovim.
---  Remove this option if you want your OS clipboard to remain independent.
---  See `:help 'clipboard'`
--- vim.o.clipboard = 'unnamedplus'
 
 -- Enable break indent
 vim.o.breakindent = true
@@ -297,7 +301,7 @@ vim.o.scrolloff = 8
 vim.o.guicursor = ""
 vim.o.expandtab = true
 vim.o.shiftwidth = 4
-vim.o.tabstop = 8
+vim.o.tabstop = 4
 vim.o.softtabstop = 0
 -- [[ Basic Keymaps ]]
 
@@ -317,8 +321,8 @@ vim.keymap.set('n', "<C-d>", "<C-d>zz")
 vim.keymap.set('v', "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set('v', "K", ":m '<-2<CR>gv=gv")
 vim.keymap.set('n', '<leader>x', "<cmd>!chmod +x %<CR>", { silent = true, desc = 'Make file e[x]ecutable' })
-vim.api.nvim_create_user_command('W', 'w', {nargs = 0})
-vim.api.nvim_create_user_command('Q', 'q', {nargs = 0})
+vim.api.nvim_create_user_command('W', 'w', { nargs = 0 })
+vim.api.nvim_create_user_command('Q', 'q', { nargs = 0 })
 
 
 -- [[ Highlight on yank ]]
@@ -332,14 +336,16 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   pattern = '*',
 })
 
+
+local actions = require('telescope.actions')
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
 require('telescope').setup {
   defaults = {
     mappings = {
       i = {
-        ['<C-u>'] = false,
-        ['<C-d>'] = false,
+        ['<C-k>'] = actions.move_selection_previous,
+        ['<C-j>'] = actions.move_selection_next,
       },
     },
   },
@@ -368,7 +374,9 @@ vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { de
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
+---@diagnostic disable-next-line: missing-fields
 require('nvim-treesitter.configs').setup {
+
   -- Add languages to be installed here that you want installed for treesitter
   ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim' },
 
@@ -376,7 +384,7 @@ require('nvim-treesitter.configs').setup {
   auto_install = true,
 
   highlight = { enable = true },
-  indent = { enable = true },
+  indent = { enable = false },
   incremental_selection = {
     enable = true,
     keymaps = {
@@ -431,6 +439,10 @@ require('nvim-treesitter.configs').setup {
     },
   },
 }
+-- For Django development
+-- setting the filetypes allows treesitter
+-- to use the correct parser
+vim.treesitter.language.register('htmldjango', 'html')
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
@@ -481,7 +493,7 @@ local on_attach = function(_, bufnr)
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
     vim.lsp.buf.format()
   end, { desc = 'Format current buffer with LSP' })
-  nmap('<leader>ff', vim.lsp.buf.format, '[F]ormat Bu[f]fer')
+  nmap('<leader>f', vim.lsp.buf.format, '[F]ormat Bu[f]fer')
 end
 
 -- Enable the following language servers
@@ -499,16 +511,26 @@ local servers = {
   -- pyright = {},
   -- rust_analyzer = {},
   -- tsserver = {},
-  -- html = { filetypes = { 'html', 'twig', 'hbs'} },
+  html = { filetypes = { 'html' } },
 
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
       telemetry = { enable = false },
+      diagnostics = {
+        disable = { "missing_fields", "missings_parameters" }
+      }
     },
   },
-  -- tratando de configurar python_lsp_server
-  pylsp = {},
+  pylsp = {
+    pylsp = {
+      plugins = {
+        pycodestyle = {
+          maxLineLength = 100
+        }
+      }
+    }
+  },
 }
 
 -- Setup neovim lua configuration
@@ -525,6 +547,7 @@ lspconfig.racket_langserver.setup {
   capabilities = capabilities,
   on_attach = on_attach,
 }
+
 
 -- Ensure the servers above are installed
 local mason_lspconfig = require 'mason-lspconfig'
@@ -550,6 +573,7 @@ local luasnip = require 'luasnip'
 require('luasnip.loaders.from_vscode').lazy_load()
 luasnip.config.setup {}
 
+---@diagnostic disable-next-line: missing-fields
 cmp.setup {
   snippet = {
     expand = function(args)
@@ -557,15 +581,11 @@ cmp.setup {
     end,
   },
   mapping = cmp.mapping.preset.insert {
-    ['<C-n>'] = cmp.mapping.select_next_item(),
-    ['<C-p>'] = cmp.mapping.select_prev_item(),
+    ['<C-j>'] = cmp.mapping.select_next_item(),
+    ['<C-k>'] = cmp.mapping.select_prev_item(),
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete {},
-    -- ['<CR>'] = cmp.mapping.confirm {
-    --   behavior = cmp.ConfirmBehavior.Replace,
-    --   select = true,
-    -- },
     ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
@@ -590,13 +610,6 @@ cmp.setup {
     { name = 'luasnip' },
   },
 }
-
-require("colors")
-
--- No-neck-pain
--- vim.cmd('NoNeckPain')
-vim.o.laststatus = 3
--- vim.keymap.set('n', '<leader>z', '', { silent = true, desc = "[Z]en Mode" })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
