@@ -238,12 +238,47 @@ require('lazy').setup({
   -- {
   --   'github/copilot.vim',
   -- },
+  {
+    "stevearc/conform.nvim",
+    event = { "BufWritePre" },
+    cmd = { "ConformInfo" },
+    keys = {
+      {
+        -- Customize or remove this keymap to your liking
+        "<leader>f",
+        function()
+          require("conform").format({ async = true, lsp_fallback = true })
+        end,
+        mode = "",
+        desc = "Format buffer",
+      },
+    },
+    -- Everything in opts will be passed to setup()
+    opts = {
+      -- Define your formatters
+      formatters_by_ft = {
+        -- lua = { "stylua" },
+        -- python = { "isort", "black" },
+        -- javascript = { { "prettierd", "prettier" } },
+        html = { "djlint" },
+      },
+      -- Customize formatters
+      formatters = {
+        shfmt = {
+          prepend_args = { "-i", "2" },
+        },
+      },
+    },
+    init = function()
+      -- If you want the formatexpr, here is the place to set it
+      vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+    end,
+  },
 }, {})
--- vim.g.copilot_no_tab_map = true
--- vim.keymap.set('i', '<C-J>', 'copilot#Accept("<CR>")', { expr = true, replace_keycodes = false})
+
 vim.cmd.colorscheme "kanagawa"
 
--- [[ Setting options ]]
+-- []
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
 
@@ -493,7 +528,7 @@ local on_attach = function(_, bufnr)
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
     vim.lsp.buf.format()
   end, { desc = 'Format current buffer with LSP' })
-  nmap('<leader>f', vim.lsp.buf.format, '[F]ormat Bu[f]fer')
+  -- nmap('<leader>f', vim.lsp.buf.format, '[F]ormat Bu[f]fer')
 end
 
 -- Enable the following language servers
