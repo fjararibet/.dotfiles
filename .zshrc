@@ -102,7 +102,7 @@ alias ohmyzsh="nvim ~/.oh-my-zsh"
 alias vim="nvim"
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias changebg="$HOME/Pictures/Backgrounds/set_background.sh"
-alias vimconf='nvim ~/.config/nvim/init.lua'
+alias vimconf='nvim ~/.config/nvim/'
 alias tmuxconf='nvim ~/.config/tmux/tmux.conf'
 # Force tmux to assume the terminal supports 256 colours.
 # otherwise colors will be wrong (and bland)
