@@ -65,7 +65,4 @@ require('nvim-treesitter.configs').setup {
     },
   },
 }
--- For Django development
--- setting the filetypes allows treesitter
--- to use the correct parser
-vim.treesitter.language.register('htmldjango', 'html')
+

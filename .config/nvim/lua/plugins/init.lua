@@ -9,10 +9,10 @@ return {
   'tpope/vim-sleuth',
 
   -- Useful plugin to show you pending keybinds.
-  'folke/which-key.nvim',
+  {'folke/which-key.nvim', opts = {} },
 
   -- "gc" to comment visual regions/lines
-  'numToStr/Comment.nvim',
+  { 'numToStr/Comment.nvim', opts = {} },
 
   "folke/zen-mode.nvim",
 

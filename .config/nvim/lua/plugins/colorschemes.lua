@@ -28,6 +28,9 @@ return {
           all = {
             ui = {
               bg_gutter = "none",
+            },
+            syn = {
+                -- special1 = "#957FB8", -- oniViolet color in the palette,
             }
           }
         }
