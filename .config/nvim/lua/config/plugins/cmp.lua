@@ -42,3 +42,5 @@ cmp.setup {
     { name = 'luasnip' },
   },
 }
+
+require('luasnip').filetype_extend("htmldjango", {"html"})
