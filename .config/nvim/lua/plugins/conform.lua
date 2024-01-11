@@ -22,6 +22,7 @@ return {
           -- python = { "isort", "black" },
           -- javascript = { { "prettierd", "prettier" } },
           html = { "djlint" },
+          htmldjango = { "djlint" },
         },
         -- Customize formatters
         formatters = {
