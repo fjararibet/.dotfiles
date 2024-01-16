@@ -21,3 +21,14 @@ dotfiles push
 ```bash
 curl https://raw.githubusercontent.com/fjararibet/.dotfiles/main/.install_dotfiles.sh | bash
 ```
+
+# Gnome Configuration
+Save it to a file
+```bash
+dconf dump / > .dconf_dump
+```
+Loading it
+```bash
+dconf load / < .dconf_dump
+```
+
