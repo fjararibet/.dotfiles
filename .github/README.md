@@ -25,5 +25,5 @@ dotfiles checkout
 ```
 or 
 ```bash
-curl https://github.com/fjararibet/.dotfiles/blob/main/.install_dotfiles.sh | bash
+curl https://raw.githubusercontent.com/fjararibet/.dotfiles/main/.github/README.md | bash
 ```
