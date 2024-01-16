@@ -1,5 +1,5 @@
 Bare repo to manage my dotfiles.
-# Set up bare repository.
+# Set up bare repository
 
 ```bash
 git init --bare $HOME/.dotfiles 
