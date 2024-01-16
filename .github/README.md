@@ -19,11 +19,5 @@ dotfiles push
 
 # Install dotfiles
 ```bash
-git clone --bare git@github.com:fjararibet/.dotfiles.git $HOME/.dotfiles
-alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-dotfiles checkout
-```
-or 
-```bash
 curl https://raw.githubusercontent.com/fjararibet/.dotfiles/main/.install_dotfiles.sh | bash
 ```
