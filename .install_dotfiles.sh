@@ -8,6 +8,8 @@ git clone --bare git@github.com:fjararibet/.dotfiles.git $HOME/.dotfiles
 function dotfiles {
    git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME $@
 }
+
+dotfiles checkout
 if [ $? = 0 ]; then
   echo "dotfiles successfully installed.";
   else
