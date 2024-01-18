@@ -22,13 +22,9 @@ dotfiles push
 curl https://raw.githubusercontent.com/fjararibet/.dotfiles/main/.install_dotfiles.sh | bash
 ```
 
-# Gnome Configuration
+# Install nvim config only
 Save it to a file
 ```bash
-dconf dump / > .dconf_dump
-```
-Loading it
-```bash
-dconf load / < .dconf_dump
+curl https://github.com/fjararibet/.dotfiles/raw/main/install_nvim_conf.sh | bash
 ```
 
