@@ -10,15 +10,16 @@ vim.wo.relativenumber = true
 vim.o.laststatus = 2
 
 -- Number width. NO NECK PAIN
+local min_width = 4
 local max_width = 16
 local flip_nuw = function()
   if vim.wo.numberwidth == max_width then
-    vim.wo.numberwidth = 4
+    vim.wo.numberwidth = min_width
   else
     vim.wo.numberwidth = max_width
   end
 end
-vim.wo.numberwidth = max_width
+vim.wo.numberwidth = min_width
 vim.keymap.set('n', '<leader>z', flip_nuw, { silent = true, desc = 'Make file e[x]ecutable' })
 -- Enable mouse mode
 vim.o.mouse = 'a'
