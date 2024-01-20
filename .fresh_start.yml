@@ -1,10 +1,10 @@
-host: localhost
-become: true
-tasks:
+- hosts: localhost
+  become: true
+  tasks:
 
-  - name: "Install fzf from source"
-    ansible.builtin.git:
-      repo: 'https://github.com/junegunn/fzf'
-      depth: 1
-      dest: '~/.fzf'
-    cmd: '~/.fzf/install'
+    - name: "Install fzf from source"
+      ansible.builtin.git:
+        repo: 'https://github.com/junegunn/fzf'
+        depth: 1
+        dest: '~/.fzf'
+      cmd: '~/.fzf/install'
