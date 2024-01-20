@@ -10,7 +10,7 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(autojump command-not-found docker docker-compose encode64 git git-flow github history-substring-search pip systemd cdenv colored-man docker-extra example findm grepr mclone)
+plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -28,10 +28,10 @@ alias changebg="$HOME/Pictures/Backgrounds/set_background.sh"
 alias vimconf='nvim ~/.config/nvim/'
 alias tmuxconf='nvim ~/.config/tmux/tmux.conf'
 
-# fzf config
-source /usr/share/doc/fzf/examples/key-bindings.zsh
-source /usr/share/doc/fzf/examples/completion.zsh
-
+##############
+# fzf config #
+##############
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Setting fd as the default source for fzf
 export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git --exclude .venv'
@@ -59,8 +59,10 @@ search-dirs() {
 }
 zle -N search-dirs
 bindkey "\ee" search-dirs
+##############
+#  end fzf   #
+##############
 
-source "$HOME/.cargo/env"
 
 # these were used to traverse the history
 # but I want to use them for tmux
@@ -82,3 +84,4 @@ else
   tmux switch-client -t "$session_name"
 fi
 
+[ -f ~/.cargo/env ] && source ~/.cargo/env
