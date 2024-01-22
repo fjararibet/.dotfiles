@@ -1,0 +1,162 @@
+- hosts: localhost
+  tasks:
+    - name: Get home directory
+      set_fact:
+        home_dir: "{{ lookup('env', 'HOME') }}"
+      tags: always
+    
+    - name: Update
+      apt:
+
+    - name: Set theme
+      shell: |
+        gsettings set org.gnome.desktop.interface gtk-theme 'Yaru-purple-dark'
+        gsettings set org.gnome.desktop.interface icon-theme 'Yaru-purple'
+      tags: [ gnome, theme ]
+
+    - name: Set some sensible personal defaults
+      shell: |
+        gsettings set org.gnome.shell.extensions.ding show-home false
+        gsettings set org.gnome.desktop.notifications show-banners false
+        gsettings set org.gnome.desktop.notifications show-in-lock-screen false
+        gsettings set org.gnome.desktop.peripherals.mouse accel-profile 'flat'
+        gsettings set org.gnome.desktop.peripherals.touchpad speed 0.3
+        gsettings set org.gnome.desktop.peripherals.mouse speed 0
+        gsettings set org.gnome.desktop.interface enable-animations false
+      tags: [ gnome, gnome-defaults ]
+
+    - name: Disable extensions
+      shell: |
+        gnome-extensions disable drive-menu@gnome-shell-extensions.gcampax.github.com
+        gnome-extensions disable ubuntu-dock@ubuntu.com
+      tags: [ gnome, disable-extensions ]
+
+    - name: Set workspace options
+      shell: | 
+        gsettings set org.gnome.mutter dynamic-workspaces false
+        gsettings set org.gnome.desktop.wm.preferences num-workspaces 4
+      tags: [ gnome, workspace-options ]
+
+    # Mapping files /usr/share/gnome-control-center/keybindings/
+    - name: Set workspace keybinds
+      shell: |
+        gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-1 "['<Super>1']"
+        gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-2 "['<Super>2']"
+        gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-3 "['<Super>3']"
+        gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-4 "['<Super>4']"
+        gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-1 "['<Super><Alt>1']"
+        gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-2 "['<Super><Alt>2']"
+        gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-3 "['<Super><Alt>3']"
+        gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-4 "['<Super><Alt>4']"
+      tags: [ gnome, binds ]
+
+    - name: Extensions 
+      block:
+      - name: Install pipx
+        become: true
+        apt: name=pipx
+        tags: [ gext-setup ]
+
+      - name: Install gext
+        shell: |
+          pipx install gnome-extensions-cli --system-site-packages
+          pipx ensurepath
+        tags: [ gext-setup ]
+
+      - name: Restart shell
+        debug:
+          msg: Restart shell and run again
+        tags: [ gext-setup ]
+
+      - name: Install extensions
+        shell: |
+          gext install auto-move-windows@gnome-shell-extensions.gcampax.github.com
+          gext install just-perfection-desktop@just-perfection
+          
+      - name: Install Just Pefection schema
+        become: true
+        copy:
+          src: "{{ home_dir }}/.local/share/gnome-shell/extensions/just-perfection-desktop@just-perfection/schemas/org.gnome.shell.extensions.just-perfection.gschema.xml"
+          dest: /usr/share/glib-2.0/schemas/
+        tags: [ schemas ]
+
+      - name: Install Auto move windows schema
+        become: true
+        copy:
+          src: "{{ home_dir }}/.local/share/gnome-shell/extensions/auto-move-windows@gnome-shell-extensions.gcampax.github.com/schemas/org.gnome.shell.extensions.auto-move-windows.gschema.xml"
+          dest: /usr/share/glib-2.0/schemas/
+        tags: [ schemas ]
+
+      - name: Compile schemas
+        become: true
+        shell: glib-compile-schemas /usr/share/glib-2.0/schemas/
+        tags: [ schemas ]
+
+      - name: Set extensions options
+        shell: |
+          gsettings set org.gnome.shell.extensions.auto-move-windows application-list ['org.gnome.Terminal.desktop:2'] 
+          gsettings set org.gnome.shell.extensions.just-perfection top-panel-position 1 > log.txt
+      tags: [ extensions ]
+    
+
+    - name: Diable auto color change
+      shell: systemctl --user mask --now org.gnome.SettingsDaemon.Color.service
+      tags: [ gnome, color-service]
+
+    - name: Install JetBrains Mono font
+      become: true
+      apt: name=fonts-jetbrains-mono
+      tags: [ font ]
+
+    - name: Install git
+      become: true
+      apt: name=git
+      tags: [ utils ]
+
+    - name: Clone fzf
+      git:
+        repo: https://github.com/junegunn/fzf.git
+        dest: "{{ home_dir }}/.fzf"
+        depth: 1
+      tags: [ fzf, utils ]
+
+    - name: Install fzf
+      shell: "{{ home_dir }}/.fzf/install" 
+      tags: [ fzf, utils ]
+
+    - name: Install Utils
+      become: true
+      apt:
+        pkg:
+          - zsh
+          - tmux
+      tags: [ utils ]
+
+    - name: Install oh-my zsh
+      shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+      tags: [ oh-my-zsh, utils ]
+
+    - name: Install neovim
+      become: true
+      snap:
+        name: nvim
+        classic: true
+      tags: [ nvim ]
+
+    - name: Install venv for LSP
+      become: true
+      apt: name=python3-venv
+      tags: [ nvim ]
+
+    - name: Install ripgrep for grep search
+      become: true
+      apt: name=ripgrep
+      tags: [ nvim ]
+
+    # - name: Install dotfiles
+    #   shell: curl https://raw.githubusercontent.com/fjararibet/.dotfiles/main/.install_dotfiles.sh | bash
+    #   tags: [ dotfiles ]
+
+
+
+
