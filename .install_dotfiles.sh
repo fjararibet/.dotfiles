@@ -14,7 +14,7 @@ if [ $? = 0 ]; then
   echo "dotfiles successfully installed.";
   else
     echo "Moving existing dotfiles to ~/.dotfiles-backup";
-    config checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} .dotfiles-backup/{}
+    dotfiles checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} .dotfiles-backup/{}
 fi
 
 dotfiles checkout
