@@ -17,12 +17,14 @@ dotfiles commit -m "Add bashrc"
 dotfiles push
 ```
 # Get keys
-```bash
-curl https://raw.githubusercontent.com/fjararibet/.dotfiles/main/.decrypt_keys.sh | bash
-```
-# Install dotfiles
+
 ```bash
 sudo apt install curl git ansible -y
+curl https://raw.githubusercontent.com/fjararibet/.dotfiles/main/.decrypt_keys.sh | bash
+```
+
+# Install dotfiles
+```bash
 curl https://raw.githubusercontent.com/fjararibet/.dotfiles/main/.install_dotfiles.sh | bash
 ```
 # Setup with ansible
