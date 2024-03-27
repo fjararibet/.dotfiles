@@ -95,6 +95,9 @@
       shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
       tags: [ oh-my-zsh, utils ]
 
+    - name: Change shell
+      shell: chsh -s $(which zsh)
+
     - name: Install neovim
       become: true
       snap:
