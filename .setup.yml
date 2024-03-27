@@ -116,11 +116,3 @@
       become: true
       apt: name=fd-find
       tags: [ fdfind ]
-
-    - name: Install dotfiles
-      shell: curl https://raw.githubusercontent.com/fjararibet/.dotfiles/main/.install_dotfiles.sh | bash
-      tags: [ dotfiles ]
-
-
-
-
