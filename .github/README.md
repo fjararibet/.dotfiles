@@ -29,7 +29,7 @@ curl https://raw.githubusercontent.com/fjararibet/.dotfiles/main/.install_dotfil
 ```
 # Setup with ansible
 ```bash
-ansible-playbook $HOME/.setup.yml
+ansible-playbook $HOME/.setup.yml -K
 ```
 # Install nvim config only
 Save it to a file
