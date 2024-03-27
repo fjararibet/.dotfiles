@@ -17,4 +17,5 @@ return {
   "folke/zen-mode.nvim",
 
   'github/copilot.vim',
+  'Vimjas/vim-python-pep8-indent',
 }

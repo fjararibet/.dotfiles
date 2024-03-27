@@ -23,6 +23,7 @@ return {
           -- javascript = { { "prettierd", "prettier" } },
           html = { "djlint" },
           htmldjango = { "djlint" },
+          json = { "prettier" },
         },
         -- Customize formatters
         formatters = {
