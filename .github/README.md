@@ -19,9 +19,13 @@ dotfiles push
 
 # Install dotfiles
 ```bash
+sudo apt install curl git ansible -y
 curl https://raw.githubusercontent.com/fjararibet/.dotfiles/main/.install_dotfiles.sh | bash
 ```
-
+# Setup with ansible
+```bash
+ansible-playbook $HOME/.setup.yml
+```
 # Install nvim config only
 Save it to a file
 ```bash
