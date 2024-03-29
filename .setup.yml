@@ -145,7 +145,8 @@
     - name: Build pop shell
       expect:
         command: make local-install
-        Questions:
-          - y
+        responses:
+          Questions:
+            - y
       tags: [ popshell ]
 
