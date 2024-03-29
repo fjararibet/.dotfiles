@@ -144,7 +144,7 @@
 
     - name: Build pop shell
       expect:
-        command: make local-install
+        command: yes | make local-install
         responses:
           Questions:
             - y
