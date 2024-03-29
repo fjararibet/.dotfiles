@@ -95,7 +95,7 @@
       expect:
         command: chsh -s /usr/bin/zsh
         responses:
-          (?i)password: "ampliubu"
+          (?i)password: "{{ ansible_password }}"
 
     - name: Install oh-my zsh
       shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
