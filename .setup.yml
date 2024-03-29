@@ -33,10 +33,6 @@
         gnome-extensions disable ubuntu-dock@ubuntu.com
       tags: [ gnome, disable-extensions ]
 
-    - name: Enable top bar bottom
-      shell: gnome-extensions enable top-bar-bottom
-      tags: [ gnome, enable-extensions ]
-
     - name: Set workspace options
       shell: | 
         gsettings set org.gnome.mutter dynamic-workspaces false
