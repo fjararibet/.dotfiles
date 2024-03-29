@@ -139,7 +139,7 @@
       git:
         repo: https://github.com/pop-os/shell.git
         dest: "{{ home_dir }}/.shell"
-        depth: 1
+        version: master_jammy
       tags: [ popshell ]
 
     - name: Build pop shell
