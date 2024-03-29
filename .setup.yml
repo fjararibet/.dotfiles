@@ -1,4 +1,6 @@
 - hosts: localhost
+  vars:
+    current_user: "{{ ansible_user_id }}"
   tasks:
     - name: Get home directory
       set_fact:
@@ -92,10 +94,9 @@
       tags: [ utils ]
 
     - name: Change shell
-      expect:
-        command: chsh -s /usr/bin/zsh
-        responses:
-          (?i)password: "{{ ansible_password }}"
+      user:
+        name: "{{ current_user }}"
+        shell: /usr/bin/zsh
 
     - name: Install oh-my zsh
       shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
