@@ -94,6 +94,7 @@
       tags: [ utils ]
 
     - name: Change shell
+      become: true
       user:
         name: "{{ current_user }}"
         shell: /usr/bin/zsh
