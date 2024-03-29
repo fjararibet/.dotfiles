@@ -91,12 +91,15 @@
           - tmux
       tags: [ utils ]
 
+    - name: Change shell
+      expect:
+        command: chsh -s /usr/bin/zsh
+        responses:
+          (?i)password: "ampliubu"
+
     - name: Install oh-my zsh
       shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
       tags: [ oh-my-zsh, utils ]
-
-    - name: Change shell
-      shell: chsh -s $(which zsh)
 
     - name: Install neovim
       become: true
@@ -119,3 +122,26 @@
       become: true
       apt: name=fd-find
       tags: [ fdfind ]
+
+    - name: Install make
+      become: true
+      apt: name=make
+      tags: [ make, popshell ]
+
+    - name: Install typescript
+      become: true
+      apt: name=node-typescript
+      tags: [ make, typescript ]
+
+    - name: Clone pop shell
+      git:
+        repo: https://github.com/pop-os/shell.git
+        dest: "{{ home_dir }}/.shell"
+        depth: 1
+      tags: [ popshell ]
+
+    - name: Build pop shell
+      command: make local-install
+      args:
+        chdir: "{{ home_dir }}/.shell"
+
