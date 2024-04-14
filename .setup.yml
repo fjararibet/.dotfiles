@@ -1,4 +1,6 @@
 - hosts: localhost
+  vars:
+    current_user: "{{ ansible_user_id }}"
   tasks:
     - name: Get home directory
       set_fact:
@@ -50,53 +52,12 @@
         gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-4 "['<Super><Alt>4']"
       tags: [ gnome, binds ]
 
-    - name: Extensions 
-      block:
-      - name: Install pipx
-        become: true
-        apt: name=pipx
-        tags: [ gext-setup ]
 
-      - name: Install gext
-        shell: |
-          pipx install gnome-extensions-cli --system-site-packages
-          pipx ensurepath
-        tags: [ gext-setup ]
-
-      - name: Restart shell
-        debug:
-          msg: Restart shell and run again
-        tags: [ gext-setup ]
-
-      - name: Install extensions
-        shell: |
-          gext install auto-move-windows@gnome-shell-extensions.gcampax.github.com
-          gext install just-perfection-desktop@just-perfection
-          
-      - name: Install Just Pefection schema
-        become: true
-        copy:
-          src: "{{ home_dir }}/.local/share/gnome-shell/extensions/just-perfection-desktop@just-perfection/schemas/org.gnome.shell.extensions.just-perfection.gschema.xml"
-          dest: /usr/share/glib-2.0/schemas/
-        tags: [ schemas ]
-
-      - name: Install Auto move windows schema
-        become: true
-        copy:
-          src: "{{ home_dir }}/.local/share/gnome-shell/extensions/auto-move-windows@gnome-shell-extensions.gcampax.github.com/schemas/org.gnome.shell.extensions.auto-move-windows.gschema.xml"
-          dest: /usr/share/glib-2.0/schemas/
-        tags: [ schemas ]
-
-      - name: Compile schemas
-        become: true
-        shell: glib-compile-schemas /usr/share/glib-2.0/schemas/
-        tags: [ schemas ]
-
-      - name: Set extensions options
-        shell: |
-          gsettings set org.gnome.shell.extensions.auto-move-windows application-list ['org.gnome.Terminal.desktop:2'] 
-          gsettings set org.gnome.shell.extensions.just-perfection top-panel-position 1 > log.txt
-      tags: [ extensions ]
+      # - name: Set extensions options
+      #   shell: |
+      #     gsettings set org.gnome.shell.extensions.auto-move-windows application-list ['org.gnome.Terminal.desktop:2'] 
+      #     gsettings set org.gnome.shell.extensions.just-perfection top-panel-position 1 > log.txt
+      # tags: [ extensions ]
     
 
     - name: Diable auto color change
@@ -132,6 +93,12 @@
           - tmux
       tags: [ utils ]
 
+    - name: Change shell
+      become: true
+      user:
+        name: "{{ current_user }}"
+        shell: /usr/bin/zsh
+
     - name: Install oh-my zsh
       shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
       tags: [ oh-my-zsh, utils ]
@@ -152,11 +119,34 @@
       become: true
       apt: name=ripgrep
       tags: [ nvim ]
+    
+    - name: Install fdfind for fzf
+      become: true
+      apt: name=fd-find
+      tags: [ fdfind ]
 
-    # - name: Install dotfiles
-    #   shell: curl https://raw.githubusercontent.com/fjararibet/.dotfiles/main/.install_dotfiles.sh | bash
-    #   tags: [ dotfiles ]
+    - name: Install make
+      become: true
+      apt: name=make
+      tags: [ make, popshell ]
 
+    - name: Install typescript
+      become: true
+      apt: name=node-typescript
+      tags: [ make, typescript ]
 
+    - name: Clone pop shell
+      git:
+        repo: https://github.com/pop-os/shell.git
+        dest: "{{ home_dir }}/.shell"
+        version: master_jammy
+      tags: [ popshell ]
 
+    - name: Build pop shell
+      expect:
+        command: yes | make local-install
+        responses:
+          Questions:
+            - y
+      tags: [ popshell ]
 
