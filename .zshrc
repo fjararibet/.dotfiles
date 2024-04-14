@@ -6,13 +6,20 @@ export ZSH="$HOME/.oh-my-zsh"
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="robbyrussell"
 
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
+DISABLE_AUTO_UPDATE="true"
+
+
+# Which plugins would you like to load?
+# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(
+  git
+)
 
 source $ZSH/oh-my-zsh.sh
+unsetopt share_history
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -85,3 +92,25 @@ else
 fi
 
 [ -f ~/.cargo/env ] && source ~/.cargo/env
+
+transparency_opt="/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/background-transparency-percent"
+add_transparency() {
+  curr_transparency=$(dconf read "$transparency_opt")
+  val=$(($curr_transparency + 5))
+  dconf write $transparency_opt $val
+}
+sub_transparency() {
+  curr_transparency=$(dconf read "$transparency_opt")
+  val=$(($curr_transparency - 5))
+  dconf write $transparency_opt $val
+}
+zle -N add_transparency
+zle -N sub_transparency
+bindkey "\e=" add_transparency
+bindkey "\e-" sub_transparency
+
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+
+# source /home/fjara/zsh-git-worktrees/zsh-git-worktrees.zsh
