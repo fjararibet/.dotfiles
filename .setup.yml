@@ -148,3 +148,10 @@
         name: alacritty
         classic: true
       tags: [ alacritty ]
+
+    - name: Set alacritty as default terminal
+      shell: | 
+        gsettings set org.gnome.desktop.default-applications.terminal exec 'alacritty'
+        gsettings set org.gnome.desktop.default-applications.terminal exec-arg ''
+      tags: [ alacritty ]
+
