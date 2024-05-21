@@ -1,0 +1,23 @@
+live_config_reload = true
+import = ["~/.config/alacritty/kanagawa.toml"]
+
+[env]
+
+
+[window]
+dimensions.columns = 100
+dimensions.lines = 80
+padding.x = 10
+padding.y = 10
+opacity = 0.85
+startup_mode = "Fullscreen"
+
+[font]
+normal.family = "JetBrains Mono"
+normal.style = "Regular"
+size = 15
+offset.y = 2
+offset.x = 0
+
+[colors]
+primary.background = "#000000"
