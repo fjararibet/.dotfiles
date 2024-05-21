@@ -19,7 +19,7 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
-unsetopt share_history
+# unsetopt share_history
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -41,7 +41,7 @@ alias tmuxconf='nvim ~/.config/tmux/tmux.conf'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Setting fd as the default source for fzf
-export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git --exclude .venv'
+export FZF_DEFAULT_COMMAND='fdfind --type f --strip-cwd-prefix --hidden --follow --exclude .git --exclude .venv'
 # To apply the command to CTRL-T as well
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 function writecmd () { 
@@ -50,19 +50,19 @@ function writecmd () {
 
 #bind <C-f> to search home with fzf
 find-all-files() {
-  fd . $HOME --type file --hidden --follow --exclude .git --exclude .venv | fzf | writecmd
+  fdfind . $HOME --type file --hidden --follow --exclude .git --exclude .venv | fzf | writecmd
 }
 zle -N find-all-files
 bindkey '\C-f' find-all-files
 # search all directories
 search-all-dirs() {
-  fd . $HOME -I --type directory --follow --exclude .git | fzf | writecmd
+  fdfind . $HOME -I --type directory --follow --exclude .git | fzf | writecmd
 }
 zle -N search-all-dirs
 bindkey "\ed" search-all-dirs
 
 search-dirs() {
-  fd -I --type directory --hidden --follow --exclude .git | fzf | writecmd
+  fdfind -I --type directory --hidden --follow --exclude .git | fzf | writecmd
 }
 zle -N search-dirs
 bindkey "\ee" search-dirs
@@ -109,8 +109,8 @@ zle -N sub_transparency
 bindkey "\e=" add_transparency
 bindkey "\e-" sub_transparency
 
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+# export PYENV_ROOT="$HOME/.pyenv"
+# [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+# eval "$(pyenv init -)"
 
 # source /home/fjara/zsh-git-worktrees/zsh-git-worktrees.zsh
