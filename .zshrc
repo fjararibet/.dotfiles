@@ -8,6 +8,9 @@ ZSH_THEME="robbyrussell"
 
 DISABLE_AUTO_UPDATE="true"
 
+### For large repositories
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
 
 # Which plugins would you like to load?
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
