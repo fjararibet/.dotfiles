@@ -149,8 +149,9 @@
 
     - name: Build pop shell
       expect:
+        chdir: "{{ home_dir }}/.shell"
         command: make local-install
         responses:
           Questions:
-            - yes
+            - y
       tags: [ popshell ]
