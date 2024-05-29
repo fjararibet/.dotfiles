@@ -77,10 +77,10 @@
       expect:
         command: "{{ home_dir }}/.fzf/install" 
         responses:
-          Do:
+          Do you want:
             - y
             - y
-            - n
+            - y
       tags: [ fzf, utils ]
 
     - name: Install Utils
@@ -152,12 +152,6 @@
         dest: "{{ home_dir }}/.shell"
         version: master_jammy
       tags: [ popshell ]
-
-    # - name: Build pop shell
-    #   shell: yes | make local-install
-    #   args:
-    #     chdir: "{{ home_dir }}/.shell"
-    #   tags: [ popshell ]
 
     - name: Build pop shell
       expect:
