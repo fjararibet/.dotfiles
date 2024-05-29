@@ -152,5 +152,5 @@
         command: make local-install
         responses:
           Questions:
-            - y
+            - yes
       tags: [ popshell ]
