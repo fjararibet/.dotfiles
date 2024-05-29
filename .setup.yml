@@ -147,11 +147,16 @@
         version: master_jammy
       tags: [ popshell ]
 
+    # - name: Build pop shell
+    #   shell: yes | make local-install
+    #   args:
+    #     chdir: "{{ home_dir }}/.shell"
+    #   tags: [ popshell ]
+
     - name: Build pop shell
       expect:
         chdir: "{{ home_dir }}/.shell"
         command: make local-install
         responses:
-          Questions:
-            - y
+          Pop: "y"
       tags: [ popshell ]
