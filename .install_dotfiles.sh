@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Note that is a BARE repo
-git clone --bare https://github.com/fjararibet/.dotfiles.git $HOME/.dotfiles
+git clone --bare git@github.com:fjararibet/.dotfiles.git $HOME/.dotfiles
 
 # we haven't created the dotfiles alias yet,
 # so we create it as a function for now 
