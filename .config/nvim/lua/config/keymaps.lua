@@ -1,6 +1,7 @@
 vim.keymap.set('n', '<C-b>', '')
 vim.keymap.set('n', '<C-f>', '')
-vim.keymap.set('n', '<leader>e', '<cmd>Explore<CR>', { desc = ' [E]xplore files', silent = true })
+-- vim.keymap.set('n', '<leader>e', '<cmd>Explore<CR>', { desc = ' [E]xplore files', silent = true })
+vim.keymap.set('n', '<leader>e', '<cmd>Oil<CR>', { desc = ' [E]xplore files', silent = true })
 
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
