@@ -35,7 +35,7 @@ alias ohmyzsh="nvim ~/.oh-my-zsh"
 alias vim="nvim"
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias changebg="$HOME/Pictures/Backgrounds/set_background.sh"
-alias vimconf='nvim ~/.config/nvim/'
+alias vimconf='cd ~/.config/nvim/ && nvim . && cd -'
 alias tmuxconf='nvim ~/.config/tmux/tmux.conf'
 
 ##############
