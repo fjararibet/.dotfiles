@@ -24,7 +24,7 @@ return {
           html = { "djlint" },
           htmldjango = { "djlint" },
           json = { "prettier" },
-          cpp = { "clang-format" },
+          -- cpp = { "clang-format" },
         },
         -- Customize formatters
         formatters = {

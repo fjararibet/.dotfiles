@@ -11,6 +11,7 @@ DISABLE_AUTO_UPDATE="true"
 ### For large repositories
 # DISABLE_UNTRACKED_FILES_DIRTY="true"
 
+export NVM_LAZY_LOAD=true
 
 # Which plugins would you like to load?
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
@@ -19,6 +20,7 @@ DISABLE_AUTO_UPDATE="true"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
+  zsh-nvm
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -95,29 +97,3 @@ else
 fi
 
 [ -f ~/.cargo/env ] && source ~/.cargo/env
-
-transparency_opt="/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/background-transparency-percent"
-add_transparency() {
-  curr_transparency=$(dconf read "$transparency_opt")
-  val=$(($curr_transparency + 5))
-  dconf write $transparency_opt $val
-}
-sub_transparency() {
-  curr_transparency=$(dconf read "$transparency_opt")
-  val=$(($curr_transparency - 5))
-  dconf write $transparency_opt $val
-}
-zle -N add_transparency
-zle -N sub_transparency
-bindkey "\e=" add_transparency
-bindkey "\e-" sub_transparency
-
-# export PYENV_ROOT="$HOME/.pyenv"
-# [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-# eval "$(pyenv init -)"
-
-# source /home/fjara/zsh-git-worktrees/zsh-git-worktrees.zsh
-
-export NVM_DIR="$HOME/.config/nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
