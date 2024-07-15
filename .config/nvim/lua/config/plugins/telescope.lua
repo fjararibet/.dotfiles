@@ -8,6 +8,7 @@ require('telescope').setup {
         ['<C-k>'] = actions.move_selection_previous,
         ['<C-j>'] = actions.move_selection_next,
         ['<esc>'] = actions.close,
+        ['<CR>'] = actions.select_default + actions.center,
       },
     },
   },
@@ -35,3 +36,4 @@ vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 vim.keymap.set('n', '<leader>sb', require('telescope.builtin').git_branches, { desc = '[S]earch Git [B]ranches' })
 vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
+vim.keymap.set('n', '<leader>sm', require('telescope.builtin').lsp_document_symbols, { desc = '[S]earch [M]ethods' })
