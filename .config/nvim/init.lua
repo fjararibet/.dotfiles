@@ -27,6 +27,6 @@ require('lazy').setup('plugins')
 --    All files in the lua folder are requireable.
 --    init.lua is executed upon require.
 require('config')
-vim.cmd.colorscheme "kanagawa"
+vim.cmd.colorscheme "kanagawa-dragon"
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
