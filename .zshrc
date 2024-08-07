@@ -97,3 +97,6 @@ else
 fi
 
 [ -f ~/.cargo/env ] && source ~/.cargo/env
+
+# opam configuration
+[[ ! -r /home/ciruela/.opam/opam-init/init.zsh ]] || source /home/ciruela/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null

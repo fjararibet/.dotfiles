@@ -86,6 +86,7 @@ local servers = {
     }
   },
   cssls = {},
+  -- ocamllsp = {},
 }
 
 -- Setup neovim lua configuration
@@ -99,6 +100,10 @@ capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 -- racket_langserver
 local lspconfig = require('lspconfig')
 lspconfig.racket_langserver.setup {
+  capabilities = capabilities,
+  on_attach = on_attach,
+}
+lspconfig.ocamllsp.setup {
   capabilities = capabilities,
   on_attach = on_attach,
 }
