@@ -24,6 +24,7 @@ return {
           html = { "djlint" },
           htmldjango = { "djlint" },
           json = { "prettier" },
+          ocaml = { "ocamlformat" },
           -- cpp = { "clang-format" },
         },
         -- Customize formatters

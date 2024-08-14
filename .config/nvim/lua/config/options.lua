@@ -24,6 +24,9 @@ vim.keymap.set('n', '<leader>z', flip_nuw, { silent = true, desc = 'Make file e[
 -- Enable mouse mode
 vim.o.mouse = 'a'
 
+-- Smart indent
+vim.o.smartindent = true
+
 -- Enable break indent
 vim.o.breakindent = true
 
