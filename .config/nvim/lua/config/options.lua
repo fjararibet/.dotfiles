@@ -26,6 +26,7 @@ vim.o.mouse = 'a'
 
 -- Smart indent
 vim.o.smartindent = true
+vim.o.autoindent = true
 
 -- Enable break indent
 vim.o.breakindent = true
