@@ -39,7 +39,7 @@ alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias changebg="$HOME/Pictures/Backgrounds/set_background.sh"
 alias vimconf='cd ~/.config/nvim/ && nvim . && cd -'
 alias tmuxconf='nvim ~/.config/tmux/tmux.conf'
-alias comp='g++ -Wall -Wextra -pedantic -std=c++11 -Wshadow -Wformat=2 -Wfloat-equal -Wconversion -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC'
+alias comp='g++ -Wall -Wextra -pedantic -std=c++17 -Wshadow -Wformat=2 -Wfloat-equal -Wconversion -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC'
 
 ##############
 # fzf config #
