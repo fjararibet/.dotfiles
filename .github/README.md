@@ -34,6 +34,11 @@ For some reason make needs to be run twice for popshell, the second time after a
 ```bash
 curl https://raw.githubusercontent.com/fjararibet/.dotfiles/main/.install_dotfiles.sh | bash
 ```
+you also may want to run
+```bash
+nvm install node
+```
+for nvim plugins
 # Install nvim config only
 Save it to a file
 ```bash
