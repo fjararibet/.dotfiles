@@ -28,6 +28,12 @@ curl https://raw.githubusercontent.com/fjararibet/.dotfiles/main/.decrypt_keys.s
 curl --remote-name https://raw.githubusercontent.com/fjararibet/.dotfiles/refs/heads/main/.setup.yml
 ansible-playbook $HOME/.setup.yml -K
 ```
+install alacritty manually from ppa
+```
+sudo add-apt-repository ppa:mmstick76/alacritty
+sudo apt update
+sudo apt install alacritty
+```
 For some reason make needs to be run twice for popshell, the second time after a logout, the command can be run manually or ```ansible-playbook $HOME/.setup.yml -K --tags popshell``` after logout
 
 # Install dotfiles
