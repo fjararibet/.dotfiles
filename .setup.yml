@@ -154,7 +154,7 @@
       git:
         repo: https://github.com/pop-os/shell.git
         dest: "{{ home_dir }}/.shell"
-        version: master_jammy
+        version: master_noble
       tags: [ popshell ]
 
     - name: Build pop shell
