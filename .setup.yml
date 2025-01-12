@@ -108,16 +108,27 @@
         classic: true
       tags: [ nvim ]
 
-    - name: Install venv for LSP
-      become: true
-      apt: name=python3-venv
+    - name: neovim plugin dependencies
+      apt:
+        pkg:
+          - python3-venv
+          - ripgrep
+          - gcc
+          - clang
       tags: [ nvim ]
 
-    - name: Install ripgrep for grep search
-      become: true
-      apt: name=ripgrep
-      tags: [ nvim ]
-    
+    - name: Install nvm
+      shell: |
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+      args:
+        creates: "{{ home_dir }}/.nvm/nvm.sh"
+      tags: [ nvim, node ]
+
+    - name: Install node
+      shell: |
+        nvm install node
+      tags: [ nvim, node ]
+
     - name: Install fdfind for fzf
       become: true
       apt: name=fd-find
