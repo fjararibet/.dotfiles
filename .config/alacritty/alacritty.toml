@@ -1,3 +1,4 @@
+[general]
 live_config_reload = true
 import = ["~/.config/alacritty/kanagawa.toml"]
 
@@ -19,4 +20,3 @@ offset.x = 0
 
 [colors]
 primary.background = "#000000"
-

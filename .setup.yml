@@ -127,12 +127,6 @@
         creates: "{{ home_dir }}/.nvm/nvm.sh"
       tags: [ nvim, node ]
 
-    - name: Install node
-      shell: |
-        source "{{ home_dir }}/.bashrc"
-        nvm install node
-      tags: [ nvim, node ]
-
     - name: Install zsh-nvm
       git:
         repo: https://github.com/lukechilds/zsh-nvm
