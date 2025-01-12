@@ -143,30 +143,6 @@
       apt: name=make
       tags: [ make, popshell ]
 
-    - name: Install cargo
-      become: true
-      apt:
-        name: cargo
-      tags: [ alacritty, rust ]
-
-    - name: Alacritty dependencies
-      become: true
-      apt:
-        pkg: 
-          - cmake 
-          - g++ 
-          - pkg-config
-          - libfreetype6-dev
-          - libfontconfig1-dev 
-          - libxcb-xfixes0-dev
-          - libxkbcommon-dev
-          - python3
-      tags: [ alacritty ]
-
-    - name: Install Alacritty
-      shell: cargo install alacritty
-      tags: [ alacritty ]
-
     - name: Set alacritty as default terminal
       shell: | 
         gsettings set org.gnome.desktop.default-applications.terminal exec 'alacritty'
