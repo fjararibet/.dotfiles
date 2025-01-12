@@ -23,13 +23,15 @@ sudo apt install curl git ansible -y
 curl https://raw.githubusercontent.com/fjararibet/.dotfiles/main/.decrypt_keys.sh | bash
 ```
 
+# Setup with ansible
+```bash
+curl --remote-name https://raw.githubusercontent.com/fjararibet/.dotfiles/refs/heads/main/.setup.yml
+ansible-playbook $HOME/.setup.yml -K
+```
+
 # Install dotfiles
 ```bash
 curl https://raw.githubusercontent.com/fjararibet/.dotfiles/main/.install_dotfiles.sh | bash
-```
-# Setup with ansible
-```bash
-ansible-playbook $HOME/.setup.yml -K
 ```
 # Install nvim config only
 Save it to a file

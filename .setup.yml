@@ -128,11 +128,15 @@
       apt: name=make
       tags: [ make, popshell ]
 
+    - name: Ansible ppa
+      become: true
+      apt_repository:
+        repo: ppa:mmstick76/alacritty
+
     - name: Install Alacritty
       become: true
-      snap:
+      apt:
         name: alacritty
-        classic: true
       tags: [ alacritty ]
 
     - name: Set alacritty as default terminal
@@ -144,7 +148,7 @@
     - name: Install typescript
       become: true
       apt: name=node-typescript
-      tags: [ make, typescript ]
+      tags: [ make, typescript, popshell ]
 
     - name: Clone pop shell
       git:
