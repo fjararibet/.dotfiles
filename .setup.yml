@@ -128,6 +128,11 @@
       shell: |
         nvm install node
       tags: [ nvim, node ]
+    - name: Install zsh-nvm
+      git:
+        repo: https://github.com/lukechilds/zsh-nvm
+        dest: "{{ home_dir }}/.oh-my-zsh/custom/plugins/zsh-nvm"
+      tags: [ node ]
 
     - name: Install fdfind for fzf
       become: true
@@ -148,6 +153,7 @@
       become: true
       apt:
         name: alacritty
+      update_cache: yes
       tags: [ alacritty ]
 
     - name: Set alacritty as default terminal
