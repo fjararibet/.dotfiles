@@ -11,7 +11,7 @@ DISABLE_AUTO_UPDATE="true"
 ### For large repositories
 # DISABLE_UNTRACKED_FILES_DIRTY="true"
 
-# export NVM_LAZY_LOAD=true
+export NVM_LAZY_LOAD=true
 
 # Which plugins would you like to load?
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
@@ -20,7 +20,7 @@ DISABLE_AUTO_UPDATE="true"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
-  # zsh-nvm
+  zsh-nvm
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -101,3 +101,7 @@ fi
 
 # opam configuration
 [[ ! -r /home/ciruela/.opam/opam-init/init.zsh ]] || source /home/ciruela/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
