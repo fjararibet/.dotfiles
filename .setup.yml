@@ -109,6 +109,7 @@
       tags: [ nvim ]
 
     - name: neovim plugin dependencies
+      become: true
       apt:
         pkg:
           - python3-venv
@@ -128,6 +129,7 @@
       shell: |
         nvm install node
       tags: [ nvim, node ]
+
     - name: Install zsh-nvm
       git:
         repo: https://github.com/lukechilds/zsh-nvm
