@@ -1,6 +1,5 @@
-
-[env]
-
+live_config_reload = true
+import = ["~/.config/alacritty/kanagawa.toml"]
 
 [window]
 padding.x = 10
@@ -21,6 +20,3 @@ offset.x = 0
 [colors]
 primary.background = "#000000"
 
-[general]
-live_config_reload = true
-import = ["~/.config/alacritty/kanagawa.toml"]
