@@ -11,7 +11,7 @@ DISABLE_AUTO_UPDATE="true"
 ### For large repositories
 # DISABLE_UNTRACKED_FILES_DIRTY="true"
 
-export NVM_LAZY_LOAD=true
+# export NVM_LAZY_LOAD=true
 
 # Which plugins would you like to load?
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
@@ -20,7 +20,7 @@ export NVM_LAZY_LOAD=true
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
-  zsh-nvm
+  # zsh-nvm
 )
 
 source $ZSH/oh-my-zsh.sh
