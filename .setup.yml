@@ -99,6 +99,8 @@
 
     - name: Install oh-my zsh
       shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+      args:
+        creates: "{{ home_dir}}/.oh-my-zsh/oh-my-zsh.sh"
       tags: [ oh-my-zsh, utils ]
 
     - name: Install neovim
@@ -127,6 +129,7 @@
 
     - name: Install node
       shell: |
+        source "{{ home_dir }}/.bashrc"
         nvm install node
       tags: [ nvim, node ]
 
