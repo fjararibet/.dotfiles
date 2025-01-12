@@ -128,7 +128,7 @@
       apt: name=make
       tags: [ make, popshell ]
 
-    - name: Ansible ppa
+    - name: Alacritty ppa
       become: true
       apt_repository:
         repo: ppa:mmstick76/alacritty
