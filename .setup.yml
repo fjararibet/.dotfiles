@@ -155,22 +155,22 @@
         gsettings set org.gnome.desktop.default-applications.terminal exec-arg ''
       tags: [ alacritty ]
 
-    - name: Install typescript
-      become: true
-      apt: name=node-typescript
-      tags: [ make, typescript, popshell ]
+    # - name: Install typescript
+    #   become: true
+    #   apt: name=node-typescript
+    #   tags: [ make, typescript, popshell ]
 
-    - name: Clone pop shell
-      git:
-        repo: https://github.com/pop-os/shell.git
-        dest: "{{ home_dir }}/.shell"
-        version: master_noble
-      tags: [ popshell ]
-
-    - name: Build pop shell
-      expect:
-        chdir: "{{ home_dir }}/.shell"
-        command: make local-install
-        responses:
-          Pop: "y"
-      tags: [ popshell ]
+    # - name: Clone pop shell
+    #   git:
+    #     repo: https://github.com/pop-os/shell.git
+    #     dest: "{{ home_dir }}/.shell"
+    #     version: master_noble
+    #   tags: [ popshell ]
+    #
+    # - name: Build pop shell
+    #   expect:
+    #     chdir: "{{ home_dir }}/.shell"
+    #     command: make local-install
+    #     responses:
+    #       Pop: "y"
+    #   tags: [ popshell ]
