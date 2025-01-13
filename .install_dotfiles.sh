@@ -12,11 +12,12 @@ function dotfiles {
 dotfiles checkout
 if [ $? = 0 ]; then
   echo "dotfiles successfully installed.";
-else
+fi
+# else
     #echo "Moving existing dotfiles to ~/.dotfiles-backup";
     #mkdir .dotfiles-backup
     #dotfiles checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} $HOME/.dotfiles-backup/{}
-fi
+# fi
 
 dotfiles checkout
 dotfiles config --local status.showUntrackedFiles no
