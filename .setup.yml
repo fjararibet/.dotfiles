@@ -143,6 +143,12 @@
       apt: name=make
       tags: [ make, popshell ]
 
+    - name: Install alacritty
+      become: true
+      apt: 
+        name: alacritty
+      tags: [ alacritty ]
+
     - name: Set alacritty as default terminal
       shell: | 
         gsettings set org.gnome.desktop.default-applications.terminal exec 'alacritty'
