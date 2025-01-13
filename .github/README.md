@@ -28,13 +28,14 @@ curl https://raw.githubusercontent.com/fjararibet/.dotfiles/main/.decrypt_keys.s
 curl --remote-name https://raw.githubusercontent.com/fjararibet/.dotfiles/refs/heads/main/.setup.yml
 ansible-playbook $HOME/.setup.yml -K
 ```
-install alacritty manually from ppa
+For some reason make needs to be run twice for popshell, the second time after a logout, the command can be run manually
 ```
-sudo add-apt-repository ppa:mmstick76/alacritty
-sudo apt update
-sudo apt install alacritty
+cd .shell
+make local-install
 ```
-For some reason make needs to be run twice for popshell, the second time after a logout, the command can be run manually or ```ansible-playbook $HOME/.setup.yml -K --tags popshell``` after logout
+or 
+```ansible-playbook $HOME/.setup.yml -K --tags popshell```
+after logout
 
 # Install dotfiles
 ```bash
