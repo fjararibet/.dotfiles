@@ -50,25 +50,31 @@ alias comp='g++ -Wall -Wextra -pedantic -std=c++17 -Wshadow -Wformat=2 -Wfloat-e
 export FZF_DEFAULT_COMMAND='fdfind --type f --strip-cwd-prefix --hidden --follow --exclude .git --exclude .venv'
 # To apply the command to CTRL-T as well
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-function writecmd () { 
-  perl -e 'ioctl STDOUT, 0x5412, $_ for split //, do{ chomp($_ = <>); $_ }' ; 
+
+writecmd() { 
+  if [[ -n $1 ]]; then
+    LBUFFER="$LBUFFER$1"
+  fi
 }
 
 #bind <C-f> to search home with fzf
 find-all-files() {
-  fdfind . $HOME --type file --hidden --follow --exclude .git --exclude .venv | fzf | writecmd
+  local result=$(fdfind . $HOME --type file --hidden --follow --exclude .git --exclude .venv | fzf)
+  writecmd $result
 }
 zle -N find-all-files
 bindkey '\C-f' find-all-files
 # search all directories
 search-all-dirs() {
-  fdfind . $HOME -I --type directory --follow --exclude .git | fzf | writecmd
+  local result=$(fdfind . $HOME -I --type directory --follow --exclude .git | fzf)
+  writecmd $result 
 }
 zle -N search-all-dirs
 bindkey "\ed" search-all-dirs
 
 search-dirs() {
-  fdfind -I --type directory --hidden --follow --exclude .git | fzf | writecmd
+  local result=$(fdfind -I --type directory --hidden --follow --exclude .git | fzf)
+  writecmd $result
 }
 zle -N search-dirs
 bindkey "\ee" search-dirs
@@ -105,3 +111,4 @@ fi
 # export NVM_DIR="$HOME/.nvm"
 # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 # [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+eval "$(uv generate-shell-completion zsh)"
