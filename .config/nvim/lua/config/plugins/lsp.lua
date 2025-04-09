@@ -64,7 +64,8 @@ local servers = {
   -- gopls = {},
   -- pyright = {},
   -- rust_analyzer = {},
-  tsserver = {},
+  ts_ls = {},
+  tailwindcss = {},
   html = { filetypes = { 'html' } },
 
   lua_ls = {

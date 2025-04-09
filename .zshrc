@@ -41,6 +41,9 @@ alias vimconf='cd ~/.config/nvim/ && nvim . && cd -'
 alias tmuxconf='nvim ~/.config/tmux/tmux.conf'
 alias comp='g++ -Wall -Wextra -pedantic -std=c++17 -Wshadow -Wformat=2 -Wfloat-equal -Wconversion -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC'
 
+# Env vars
+export EDITOR="nvim"
+
 ##############
 # fzf config #
 ##############
