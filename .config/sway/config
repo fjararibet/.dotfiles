@@ -16,7 +16,7 @@ set $browser firefox
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu dmenu_path | dmenu | xargs swaymsg exec --
+set $menu env PATH=$HOME/.local/bin:$PATH dmenu_path | dmenu -b | xargs swaymsg exec --
 
 include /etc/sway/config-vars.d/*
 
@@ -58,12 +58,19 @@ output 'Lenovo Group Limited LEN G24-10 U5B448B5' mode 1920x1080@143.999Hz posit
 #       middle_emulation enabled
 #   }
 #
+
+# Mouse
 input "1133:16500:Logitech_G305" {
     natural_scroll disabled
     accel_profile flat
     pointer_accel 0
 }
-input * xkb_options "ctrl:nocaps"
+# Keyboard
+input * { 
+    xkb_options "ctrl:nocaps",nodeadkeys
+    xkb_layout us
+    xkb_variant altgr-intl
+}
 # You can get the names of your inputs by running: swaymsg -t get_inputs
 # Read `man 5 sway-input` for more information about this section.
 
@@ -80,6 +87,7 @@ input * xkb_options "ctrl:nocaps"
     bindsym $mod+q kill
 
     # Start your launcher
+    bindsym $mod+space exec $menu
     bindsym --release Super_L exec $menu
 
     # Drag floating windows by holding down $mod and left mouse button.
@@ -122,14 +130,14 @@ input * xkb_options "ctrl:nocaps"
 # Workspaces:
 #
     # Switch to workspace
-    bindsym $mod+d workspace number 1
-    bindsym $mod+f workspace number 2
-    bindsym $mod+c workspace number "abc"
+    bindsym $mod+d workspace "1: browser"
+    bindsym $mod+f workspace "2: terminal"
+    bindsym $mod+c workspace number 3
     bindsym $mod+v workspace number 4
     # Move focused container to workspace
-    bindsym $mod+Alt+d move container to workspace number 1
-    bindsym $mod+Alt+f move container to workspace number 2
-    bindsym $mod+Alt+c move container to workspace name "abc"
+    bindsym $mod+Alt+d move container to workspace "1: browser"
+    bindsym $mod+Alt+f move container to workspace "2: terminal"
+    bindsym $mod+Alt+c move container to workspace number 3
     bindsym $mod+Alt+v move container to workspace number 4
     # Note: workspaces can have any name you want, not just numbers.
 #
@@ -231,7 +239,11 @@ default_floating_border none
 client.focused #00ff00 #222222 #ffffff $cyan $cyan
 
 # Gaps
-gaps inner 5 
+gaps inner 5
 gaps outer 0
+
+# for_window [app_id="firefox"] border none
+# for_window [app_id="firefox"] gaps inner 0
+# for_window [app_id="firefox"] gaps outer 0
 
 include /etc/sway/config.d/*
