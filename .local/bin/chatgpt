@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+/usr/bin/firefox -P chatgpt --kiosk https://chat.com &
+
+# Wait until the ChatGPT Firefox window appears
+while ! swaymsg -t get_tree | grep -q 'ChatGPT — Mozilla Firefox'; do
+    sleep 0.1
+done
+
+# Toggle fullscreen (so kiosk becomes borderless window)
+swaymsg '[app_id="firefox_firefox" title="ChatGPT — Mozilla Firefox"] fullscreen toggle'
+
+
