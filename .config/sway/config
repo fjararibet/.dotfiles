@@ -88,7 +88,7 @@ input * {
 
     # Start your launcher
     bindsym $mod+space exec $menu
-    bindsym --release Super_L exec $menu
+    # bindsym --release Super_L exec $menu
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -242,8 +242,6 @@ client.focused #00ff00 #222222 #ffffff $cyan $cyan
 gaps inner 5
 gaps outer 0
 
-# for_window [app_id="firefox"] border none
-# for_window [app_id="firefox"] gaps inner 0
-# for_window [app_id="firefox"] gaps outer 0
+exec_always --no-startup-id bash -c ' if ! pgrep -u "$USER" ssh-agent > /dev/null; then eval $(ssh-agent -s) ssh-add ~/.ssh/id_ed25519 fi '
 
 include /etc/sway/config.d/*
