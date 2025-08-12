@@ -80,8 +80,7 @@ input * xkb_options "ctrl:nocaps"
     bindsym $mod+q kill
 
     # Start your launcher
-    bindsym $mod+Return exec $menu
-    bindsym $mod+space exec $menu
+    bindsym --release Super_L exec $menu
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -125,12 +124,12 @@ input * xkb_options "ctrl:nocaps"
     # Switch to workspace
     bindsym $mod+d workspace number 1
     bindsym $mod+f workspace number 2
-    bindsym $mod+c workspace number 3
+    bindsym $mod+c workspace number "abc"
     bindsym $mod+v workspace number 4
     # Move focused container to workspace
     bindsym $mod+Alt+d move container to workspace number 1
     bindsym $mod+Alt+f move container to workspace number 2
-    bindsym $mod+Alt+c move container to workspace number 3
+    bindsym $mod+Alt+c move container to workspace name "abc"
     bindsym $mod+Alt+v move container to workspace number 4
     # Note: workspaces can have any name you want, not just numbers.
 #
