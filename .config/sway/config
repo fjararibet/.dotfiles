@@ -226,7 +226,13 @@ bar {
 }
 
 
-# No title bars
-default_border none
+# Borders
+default_border pixel 2
+default_floating_border none
+client.focused #00ff00 #222222 #ffffff $cyan $cyan
+
+# Gaps
+gaps inner 5 
+gaps outer 0
 
 include /etc/sway/config.d/*
