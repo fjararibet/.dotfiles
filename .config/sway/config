@@ -60,7 +60,7 @@ output 'Lenovo Group Limited LEN G24-10 U5B448B5' mode 1920x1080@143.999Hz posit
       natural_scroll enabled
       middle_emulation disabled
       accel_profile flat
-      pointer_accel 0
+      pointer_accel 0.7
       scroll_factor 0.5
   }
 #
@@ -136,13 +136,13 @@ input * {
 # Workspaces:
 #
     # Switch to workspace
-    bindsym $mod+d workspace "1: browser"
-    bindsym $mod+f workspace "2: terminal"
+    bindsym $mod+d workspace number 1
+    bindsym $mod+f workspace number 2
     bindsym $mod+c workspace number 3
     bindsym $mod+v workspace number 4
     # Move focused container to workspace
-    bindsym $mod+Alt+d move container to workspace "1: browser"
-    bindsym $mod+Alt+f move container to workspace "2: terminal"
+    bindsym $mod+Alt+d move container to workspace number 1
+    bindsym $mod+Alt+f move container to workspace number 2
     bindsym $mod+Alt+c move container to workspace number 3
     bindsym $mod+Alt+v move container to workspace number 4
     # Note: workspaces can have any name you want, not just numbers.
@@ -223,20 +223,22 @@ set $red #c34043
 set $white #c8c093
 set $yellow #c0a36e
 
-bar {
-    position bottom
+bar swaybar_command waybar
+# bar {
+#     position bottom
+#
+#     # When the status_command prints a new line to stdout, swaybar updates.
+#     # The default just shows the current date and time.
+#     status_command while date +'%a %d %H:%M %p'; do sleep 1; done
+#
+#     colors {
+#         statusline $white
+#         background $black
+#         focused_workspace $green $green $black
+#         inactive_workspace $blue $blue $white
+#     }
+# }
 
-    # When the status_command prints a new line to stdout, swaybar updates.
-    # The default just shows the current date and time.
-    status_command while date +'%a %d %H:%M %p'; do sleep 1; done
-
-    colors {
-        statusline $white
-        background $black
-        focused_workspace $green $green $black
-        inactive_workspace $blue $blue $white
-    }
-}
 
 
 # Borders
