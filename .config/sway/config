@@ -222,7 +222,7 @@ bar {
 
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
-    status_command while date +'%Y-%m-%d %H:%M %p'; do sleep 1; done
+    status_command while date +'%a %d %H:%M %p'; do sleep 1; done
 
     colors {
         statusline $white
@@ -242,6 +242,7 @@ client.focused #00ff00 #222222 #ffffff $cyan $cyan
 gaps inner 5
 gaps outer 0
 
-exec_always --no-startup-id bash -c ' if ! pgrep -u "$USER" ssh-agent > /dev/null; then eval $(ssh-agent -s) ssh-add ~/.ssh/id_ed25519 fi '
+# Keychain
+exec --no-startup-id /usr/bin/keychain --quiet --eval id_ed25519
 
 include /etc/sway/config.d/*
