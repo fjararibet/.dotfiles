@@ -3,7 +3,6 @@
   "position": "bottom",
   "margin-top": -4,
   "margin-bottom": -2,
-  "margin-right": 6,
   "spacing" : 0,
   "modules-left": [
       "sway/workspaces",
@@ -12,7 +11,7 @@
   "modules-center": ["clock"],
 
   "modules-right": [
-    "bluetooth",
+    // "bluetooth",
     "network",
     "pulseaudio", 
     "backlight",
@@ -46,7 +45,7 @@
         "off": "󰂲",
         "connected": "󰂱",
         },
-    "on-click": "blueman-manager",
+    // "on-click": "blueman-manager",
     "tooltip-format-connected":"{device_enumerate}"
   },
 
@@ -69,8 +68,8 @@
 
   "network": {
     "format-wifi": "󰤢",
-    "format-ethernet": "󰈀 ",
-    "format-disconnected": "󰤠 ",
+    "format-ethernet": "󰈀",
+    "format-disconnected": "󰤠",
     "interval": 5,
     "tooltip-format": "{essid} ({signalStrength}%)",
     "on-click": "nm-connection-editor"
