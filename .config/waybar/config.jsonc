@@ -3,6 +3,7 @@
   "position": "bottom",
   "margin-top": -4,
   "margin-bottom": -2,
+  "margin-right": 6,
   "spacing" : 0,
   "modules-left": [
       "sway/workspaces",
@@ -20,6 +21,7 @@
 
   "sway/workspaces": {
     "disable-scroll": true,
+    "disable-click": true,
     "all-outputs": true,
     "format": "{icon}",
     "format-icons": {
@@ -61,7 +63,7 @@
   "clock": {
     "timezone": "America/Santiago",
     "tooltip": false,
-    "format": "{:%A, %d}",
+    "format": "{:%H:%M - %A %d}",
     "interval": 1
   },
 
@@ -103,7 +105,7 @@
   },
   
   "pulseaudio": {
-    "format": "{icon}  {volume}%",
+    "format": "{icon}{volume}%",
     "format-muted": "",
     "format-icons": {
       "default": ["", "", " "]

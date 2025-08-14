@@ -141,10 +141,10 @@ input * {
     bindsym $mod+c workspace number 3
     bindsym $mod+v workspace number 4
     # Move focused container to workspace
-    bindsym $mod+Alt+d move container to workspace number 1
-    bindsym $mod+Alt+f move container to workspace number 2
-    bindsym $mod+Alt+c move container to workspace number 3
-    bindsym $mod+Alt+v move container to workspace number 4
+    bindsym $mod+Alt+d move container to workspace number 1; workspace number 1
+    bindsym $mod+Alt+f move container to workspace number 2; workspace number 2
+    bindsym $mod+Alt+c move container to workspace number 3; workspace number 3
+    bindsym $mod+Alt+v move container to workspace number 4; workspace number 4
     # Note: workspaces can have any name you want, not just numbers.
 #
 # Layout stuff:
@@ -250,7 +250,14 @@ client.focused #00ff00 #222222 #ffffff $cyan $cyan
 gaps inner 5
 gaps outer 0
 
-# Keychain
-exec --no-startup-id /usr/bin/keychain --quiet --eval id_ed25519
+# Volume
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+
+# Player
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
 
 include /etc/sway/config.d/*

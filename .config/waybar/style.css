@@ -3,6 +3,7 @@
   font-family: 'JetBrainsMono Nerd Font Mono', 'SF Pro Text', 'Inter', 'Segoe UI, NotoSans Nerd Font', sans-serif;
   font-size: 13px;
   min-height: 0;
+  color: #c8c093;
   padding-right: 0px;
   padding-left: 0px;
   padding-bottom: 0px;
@@ -169,19 +170,19 @@
 }
 
 #clock {
-  color: #99d1db;
+  color: #c8c093;
   font-weight: 500;
 }
 
 #pulseaudio {
-  color: #c6d0f5;
+  color: #c8c093;
 }
 #backlight {
-  color: #c6d0f5;
+  color: #c8c093;
 }
 
 #network {
-  color: #c6d0f5;
+  color: #c8c093;
 }
 
 #network.disconnected {
