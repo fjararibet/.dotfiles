@@ -23,7 +23,7 @@ include /etc/sway/config-vars.d/*
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg ~/Pictures/Backgrounds/teatime.jpg fill
+output * bg ~/Pictures/Backgrounds/city_night.jpg fill
 # Color managment
 exec gammastep -O 6500K -g 0.7 -l 0:0
 # Run gammastep only if DP-1 is connected
@@ -251,9 +251,9 @@ gaps inner 5
 gaps outer 0
 
 # Volume
-bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
-bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
-bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym XF86AudioRaiseVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
+bindsym XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
 
 # Player
 bindsym XF86AudioPlay exec playerctl play-pause
