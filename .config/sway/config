@@ -1,7 +1,14 @@
 # Read `man 5 sway` for a complete reference.
+set $black #090618
+set $blue #7e9cd8
+set $cyan #6a9589
+set $green #76946a
+set $magenta #957fb8
+set $red #c34043
+set $white #c8c093
+set $yellow #c0a36e
 
-### Variables
-#
+## Variables
 # Logo key.
 set $mod Mod4
 # Home row direction keys, like vim
@@ -16,7 +23,7 @@ set $browser firefox
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu env PATH=$HOME/.local/bin:$PATH dmenu_path | dmenu -b | xargs swaymsg exec --
+set $menu dmenu_path | dmenu -i -l 10 -fn 'JetBrainsMono Nerd Font Mono' -nb '$black' -nf '$white' -sb '$white' -sf '$black' | xargs swaymsg exec --
 
 include /etc/sway/config-vars.d/*
 
@@ -84,17 +91,15 @@ input * {
 #
 # Basics:
 #
-    # Start a terminal
     bindsym $mod+b exec $browser
-
     bindsym $mod+t exec $term
+    bindsym $mod+g exec /home/fjara/.local/bin/chatgpt
 
     # Kill focused window
     bindsym $mod+q kill
 
     # Start your launcher
     bindsym $mod+space exec $menu
-    # bindsym --release Super_L exec $menu
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -213,15 +218,6 @@ bindsym $mod+r mode "resize"
 #
 # Read `man 5 sway-bar` for more information about this section.
 
-# Kanagawa colors
-set $black #090618
-set $blue #7e9cd8
-set $cyan #6a9589
-set $green #76946a
-set $magenta #957fb8
-set $red #c34043
-set $white #c8c093
-set $yellow #c0a36e
 
 bar swaybar_command waybar
 # bar {
@@ -244,10 +240,10 @@ bar swaybar_command waybar
 # Borders
 default_border pixel 2
 default_floating_border none
-client.focused #00ff00 #222222 #ffffff $cyan $cyan
+client.focused $white $white $white $white $white
 
 # Gaps
-gaps inner 5
+gaps inner 10
 gaps outer 0
 
 # Volume
