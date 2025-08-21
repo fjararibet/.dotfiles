@@ -40,21 +40,21 @@ writecmd() {
 
 #bind <C-f> to search home with fzf
 find-all-files() {
-  local result=$(fdfind . $HOME --type file --hidden --follow --exclude .git --exclude .venv | fzf)
+  local result=$(fd . $HOME --type file --hidden --follow --exclude .git --exclude .venv | fzf)
   writecmd $result
 }
 zle -N find-all-files
 bindkey '\C-f' find-all-files
 # search all directories
 search-all-dirs() {
-  local result=$(fdfind . $HOME -I --type directory --follow --exclude .git | fzf)
+  local result=$(fd . $HOME -I --type directory --follow --exclude .git | fzf)
   writecmd $result 
 }
 zle -N search-all-dirs
 bindkey "\ed" search-all-dirs
 
 search-dirs() {
-  local result=$(fdfind -I --type directory --hidden --follow --exclude .git | fzf)
+  local result=$(fd -I --type directory --hidden --follow --exclude .git | fzf)
   writecmd $result
 }
 zle -N search-dirs
