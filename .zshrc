@@ -1,18 +1,5 @@
 export PATH=$HOME/.local/bin:/usr/local/bin:$PATH
 
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
-
-DISABLE_AUTO_UPDATE="true"
-
-# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# plugins=(
-#   git
-# )
-
-source $ZSH/oh-my-zsh.sh
-
 # Aliases
 alias zshconf="nvim ~/.zshrc"
 alias vim="nvim"
@@ -22,11 +9,7 @@ alias vimconf='cd ~/.config/nvim/ && nvim . && cd -'
 alias tmuxconf='nvim ~/.config/tmux/tmux.conf'
 alias comp='g++ -Wall -Wextra -pedantic -std=c++17 -Wshadow -Wformat=2 -Wfloat-equal -Wconversion -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC'
 
-# Env vars
 export EDITOR="nvim"
-
-# fzf
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Setting fd as the default source for fzf
 export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git --exclude .venv'
@@ -80,6 +63,3 @@ if [[ -z "$TMUX" ]]; then
 else
   tmux switch-client -t "$session_name"
 fi
-
-
-eval "$(uv generate-shell-completion zsh)"
