@@ -11,8 +11,15 @@
     ];
 
   # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader = {
+    systemd-boot.enable = false;
+    efi.canTouchEfiVariables = true;
+    efi.efiSysMountPoint = "/boot";
+    grub.enable = true;
+    grub.device = "nodev";
+    grub.useOSProber = true;
+    grub.efiSupport = true;
+  };
 
   networking.hostName = "nixos";
   # Pick only one of the below networking options.
@@ -70,9 +77,8 @@
     enable = true;
     ohMyZsh = {
       enable = true;
-      plugins = [
-        "git"
-      ];
+      plugins = [ "git" ];
+      theme = "robbyrussell";
     };
   };
   programs.fzf = {
@@ -100,7 +106,6 @@
       zsh 
       nodejs_24
       gammastep
-      waybar
       wl-clipboard
       uv
       fd
@@ -110,6 +115,10 @@
       unzip
       discord
       stow
+      adwaita-icon-theme
+      google-cloud-sdk
+      wlogout
+      waybar
     ];
     shell = pkgs.zsh;
   };
@@ -147,6 +156,7 @@
     playerctl
     pamixer
     alsa-utils
+    gnumake
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
