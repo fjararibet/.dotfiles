@@ -45,20 +45,11 @@
   # services.xserver.enable = true;
 
 
-  programs.sway.enable = true;
-  services.displayManager.ly.enable = true;
   
-
-  # Configure keymap in X11
-  # services.xserver.xkb.layout = "us";
-  # services.xserver.xkb.options = "eurosign:e,caps:escape";
-
   # Enable CUPS to print documents.
   # services.printing.enable = true;
 
-  # Enable sound.
   services.pulseaudio.enable = false;
-  # OR
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -85,16 +76,14 @@
     keybindings = true;
     fuzzyCompletion = true;
   };
-  # Enable touchpad support (enabled default in most desktopManager).
+  # Enable touchpad support
   services.libinput.enable = true;
 
-  # pkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
-      # Add additional package names here
       "discord"
   ];
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+
   users.users.fjara = {
     isNormalUser = true;
     extraGroups = [ "wheel" "audio"];
@@ -141,8 +130,6 @@
   programs.firefox.enable = true;
   
 
-  # List packages installed in system profile.
-  # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
     vim
     wget
@@ -169,6 +156,11 @@
 
   # List services that you want to enable:
 
+  programs.sway.enable = true;
+  services.displayManager.ly.enable = true;
+  services.gnome.gnome-keyring.enable = true;
+  security.pam.services.ly.enableGnomeKeyring = true;
+  programs.ssh.startAgent = true;
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
