@@ -30,7 +30,7 @@ include /etc/sway/config-vars.d/*
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg ~/Pictures/Backgrounds/city_night.jpg fill
+output * bg ~/Backgrounds/city_night.jpg fill
 # Color managment
 exec gammastep -O 6500K -g 0.7 -l 0:0
 # Run gammastep only if DP-1 is connected
@@ -114,7 +114,7 @@ input * {
     # Exit sway (logs you out of your Wayland session)
     # bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
 
-    bindsym $mod+Alt+l exec swaylock --indicator-idle-visible --image ~/Pictures/Backgrounds/teatime.jpg
+    bindsym $mod+Alt+l exec swaylock --indicator-idle-visible --image ~/Backgrounds/teatime.jpg
 #
 # Moving around:
 #

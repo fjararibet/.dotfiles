@@ -1,6 +1,6 @@
 {
     "label" : "lock",
-    "action" : "swaylock --indicator-idle-visible --image ~/Pictures/Backgrounds/teatime.jpg",
+    "action" : "swaylock --indicator-idle-visible --image ~/Backgrounds/teatime.jpg",
     "text" : "Lock",
     "keybind" : ""
 }
