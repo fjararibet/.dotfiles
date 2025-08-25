@@ -3,7 +3,6 @@ export PATH=$HOME/.local/bin:/usr/local/bin:$PATH
 # Aliases
 alias zshconf="nvim ~/.zshrc"
 alias vim="nvim"
-alias dotfiles='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias changebg="$HOME/Pictures/Backgrounds/set_background.sh"
 alias vimconf='cd ~/.config/nvim/ && nvim . && cd -'
 alias tmuxconf='nvim ~/.config/tmux/tmux.conf'
