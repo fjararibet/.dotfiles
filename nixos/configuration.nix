@@ -84,6 +84,7 @@
       "discord"
   ];
 
+  programs.nix-ld.enable = true;
   users.users.fjara = {
     isNormalUser = true;
     extraGroups = [ "wheel" "audio"];
@@ -108,6 +109,8 @@
       google-cloud-sdk
       wlogout
       waybar
+      wrangler
+      gemini-cli
     ];
     shell = pkgs.zsh;
   };
