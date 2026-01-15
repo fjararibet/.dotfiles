@@ -10,6 +10,9 @@ luasnip.filetype_extend("javascriptreact", { "html" })
 
 ---@diagnostic disable-next-line: missing-fields
 cmp.setup {
+  completion = {
+    autocomplete = false, -- Disable automatic completion
+  },
   snippet = {
     expand = function(args)
       luasnip.lsp_expand(args.body)
