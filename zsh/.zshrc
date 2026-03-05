@@ -49,16 +49,28 @@ bindkey -r "^[."
 bindkey -r "^[,"
 
 # Always start with a tmux session.
-session_name="main"
+# session_name="main"
 # 1. First you check if a tmux session exists with a given name.
-tmux has-session -t=$session_name 2> /dev/null
+# tmux has-session -t=$session_name 2> /dev/null
 # 2. Create the session if it doesn't exists.
-if [[ $? -ne 0 ]]; then
-  TMUX='' tmux new-session -d -s "$session_name"
-fi
+# if [[ $? -ne 0 ]]; then
+#   TMUX='' tmux new-session -d -s "$session_name"
+# fi
 # 3. Attach if outside of tmux, switch if you're in tmux.
-if [[ -z "$TMUX" ]]; then
-  tmux attach -t "$session_name"
-else
-  tmux switch-client -t "$session_name"
-fi
+# if [[ -z "$TMUX" ]]; then
+#   tmux attach -t "$session_name"
+# else
+#   tmux switch-client -t "$session_name"
+# fi
+
+
+# BEGIN opam configuration
+# This is useful if you're using opam as it adds:
+#   - the correct directories to the PATH
+#   - auto-completion for the opam binary
+# This section can be safely removed at any time if needed.
+[[ ! -r '/home/fjara/.opam/opam-init/init.zsh' ]] || source '/home/fjara/.opam/opam-init/init.zsh' > /dev/null 2> /dev/null
+# END opam configuration
+
+# opencode
+export PATH=/home/fjara/.opencode/bin:$PATH
