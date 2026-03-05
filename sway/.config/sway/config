@@ -36,6 +36,8 @@ exec gammastep -O 6500K -g 0.7 -l 0:0
 # Run gammastep only if DP-1 is connected
 # exec sh -c 'swaymsg -t get_outputs | grep -q "\"name\":\"DP-1\"" && gammastep -m DP-1 &'
 
+exec env RUST_BACKTRACE=1 RUST_LOG=swayr=debug swayrd > /tmp/swayrd.log 2>&1
+
 #
 # Example configuration:
 #
@@ -91,9 +93,10 @@ input * {
 #
 # Basics:
 #
-    bindsym $mod+b exec $browser
+    bindsym $mod+b exec firefox -P default -new-tab about:home
     bindsym $mod+t exec $term
     bindsym $mod+g exec /home/fjara/.local/bin/chatgpt
+    bindsym $mod+w exec firefox -P work
 
     # Kill focused window
     bindsym $mod+q kill
@@ -115,6 +118,11 @@ input * {
     # bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
 
     bindsym $mod+Alt+l exec swaylock --indicator-idle-visible --image ~/Backgrounds/teatime.jpg
+
+
+### Swayr
+bindsym Alt+space exec swayr switch-window
+
 #
 # Moving around:
 #
@@ -164,7 +172,7 @@ input * {
 
     # Switch the current container between different layout styles
     bindsym $mod+s layout stacking
-    bindsym $mod+w layout tabbed
+    # bindsym $mod+w layout tabbed
     bindsym $mod+e layout toggle split
 
     # Make the current focus fullscreen
@@ -220,7 +228,7 @@ bindsym $mod+r mode "resize"
 #
 # Read `man 5 sway-bar` for more information about this section.
 
-
+bindsym Print exec grimshot copy area
 bar swaybar_command waybar
 # bar {
 #     position bottom
@@ -245,8 +253,10 @@ default_floating_border none
 client.focused $white $white $white $white $white
 
 # Gaps
-gaps inner 10
-gaps outer 0
+gaps inner 5
+gaps outer 5
+smart_gaps on
+smart_borders on
 
 # Volume
 bindsym XF86AudioRaiseVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
@@ -257,5 +267,22 @@ bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
 bindsym XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
+
+
+exec wl-paste -t text --watch clipman store --no-persist
+
+
+# Startup
+workspace 1
+exec firefox -P default -new-tab about:home
+
+workspace 2
+exec $term
+
+workspace 3
+exec ~/.local/bin/claude-app
+
+workspace 4
+
 
 include /etc/sway/config.d/*

@@ -25,6 +25,45 @@
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [ 8000 22 ];
+    trustedInterfaces = [ "tailscale0" ];
+    allowedUDPPorts = [ config.services.tailscale.port ];
+  };
+  systemd.services.tailscaled.serviceConfig.Environment = [ 
+    "TS_DEBUG_FIREWALL_MODE=nftables" 
+  ];
+  systemd.network.wait-online.enable = false; 
+  boot.initrd.systemd.network.wait-online.enable = false;
+  services.dnsmasq = {
+    enable = true;
+    resolveLocalQueries = false;
+    settings = {
+      address = [
+        "/code.home/100.106.210.10"
+      ];
+      listen-address = "100.106.210.10";
+      bind-interfaces = true;
+      except-interface = "lo";
+      no-resolv = true;
+      no-hosts = true;
+    };
+  };
+
+  services.caddy = {
+    enable = true;
+    virtualHosts."http://code.home" = {
+      extraConfig = ''
+        reverse_proxy http://localhost:4096
+      '';
+    };
+    virtualHosts."seafile" = {        # add more services here
+      extraConfig = ''
+        reverse_proxy http://localhost:8083
+      '';
+    };
+  };
 
   # Set your time zone.
   time.timeZone = "America/Santiago";
@@ -42,9 +81,14 @@
   # };
 
   # Enable the X11 windowing system.
-  # services.xserver.enable = true;
 
-
+  virtualisation.docker = {
+    enable = true;
+    rootless = {
+      enable = true;
+      setSocketVariable = true;
+    };
+  };
   
   # Enable CUPS to print documents.
   # services.printing.enable = true;
@@ -78,13 +122,65 @@
   };
   # Enable touchpad support
   services.libinput.enable = true;
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+  };
+
+  services.cloudflared = {
+    enable = true;
+    tunnels = {
+      "ba400f6f-b34e-40c0-bd40-18a302990cb7" = {
+        credentialsFile = "/home/fjara/.cloudflared/ba400f6f-b34e-40c0-bd40-18a302990cb7.json";
+        default = "http_status:404";
+        ingress = {
+        "code.fjara.cl" = "http://localhost:80";
+        };
+      };
+    };
+  };
+  services.tailscale = {
+    enable = true;
+    # Enable tailscale at startup
+
+    # If you would like to use a preauthorized key
+    #authKeyFile = "/run/secrets/tailscale_key";
+
+  };
+  environment.sessionVariables = {
+    SSH_AUTH_SOCK = "/run/user/1000/gcr/ssh";
+  };
+  systemd.services.opencode = {
+    enable = true;
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      ExecStart = "/home/fjara/.opencode/bin/opencode web --port 4096 --hostname 0.0.0.0";
+      Restart = "on-failure";
+      User = "fjara";
+      Environment = [
+        "PATH=/run/current-system/sw/bin:$PATH"
+      ];
+    };
+  };
 
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
       "discord"
+      "obsidian"
+      "spotify"
+  ];
+  nixpkgs.config.permittedInsecurePackages = [
+    "olm-3.2.16"
   ];
 
-  programs.nix-ld.enable = true;
+
+  programs.nix-ld = {
+    enable = true;
+    libraries = with pkgs; [
+      zlib zstd stdenv.cc.cc curl openssl attr libssh bzip2 libxml2 acl libsodium util-linux xz systemd openssl.dev
+    ];
+  };
   users.users.fjara = {
     isNormalUser = true;
     extraGroups = [ "wheel" "audio"];
@@ -94,7 +190,8 @@
       ansible
       neovim
       zsh 
-      nodejs_24
+      # nodejs_24
+      nodejs_22
       gammastep
       wl-clipboard
       uv
@@ -111,15 +208,38 @@
       waybar
       wrangler
       gemini-cli
+      sway-contrib.grimshot
+      obsidian
+      spotify
+      ghostty
+      opam
+      ripgrep
+      llvmPackages_20.clang-unwrapped
+      cmake
+      dbmate
+      element-desktop
+      nheko
+      swayr
+      wofi
+      jq
+      opentimestamps-client
+      bitcoin
+      clipman
+      numactl
+      llama-cpp
+      htop
+      paraview
+      cloudflared
     ];
     shell = pkgs.zsh;
   };
   fonts = {
     enableDefaultPackages = true;
     packages = with pkgs; [ 
-      ubuntu_font_family
+      ubuntu-classic
       liberation_ttf
       nerd-fonts.jetbrains-mono
+      xorg.fontmiscmisc
     ];
 
     fontconfig = {
@@ -128,7 +248,9 @@
         sansSerif = [ "Ubuntu" ];
         monospace = [ "JetBrainsMono Nerd Font Mono" ];
       };
+      allowBitmaps = true;
     };
+    fontDir.enable = true;
   };
   programs.firefox.enable = true;
   
@@ -147,8 +269,29 @@
     pamixer
     alsa-utils
     gnumake
-  ];
-
+    numactl
+    openssl
+    openssl.dev
+    (pkgs.writeShellScriptBin "python" ''
+      export LD_LIBRARY_PATH=$NIX_LD_LIBRARY_PATH
+      exec ${pkgs.python3}/bin/python "$@"
+    '')
+  ]  ++ (with pkgs.rocmPackages; [
+  clr
+  rocm-core
+  rocm-runtime
+  rocm-smi
+  rocminfo
+  hipcc
+  rocblas
+  miopen
+  rccl
+  rocsolver
+  hipblas
+  rocrand
+  rocfft
+  amdsmi
+]);
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -160,12 +303,40 @@
   # List services that you want to enable:
 
   programs.sway.enable = true;
-  services.displayManager.ly.enable = true;
+  programs.sway.xwayland.enable = true;
+  services.displayManager = {
+    ly = {
+      enable = true;
+      # settings = {
+      #   auto_login_session = "sway";
+      #   auto_login_user = "fjara";
+      # };
+    };
+    # autoLogin = {
+    #   user = "fjara";
+    #   enable = true;
+    # };
+  };
   services.gnome.gnome-keyring.enable = true;
   security.pam.services.ly.enableGnomeKeyring = true;
-  programs.ssh.startAgent = true;
+  security.pam.services.login.enableGnomeKeyring = true;
+  # programs.ssh.startAgent = true;
   # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+    settings = {
+      PermitRootLogin = "no";
+      PasswordAuthentication = false;
+    };
+  };
+  services.postgresql = {
+    enable = true;
+    ensureDatabases = [ "noria" ];
+    authentication = pkgs.lib.mkOverride 10 ''
+      #type database  DBuser  auth-method
+      local all       all     trust
+    '';
+    };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

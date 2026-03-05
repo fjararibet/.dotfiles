@@ -4,11 +4,11 @@ CompileFlags:
     - -Wall
     - -Wextra
     - -pedantic
-    - -std=c++20
+    - -std=c++17
     - -Wshadow
     - -Wformat=2
     - -Wfloat-equal
-    - -Wconversion
+    # - -Wconversion
     - -D_GLIBCXX_DEBUG
     - -D_GLIBCXX_DEBUG_PEDANTIC
     - -I/nix/store/8adzgnxs3s0pbj22qhk9zjxi1fqmz3xv-gcc-14.3.0/include/c++/14.3.0
