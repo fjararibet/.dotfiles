@@ -9,6 +9,7 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader = {
@@ -21,19 +22,21 @@
     grub.efiSupport = true;
   };
 
-  networking.hostName = "nixos";
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  networking.hostName = "huala";
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking.nftables.enable = true;
   networking.firewall = {
     enable = true;
     allowedTCPPorts = [ 8000 22 ];
     trustedInterfaces = [ "tailscale0" ];
     allowedUDPPorts = [ config.services.tailscale.port ];
   };
-  systemd.services.tailscaled.serviceConfig.Environment = [ 
-    "TS_DEBUG_FIREWALL_MODE=nftables" 
-  ];
+  # systemd.services.tailscaled.serviceConfig.Environment = [ 
+  #   "TS_DEBUG_FIREWALL_MODE=nftables" 
+  # ];
   systemd.network.wait-online.enable = false; 
   boot.initrd.systemd.network.wait-online.enable = false;
   services.dnsmasq = {
@@ -42,6 +45,8 @@
     settings = {
       address = [
         "/code.home/100.106.210.10"
+        "/seafile.home/100.106.210.10"
+        "/filebrowser.home/100.106.210.10"
       ];
       listen-address = "100.106.210.10";
       bind-interfaces = true;
@@ -50,7 +55,7 @@
       no-hosts = true;
     };
   };
-
+  services.tailscale.permitCertUid = "caddy";
   services.caddy = {
     enable = true;
     virtualHosts."http://code.home" = {
@@ -58,10 +63,30 @@
         reverse_proxy http://localhost:4096
       '';
     };
-    virtualHosts."seafile" = {        # add more services here
+    virtualHosts."https://nixos.triceratops-corn.ts.net" = {
       extraConfig = ''
-        reverse_proxy http://localhost:8083
+        reverse_proxy http://localhost:5435 {
+          header_up Host seafile.home
+        }
       '';
+    };
+    virtualHosts."http://seafile.home" = {
+      extraConfig = ''
+        reverse_proxy http://localhost:5435
+      '';
+    };
+    virtualHosts."http://filebrowser.home" = {
+      extraConfig = ''
+        reverse_proxy http://localhost:4173
+      '';
+    };
+  };
+
+  services.filebrowser = {
+    enable = true;
+    settings =  {
+      port = 4173;
+      root = "/var/lib/filebrowser/data";
     };
   };
 
@@ -211,22 +236,17 @@
       sway-contrib.grimshot
       obsidian
       spotify
-      ghostty
-      opam
       ripgrep
       llvmPackages_20.clang-unwrapped
       cmake
-      dbmate
       element-desktop
       nheko
       swayr
       wofi
       jq
-      opentimestamps-client
       bitcoin
       clipman
       numactl
-      llama-cpp
       htop
       paraview
       cloudflared
@@ -272,6 +292,7 @@
     numactl
     openssl
     openssl.dev
+    filebrowser
     (pkgs.writeShellScriptBin "python" ''
       export LD_LIBRARY_PATH=$NIX_LD_LIBRARY_PATH
       exec ${pkgs.python3}/bin/python "$@"
@@ -302,7 +323,13 @@
 
   # List services that you want to enable:
 
-  programs.sway.enable = true;
+  programs.sway = {
+    enable = true;
+    wrapperFeatures.gtk = true;
+    extraPackages = with pkgs; [
+      adwaita-icon-theme
+    ];
+  };
   programs.sway.xwayland.enable = true;
   services.displayManager = {
     ly = {
