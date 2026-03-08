@@ -284,5 +284,6 @@ exec ~/.local/bin/claude-app
 
 workspace 4
 
+seat seat0 xcursor_theme Adwaita 24
 
 include /etc/sway/config.d/*
