@@ -45,7 +45,7 @@
     settings = {
       address = [
         "/code.home/100.106.210.10"
-        "/seafile.home/100.106.210.10"
+        # "/seafile.home/100.106.210.10"
         "/filebrowser.home/100.106.210.10"
       ];
       listen-address = "100.106.210.10";
@@ -63,18 +63,16 @@
         reverse_proxy http://localhost:4096
       '';
     };
-    virtualHosts."https://nixos.triceratops-corn.ts.net" = {
+    virtualHosts."https://huala.triceratops-corn.ts.net" = {
       extraConfig = ''
-        reverse_proxy http://localhost:5435 {
-          header_up Host seafile.home
-        }
+        reverse_proxy http://localhost:8080
       '';
     };
-    virtualHosts."http://seafile.home" = {
-      extraConfig = ''
-        reverse_proxy http://localhost:5435
-      '';
-    };
+    # virtualHosts."http://seafile.home" = {
+    #   extraConfig = ''
+    #     reverse_proxy http://localhost:5435
+    #   '';
+    # };
     virtualHosts."http://filebrowser.home" = {
       extraConfig = ''
         reverse_proxy http://localhost:4173
@@ -89,6 +87,29 @@
       root = "/var/lib/filebrowser/data";
     };
   };
+
+
+
+  services = {
+    # port 8096
+    jellyfin = {
+      enable = true;
+    };
+    qbittorrent = {
+      enable = true;
+      webuiPort = 4831;
+    };
+    sonarr = {
+      enable = true;
+      settings.server.port = 8989;
+    };
+  };
+  users.groups.media = {};
+  users.users.jellyfin.extraGroups = [ "media" ];
+  users.users.sonarr.extraGroups = [ "media" ];
+  systemd.tmpfiles.rules = [
+    "d /srv/media 0775 sonarr media -"
+  ];
 
   # Set your time zone.
   time.timeZone = "America/Santiago";
@@ -109,10 +130,10 @@
 
   virtualisation.docker = {
     enable = true;
-    rootless = {
-      enable = true;
-      setSocketVariable = true;
-    };
+    # rootless = {
+    #   enable = true;
+    #   setSocketVariable = true;
+    # };
   };
   
   # Enable CUPS to print documents.
@@ -152,18 +173,18 @@
     nssmdns4 = true;
   };
 
-  services.cloudflared = {
-    enable = true;
-    tunnels = {
-      "ba400f6f-b34e-40c0-bd40-18a302990cb7" = {
-        credentialsFile = "/home/fjara/.cloudflared/ba400f6f-b34e-40c0-bd40-18a302990cb7.json";
-        default = "http_status:404";
-        ingress = {
-        "code.fjara.cl" = "http://localhost:80";
-        };
-      };
-    };
-  };
+  # services.cloudflared = {
+  #   enable = true;
+  #   tunnels = {
+  #     "ba400f6f-b34e-40c0-bd40-18a302990cb7" = {
+  #       credentialsFile = "/home/fjara/.cloudflared/ba400f6f-b34e-40c0-bd40-18a302990cb7.json";
+  #       default = "http_status:404";
+  #       ingress = {
+  #       "code.fjara.cl" = "http://localhost:4096";
+  #       };
+  #     };
+  #   };
+  # };
   services.tailscale = {
     enable = true;
     # Enable tailscale at startup
@@ -221,13 +242,11 @@
       wl-clipboard
       uv
       fd
-      pipx
       dmenu
       zip
       unzip
       discord
       stow
-      adwaita-icon-theme
       google-cloud-sdk
       wlogout
       waybar
@@ -250,6 +269,7 @@
       htop
       paraview
       cloudflared
+      atuin
     ];
     shell = pkgs.zsh;
   };
@@ -297,31 +317,7 @@
       export LD_LIBRARY_PATH=$NIX_LD_LIBRARY_PATH
       exec ${pkgs.python3}/bin/python "$@"
     '')
-  ]  ++ (with pkgs.rocmPackages; [
-  clr
-  rocm-core
-  rocm-runtime
-  rocm-smi
-  rocminfo
-  hipcc
-  rocblas
-  miopen
-  rccl
-  rocsolver
-  hipblas
-  rocrand
-  rocfft
-  amdsmi
-]);
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
+  ];
 
   programs.sway = {
     enable = true;
@@ -331,24 +327,17 @@
     ];
   };
   programs.sway.xwayland.enable = true;
-  services.displayManager = {
-    ly = {
-      enable = true;
-      # settings = {
-      #   auto_login_session = "sway";
-      #   auto_login_user = "fjara";
-      # };
+  services.displayManager.ly = {
+    enable = true;
+    settings = {
+      logfile = "/dev/null";
     };
-    # autoLogin = {
-    #   user = "fjara";
-    #   enable = true;
-    # };
   };
+
   services.gnome.gnome-keyring.enable = true;
   security.pam.services.ly.enableGnomeKeyring = true;
   security.pam.services.login.enableGnomeKeyring = true;
-  # programs.ssh.startAgent = true;
-  # Enable the OpenSSH daemon.
+
   services.openssh = {
     enable = true;
     settings = {
@@ -356,20 +345,6 @@
       PasswordAuthentication = false;
     };
   };
-  services.postgresql = {
-    enable = true;
-    ensureDatabases = [ "noria" ];
-    authentication = pkgs.lib.mkOverride 10 ''
-      #type database  DBuser  auth-method
-      local all       all     trust
-    '';
-    };
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
