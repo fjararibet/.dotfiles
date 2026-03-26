@@ -4,3 +4,23 @@
 
 [init]
 	defaultBranch = main
+[core]
+editor = vim
+autocrlf = input
+pager = less -FRX
+
+[pull]
+ff = only
+
+[push]
+default = simple
+autoSetupRemote = true
+
+[init]
+defaultBranch = main
+
+[merge]
+conflictstyle = zdiff3
+
+[fetch]
+prune = true
