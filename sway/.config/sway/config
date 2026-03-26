@@ -96,7 +96,6 @@ input * {
     bindsym $mod+b exec firefox -P default -new-tab about:home
     bindsym $mod+t exec $term
     bindsym $mod+g exec /home/fjara/.local/bin/chatgpt
-    bindsym $mod+w exec firefox -P work
 
     # Kill focused window
     bindsym $mod+q kill

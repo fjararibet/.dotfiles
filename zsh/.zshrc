@@ -74,3 +74,4 @@ bindkey -r "^[,"
 
 # opencode
 export PATH=/home/fjara/.opencode/bin:$PATH
+. ~/.atuin_zsh
