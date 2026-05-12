@@ -12,6 +12,7 @@ return {
         changedelete = { text = '~' },
       },
       on_attach = function(bufnr)
+        vim.keymap.set('n', '<leader>gbl', require('gitsigns').blame_line, { buffer = bufnr, desc = '[G]it [B]lame [L]ine' })
         vim.keymap.set('n', '<leader>gp', require('gitsigns').prev_hunk, { buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
         vim.keymap.set('n', '<leader>gn', require('gitsigns').next_hunk, { buffer = bufnr, desc = '[G]o to [N]ext Hunk' })
         vim.keymap.set('n', '<leader>gp', require('gitsigns').preview_hunk, { buffer = bufnr, desc = '[G]it [P]review Hunk' })
@@ -20,10 +21,5 @@ return {
         vim.keymap.set('n', '<leader>guh', require('gitsigns').undo_stage_hunk, { buffer = bufnr, desc = '[G]it [U]ndo Stage [H]unk' })
       end,
     },
-  },
-  {
-    'tpope/vim-fugitive',
-    -- config = function()
-    -- end,
   },
 }
