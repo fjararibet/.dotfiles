@@ -3,13 +3,28 @@
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
 { config, lib, pkgs, ... }:
-
+let
+  unstable = import <unstable> {
+    config.allowUnfree = true;
+  };
+in
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+  hardware.opentabletdriver.enable = true;
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      rocmPackages.clr.icd
+    ];
+  };
+  # Required by OpenTabletDriver
+  hardware.uinput.enable = true;
+  boot.initrd.kernelModules = [ "amdgpu" ];
+  boot.kernelModules = [ "uinput" ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader = {
@@ -29,8 +44,8 @@
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
   networking.nftables.enable = true;
   networking.firewall = {
-    enable = true;
-    allowedTCPPorts = [ 8000 22 ];
+    enable = false;
+    allowedTCPPorts = [ 8000 22 4096 ];
     trustedInterfaces = [ "tailscale0" ];
     allowedUDPPorts = [ config.services.tailscale.port ];
   };
@@ -195,6 +210,7 @@
   };
   environment.sessionVariables = {
     SSH_AUTH_SOCK = "/run/user/1000/gcr/ssh";
+    SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
   };
   systemd.services.opencode = {
     enable = true;
@@ -205,7 +221,10 @@
       Restart = "on-failure";
       User = "fjara";
       Environment = [
-        "PATH=/run/current-system/sw/bin:$PATH"
+          "PATH=/run/current-system/sw/bin:$PATH"
+          # "PLAYWRIGHT_BROWSERS_PATH=${pkgs.playwright-driver.browsers}"
+          "PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=true"
+          "PLAYWRIGHT_HOST_PLATFORM_OVERRIDE='ubuntu-24.04'"
       ];
     };
   };
@@ -215,6 +234,7 @@
       "discord"
       "obsidian"
       "spotify"
+      "davinci-resolve"
   ];
   nixpkgs.config.permittedInsecurePackages = [
     "olm-3.2.16"
@@ -232,12 +252,16 @@
     extraGroups = [ "wheel" "audio"];
 
     packages = with pkgs; [
+      obs-studio
       tree
       ansible
       neovim
+      audacity
       zsh 
-      # nodejs_24
-      nodejs_22
+      go
+      nodejs_24
+      lsof
+      # nodejs_22
       gammastep
       wl-clipboard
       uv
@@ -255,6 +279,7 @@
       sway-contrib.grimshot
       obsidian
       spotify
+      davinci-resolve
       ripgrep
       llvmPackages_20.clang-unwrapped
       cmake
@@ -270,6 +295,16 @@
       paraview
       cloudflared
       atuin
+      kdePackages.wacomtablet
+      unstable.osu-lazer-bin
+      unstable.valhalla
+      unstable.opencode
+      unstable.opencode-desktop
+      unstable.playwright
+      unstable.playwright-driver.browsers
+      unstable.playwright-mcp
+      unstable.playwright-test
+      unstable.codex
     ];
     shell = pkgs.zsh;
   };
@@ -342,7 +377,7 @@
     enable = true;
     settings = {
       PermitRootLogin = "no";
-      PasswordAuthentication = false;
+      PasswordAuthentication = true;
     };
   };
 
