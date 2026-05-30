@@ -278,9 +278,6 @@ exec firefox -P default -new-tab about:home
 workspace 2
 exec $term
 
-workspace 3
-exec ~/.local/bin/claude-app
-
 workspace 4
 
 seat seat0 xcursor_theme Adwaita 24

@@ -5,6 +5,7 @@ alias zshconf="nvim ~/.zshrc"
 alias vim="nvim"
 alias changebg="$HOME/Pictures/Backgrounds/set_background.sh"
 alias vimconf='cd ~/.config/nvim/ && nvim . && cd -'
+alias nixconf='nvim ~/.dotfiles/nixos/huala/configuration.nix'
 alias tmuxconf='nvim ~/.config/tmux/tmux.conf'
 alias comp='g++ -Wall -Wextra -pedantic -std=c++17 -Wshadow -Wformat=2 -Wfloat-equal -Wconversion -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC'
 
@@ -69,9 +70,12 @@ bindkey -r "^[,"
 #   - the correct directories to the PATH
 #   - auto-completion for the opam binary
 # This section can be safely removed at any time if needed.
-[[ ! -r '/home/fjara/.opam/opam-init/init.zsh' ]] || source '/home/fjara/.opam/opam-init/init.zsh' > /dev/null 2> /dev/null
+# [[ ! -r '/home/fjara/.opam/opam-init/init.zsh' ]] || source '/home/fjara/.opam/opam-init/init.zsh' > /dev/null 2> /dev/null
 # END opam configuration
 
-# opencode
-export PATH=/home/fjara/.opencode/bin:$PATH
+[ -f .venv/bin/activate ] && source .venv/bin/activate
 . ~/.atuin_zsh
+
+fpath+=~/.zfunc; autoload -Uz compinit; compinit -C
+
+zstyle ':completion:*' menu select
