@@ -1,6 +1,6 @@
 -- Set <space> as the leader key
 -- See `:help mapleader`
---  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
+--  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
@@ -8,7 +8,7 @@ vim.g.maplocalleader = ' '
 --    https://github.com/folke/lazy.nvim
 --    `:help lazy.nvim.txt` for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
   vim.fn.system {
     'git',
     'clone',
@@ -18,15 +18,20 @@ if not vim.loop.fs_stat(lazypath) then
     lazypath,
   }
 end
+
+-- Add lazy to the `runtimepath`, this allows us to `require` it.
 vim.opt.rtp:prepend(lazypath)
-require('lazy').setup('plugins')
 
--- Set default colorscheme
+-- Set up lazy, and load every spec in `lua/custom/plugins/`
+--    Editor options and keymaps live in `plugin/` (auto-sourced by Neovim),
+--    filetype tweaks in `after/ftplugin/`.
+require('lazy').setup({ import = 'custom.plugins' }, {
+  change_detection = {
+    notify = false,
+  },
+})
 
--- Require personal config
---    All files in the lua folder are requireable.
---    init.lua is executed upon require.
-require('config')
-vim.cmd.colorscheme "kanagawa"
+vim.cmd.colorscheme 'kanagawa'
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
