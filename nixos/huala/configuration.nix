@@ -10,21 +10,22 @@ let
 in
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
       ./hardware-configuration.nix
     ];
-  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+  nixpkgs.config.allowUnfree = true;
+
+  # Required by OpenTabletDriver
+  hardware.uinput.enable = true;
   hardware.opentabletdriver.enable = true;
+  boot.kernelModules = [ "uinput" ];
+
   hardware.graphics = {
     enable = true;
     extraPackages = with pkgs; [
       rocmPackages.clr.icd
     ];
   };
-  # Required by OpenTabletDriver
-  hardware.uinput.enable = true;
-  boot.initrd.kernelModules = [ "amdgpu" ];
-  boot.kernelModules = [ "uinput" ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader = {
@@ -39,122 +40,43 @@ in
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   networking.hostName = "huala";
-  # Pick only one of the below networking options.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking.networkmanager.enable = true;
   networking.nftables.enable = true;
   networking.firewall = {
     enable = false;
     allowedTCPPorts = [ 8000 22 4096 ];
-    trustedInterfaces = [ "tailscale0" ];
+    trustedInterfaces = [ config.services.tailscale.interfaceName ];
     allowedUDPPorts = [ config.services.tailscale.port ];
   };
-  # systemd.services.tailscaled.serviceConfig.Environment = [ 
-  #   "TS_DEBUG_FIREWALL_MODE=nftables" 
-  # ];
+  # Force tailscaled to use nftables (Critical for clean nftables-only systems)
+  # This avoids the "iptables-compat" translation layer issues.
+  systemd.services.tailscaled.serviceConfig.Environment = [ 
+    "TS_DEBUG_FIREWALL_MODE=nftables" 
+  ];
+  programs.steam = {
+    enable = true;
+  };
+
+  # Optimization: Prevent systemd from waiting for network online 
+  # (Optional but recommended for faster boot with VPNs)
   systemd.network.wait-online.enable = false; 
   boot.initrd.systemd.network.wait-online.enable = false;
-  services.dnsmasq = {
-    enable = true;
-    resolveLocalQueries = false;
-    settings = {
-      address = [
-        "/code.home/100.106.210.10"
-        # "/seafile.home/100.106.210.10"
-        "/filebrowser.home/100.106.210.10"
-      ];
-      listen-address = "100.106.210.10";
-      bind-interfaces = true;
-      except-interface = "lo";
-      no-resolv = true;
-      no-hosts = true;
-    };
-  };
-  services.tailscale.permitCertUid = "caddy";
-  services.caddy = {
-    enable = true;
-    virtualHosts."http://code.home" = {
-      extraConfig = ''
-        reverse_proxy http://localhost:4096
-      '';
-    };
-    virtualHosts."https://huala.triceratops-corn.ts.net" = {
-      extraConfig = ''
-        reverse_proxy http://localhost:8080
-      '';
-    };
-    # virtualHosts."http://seafile.home" = {
-    #   extraConfig = ''
-    #     reverse_proxy http://localhost:5435
-    #   '';
-    # };
-    virtualHosts."http://filebrowser.home" = {
-      extraConfig = ''
-        reverse_proxy http://localhost:4173
-      '';
-    };
-  };
-
-  services.filebrowser = {
-    enable = true;
-    settings =  {
-      port = 4173;
-      root = "/var/lib/filebrowser/data";
-    };
-  };
-
-
-
-  services = {
-    # port 8096
-    jellyfin = {
-      enable = true;
-    };
-    qbittorrent = {
-      enable = true;
-      webuiPort = 4831;
-    };
-    sonarr = {
-      enable = true;
-      settings.server.port = 8989;
-    };
-  };
-  users.groups.media = {};
-  users.users.jellyfin.extraGroups = [ "media" ];
-  users.users.sonarr.extraGroups = [ "media" ];
-  systemd.tmpfiles.rules = [
-    "d /srv/media 0775 sonarr media -"
-  ];
 
   # Set your time zone.
   time.timeZone = "America/Santiago";
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  #   useXkbConfig = true; # use xkb.options in tty.
-  # };
-
-  # Enable the X11 windowing system.
+  i18n.defaultLocale = "es_CL.UTF-8";
 
   virtualisation.docker = {
     enable = true;
-    # rootless = {
-    #   enable = true;
-    #   setSocketVariable = true;
-    # };
+    rootless = {
+      enable = true;
+      setSocketVariable = true;
+    };
   };
   
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
-
-  services.pulseaudio.enable = false;
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -168,7 +90,6 @@ in
     };
   };
 
-
   programs.zsh = {
     enable = true;
     ohMyZsh = {
@@ -177,80 +98,24 @@ in
       theme = "robbyrussell";
     };
   };
+
   programs.fzf = {
     keybindings = true;
     fuzzyCompletion = true;
   };
-  # Enable touchpad support
-  services.libinput.enable = true;
-  services.avahi = {
+
+  services.cloudflared = {
     enable = true;
-    nssmdns4 = true;
   };
 
-  # services.cloudflared = {
-  #   enable = true;
-  #   tunnels = {
-  #     "ba400f6f-b34e-40c0-bd40-18a302990cb7" = {
-  #       credentialsFile = "/home/fjara/.cloudflared/ba400f6f-b34e-40c0-bd40-18a302990cb7.json";
-  #       default = "http_status:404";
-  #       ingress = {
-  #       "code.fjara.cl" = "http://localhost:4096";
-  #       };
-  #     };
-  #   };
-  # };
-  services.tailscale = {
-    enable = true;
-    # Enable tailscale at startup
-
-    # If you would like to use a preauthorized key
-    #authKeyFile = "/run/secrets/tailscale_key";
-
-  };
   environment.sessionVariables = {
     SSH_AUTH_SOCK = "/run/user/1000/gcr/ssh";
     SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
   };
-  systemd.services.opencode = {
-    enable = true;
-    after = [ "network.target" ];
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      ExecStart = "/home/fjara/.opencode/bin/opencode web --port 4096 --hostname 0.0.0.0";
-      Restart = "on-failure";
-      User = "fjara";
-      Environment = [
-          "PATH=/run/current-system/sw/bin:$PATH"
-          # "PLAYWRIGHT_BROWSERS_PATH=${pkgs.playwright-driver.browsers}"
-          "PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=true"
-          "PLAYWRIGHT_HOST_PLATFORM_OVERRIDE='ubuntu-24.04'"
-      ];
-    };
-  };
 
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [
-      "discord"
-      "obsidian"
-      "spotify"
-      "davinci-resolve"
-  ];
-  nixpkgs.config.permittedInsecurePackages = [
-    "olm-3.2.16"
-  ];
-
-
-  programs.nix-ld = {
-    enable = true;
-    libraries = with pkgs; [
-      zlib zstd stdenv.cc.cc curl openssl attr libssh bzip2 libxml2 acl libsodium util-linux xz systemd openssl.dev
-    ];
-  };
   users.users.fjara = {
     isNormalUser = true;
     extraGroups = [ "wheel" "audio"];
-
     packages = with pkgs; [
       obs-studio
       tree
@@ -261,7 +126,6 @@ in
       go
       nodejs_24
       lsof
-      # nodejs_22
       gammastep
       wl-clipboard
       uv
@@ -281,23 +145,17 @@ in
       spotify
       davinci-resolve
       ripgrep
-      llvmPackages_20.clang-unwrapped
       cmake
-      element-desktop
-      nheko
       swayr
-      wofi
+      rofi
       jq
-      bitcoin
       clipman
       numactl
       htop
       paraview
       cloudflared
       atuin
-      kdePackages.wacomtablet
       unstable.osu-lazer-bin
-      unstable.valhalla
       unstable.opencode
       unstable.opencode-desktop
       unstable.playwright
@@ -305,6 +163,17 @@ in
       unstable.playwright-mcp
       unstable.playwright-test
       unstable.codex
+    wget
+    curl
+    git
+    tmux
+    gcc
+    pavucontrol
+    playerctl
+    pamixer
+    alsa-utils
+    gnumake
+    numactl
     ];
     shell = pkgs.zsh;
   };
@@ -314,7 +183,6 @@ in
       ubuntu-classic
       liberation_ttf
       nerd-fonts.jetbrains-mono
-      xorg.fontmiscmisc
     ];
 
     fontconfig = {
@@ -328,30 +196,10 @@ in
     fontDir.enable = true;
   };
   programs.firefox.enable = true;
-  
-
   environment.systemPackages = with pkgs; [
     vim
     wget
-    alacritty
     curl
-    git
-    tmux
-    python313
-    gcc
-    pavucontrol
-    playerctl
-    pamixer
-    alsa-utils
-    gnumake
-    numactl
-    openssl
-    openssl.dev
-    filebrowser
-    (pkgs.writeShellScriptBin "python" ''
-      export LD_LIBRARY_PATH=$NIX_LD_LIBRARY_PATH
-      exec ${pkgs.python3}/bin/python "$@"
-    '')
   ];
 
   programs.sway = {

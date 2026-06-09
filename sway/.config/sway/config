@@ -42,7 +42,7 @@ exec env RUST_BACKTRACE=1 RUST_LOG=swayr=debug swayrd > /tmp/swayrd.log 2>&1
 # Example configuration:
 #
   # output HDMI-A-1 resolution 1920x1080 position 1920,0
-output 'Lenovo Group Limited LEN G24-10 U5B448B5' mode 1920x1080@143.999Hz position 1920,0
+output 'Lenovo Group Limited LEN G24-10 U5B448B5' mode 1920x1080@143.999Hz position 0 0
 #
 # You can get the names of your outputs by running: swaymsg -t get_outputs
 
@@ -93,7 +93,8 @@ input * {
 #
 # Basics:
 #
-    bindsym $mod+b exec firefox -P default -new-tab about:home
+    bindsym $mod+b exec firefox -P default
+    bindsym $mod+w exec firefox -P work
     bindsym $mod+t exec $term
     bindsym $mod+g exec /home/fjara/.local/bin/chatgpt
 
@@ -273,7 +274,7 @@ exec wl-paste -t text --watch clipman store --no-persist
 
 # Startup
 workspace 1
-exec firefox -P default -new-tab about:home
+exec firefox -P default
 
 workspace 2
 exec $term
