@@ -98,6 +98,19 @@ in
       theme = "robbyrussell";
     };
   };
+  programs.atuin = {
+    enable = true;
+    daemon.enable = true;
+    flags = [
+      "--disable-up-arrow"
+    ];
+    settings = {
+      daemon.enabled = true;
+      daemon.autostart = true;
+      search_mode = "daemon_fuzzy";
+      enter_accept = true;
+    };
+  };
 
   programs.fzf = {
     keybindings = true;
