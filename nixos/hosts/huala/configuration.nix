@@ -2,30 +2,25 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, nixpkgs-unstable, ... }:
 let
-  unstable = import <unstable> {
-    config.allowUnfree = true;
-  };
+  unstable = import nixpkgs-unstable { system = pkgs.system; config.allowUnfree = true; };
 in
 {
   imports =
     [
       ./hardware-configuration.nix
     ];
+  nix.settings.auto-optimise-store = true;
   nixpkgs.config.allowUnfree = true;
+  programs.nix-ld.enable = true;
+  hardware.graphics.enable = true;
 
   # Required by OpenTabletDriver
   hardware.uinput.enable = true;
   hardware.opentabletdriver.enable = true;
   boot.kernelModules = [ "uinput" ];
 
-  hardware.graphics = {
-    enable = true;
-    extraPackages = with pkgs; [
-      rocmPackages.clr.icd
-    ];
-  };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader = {
@@ -40,6 +35,7 @@ in
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   networking.hostName = "huala";
+  services.tailscale.enable = true;
   networking.networkmanager.enable = true;
   networking.nftables.enable = true;
   networking.firewall = {
@@ -57,6 +53,19 @@ in
     enable = true;
   };
 
+  i18n.defaultLocale = "en_US.UTF-8";
+  i18n.extraLocaleSettings = {
+    LC_ADDRESS = "es_CL.UTF-8";
+    LC_IDENTIFICATION = "es_CL.UTF-8";
+    LC_MEASUREMENT = "es_CL.UTF-8";
+    LC_MONETARY = "es_CL.UTF-8";
+    LC_NAME = "es_CL.UTF-8";
+    LC_NUMERIC = "es_CL.UTF-8";
+    LC_PAPER = "es_CL.UTF-8";
+    LC_TELEPHONE = "es_CL.UTF-8";
+    LC_TIME = "es_CL.UTF-8";
+  };
+
   # Optimization: Prevent systemd from waiting for network online 
   # (Optional but recommended for faster boot with VPNs)
   systemd.network.wait-online.enable = false; 
@@ -65,9 +74,6 @@ in
   # Set your time zone.
   time.timeZone = "America/Santiago";
 
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "es_CL.UTF-8";
 
   virtualisation.docker = {
     enable = true;
@@ -107,7 +113,7 @@ in
     settings = {
       daemon.enabled = true;
       daemon.autostart = true;
-      search_mode = "daemon_fuzzy";
+      search_mode = "daemon-fuzzy";
       enter_accept = true;
     };
   };
@@ -123,13 +129,13 @@ in
 
   environment.sessionVariables = {
     SSH_AUTH_SOCK = "/run/user/1000/gcr/ssh";
-    SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
   };
 
   users.users.fjara = {
     isNormalUser = true;
     extraGroups = [ "wheel" "audio"];
     packages = with pkgs; [
+      alacritty
       obs-studio
       tree
       ansible
@@ -144,23 +150,19 @@ in
       uv
       fd
       dmenu
+      tree-sitter
       zip
       unzip
       discord
       stow
       google-cloud-sdk
-      wlogout
-      waybar
       wrangler
       gemini-cli
-      sway-contrib.grimshot
       obsidian
       spotify
       davinci-resolve
       ripgrep
       cmake
-      swayr
-      rofi
       jq
       clipman
       numactl
@@ -176,18 +178,18 @@ in
       unstable.playwright-mcp
       unstable.playwright-test
       unstable.codex
-    wget
-    curl
-    git
-    tmux
-    gcc
-    pavucontrol
-    playerctl
-    pamixer
-    alsa-utils
-    gnumake
-    numactl
-    ];
+      wget
+      curl
+      git
+      tmux
+      gcc
+      pavucontrol
+      playerctl
+      pamixer
+      alsa-utils
+      gnumake
+      numactl
+      ];
     shell = pkgs.zsh;
   };
   fonts = {
@@ -215,11 +217,17 @@ in
     curl
   ];
 
+  services.elephant.enable = true;
   programs.sway = {
     enable = true;
     wrapperFeatures.gtk = true;
     extraPackages = with pkgs; [
       adwaita-icon-theme
+      sway-contrib.grimshot
+      swayr
+      wlogout
+      waybar
+      walker
     ];
   };
   programs.sway.xwayland.enable = true;
@@ -241,11 +249,6 @@ in
       PasswordAuthentication = true;
     };
   };
-
-  # Copy the NixOS configuration file and link it from the resulting system
-  # (/run/current-system/configuration.nix). This is useful in case you
-  # accidentally delete configuration.nix.
-  # system.copySystemConfiguration = true;
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
