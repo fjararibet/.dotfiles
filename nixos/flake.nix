@@ -7,6 +7,7 @@
       url = "github:nix-community/NixOS-WSL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, nixos-wsl, ... }:

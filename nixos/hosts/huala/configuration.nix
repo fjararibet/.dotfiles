@@ -4,7 +4,7 @@
 
 { config, lib, pkgs, nixpkgs-unstable, ... }:
 let
-  unstable = import nixpkgs-unstable { system = pkgs.system; config.allowUnfree = true; };
+  unstable = import nixpkgs-unstable { system = pkgs.stdenv.hostPlatform.system; config.allowUnfree = true; };
 in
 {
   imports =
@@ -218,6 +218,20 @@ in
   ];
 
   services.elephant.enable = true;
+  systemd.user.services.elephant.path = [ pkgs.bash ] ++ config.users.users.fjara.packages;
+  systemd.user.services.walker = {
+    description = "Walker";
+    path = [ pkgs.elephant config.programs.steam.package config.system.path ] ++ config.users.users.fjara.packages;
+
+    after = [ "graphical-session.target" "elephant.service" ];
+    requires = [ "elephant.service" ];
+    wantedBy = [ "graphical-session.target" ];
+
+    serviceConfig = {
+      ExecStart = "${pkgs.walker}/bin/walker --gapplication-service";
+      Restart = "on-failure";
+    };
+  };
   programs.sway = {
     enable = true;
     wrapperFeatures.gtk = true;
@@ -228,6 +242,7 @@ in
       wlogout
       waybar
       walker
+      netcat-openbsd
     ];
   };
   programs.sway.xwayland.enable = true;
@@ -270,4 +285,3 @@ in
   system.stateVersion = "25.05"; # Did you read the comment?
 
 }
-

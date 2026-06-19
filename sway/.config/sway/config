@@ -1,4 +1,3 @@
-# Read `man 5 sway` for a complete reference.
 set $black #090618
 set $blue #7e9cd8
 set $cyan #6a9589
@@ -8,116 +7,69 @@ set $red #c34043
 set $white #c8c093
 set $yellow #c0a36e
 
-## Variables
-# Logo key.
 set $mod Mod4
-# Home row direction keys, like vim
+
 set $left h
 set $down j
 set $up k
 set $right l
 
-# Apps
 set $term alacritty
 set $browser firefox
-# Your preferred application launcher
-# Note: pass the final command to swaymsg so that the resulting window can be opened
-# on the original workspace that the command was run on.
-set $menu dmenu_path | dmenu -i -l 10 -fn 'JetBrainsMono Nerd Font Mono' -nb '$black' -nf '$white' -sb '$white' -sf '$black' | xargs swaymsg exec --
+set $menu nc -U /run/user/1000/walker/walker.sock
 
 include /etc/sway/config-vars.d/*
 
-### Output configuration
-#
-# Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
 output * bg ~/Backgrounds/city_night.jpg fill
-# Color managment
 exec gammastep -O 6500K -g 0.7 -l 0:0
-# Run gammastep only if DP-1 is connected
-# exec sh -c 'swaymsg -t get_outputs | grep -q "\"name\":\"DP-1\"" && gammastep -m DP-1 &'
+exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP XDG_SESSION_TYPE
 
-exec env RUST_BACKTRACE=1 RUST_LOG=swayr=debug swayrd > /tmp/swayrd.log 2>&1
 
-#
-# Example configuration:
-#
-  # output HDMI-A-1 resolution 1920x1080 position 1920,0
 output 'Lenovo Group Limited LEN G24-10 U5B448B5' mode 1920x1080@143.999Hz position 0 0
-#
-# You can get the names of your outputs by running: swaymsg -t get_outputs
 
-### Idle configuration
-#
-# Example configuration:
-#
-# exec swayidle -w \
-#          timeout 300 'swaylock -f -c 000000' \
-#          timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
-#          before-sleep 'swaylock -f -c 000000'
-#
-# This will lock your screen after 300 seconds of inactivity, then turn off
-# your displays after another 300 seconds, and turn your screens back on when
-# resumed. It will also lock your screen before your computer goes to sleep.
+input type:touchpad {
+    dwt enabled
+    tap enabled
+    natural_scroll enabled
+    middle_emulation disabled
+    accel_profile flat
+    pointer_accel 0.7
+    scroll_factor 0.5
+}
 
-### Input configuration
-#
-# Example configuration:
-#
-  input type:touchpad {
-      dwt enabled
-      tap enabled
-      natural_scroll enabled
-      middle_emulation disabled
-      accel_profile flat
-      pointer_accel 0.7
-      scroll_factor 0.5
-  }
-#
-
-# Mouse
-input "1133:16500:Logitech_G305" {
+input type:pointer {
     natural_scroll disabled
     accel_profile flat
     pointer_accel 0
 }
-# Keyboard
-input * { 
+
+input type:keyboard { 
     xkb_options "ctrl:nocaps",nodeadkeys
     xkb_layout us
     xkb_variant altgr-intl
 }
-# You can get the names of your inputs by running: swaymsg -t get_inputs
-# Read `man 5 sway-input` for more information about this section.
+bindsym $mod+b exec firefox -P default
+bindsym $mod+w exec firefox -P work
+bindsym $mod+t exec $term
+bindsym $mod+g exec /home/fjara/.local/bin/chatgpt
 
-### Key bindings
-#
-# Basics:
-#
-    bindsym $mod+b exec firefox -P default
-    bindsym $mod+w exec firefox -P work
-    bindsym $mod+t exec $term
-    bindsym $mod+g exec /home/fjara/.local/bin/chatgpt
+bindsym $mod+q kill
 
-    # Kill focused window
-    bindsym $mod+q kill
+bindsym $mod+space exec $menu
+bindsym $mod+p exec walker --provider clipboard
 
-    # Start your launcher
-    bindsym $mod+space exec $menu
+# Drag floating windows by holding down $mod and left mouse button.
+# Resize them with right mouse button + $mod.
+# Despite the name, also works for non-floating windows.
+# Change normal to inverse to use left mouse button for resizing and right
+# mouse button for dragging.
+floating_modifier $mod normal
 
-    # Drag floating windows by holding down $mod and left mouse button.
-    # Resize them with right mouse button + $mod.
-    # Despite the name, also works for non-floating windows.
-    # Change normal to inverse to use left mouse button for resizing and right
-    # mouse button for dragging.
-    floating_modifier $mod normal
+# Reload the configuration file
+bindsym $mod+Shift+r reload
 
-    # Reload the configuration file
-    bindsym $mod+Shift+r reload
 
-    # Exit sway (logs you out of your Wayland session)
-    # bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
-
-    bindsym $mod+Alt+l exec swaylock --indicator-idle-visible --image ~/Backgrounds/teatime.jpg
+bindsym $mod+Alt+l exec swaylock --indicator-idle-visible --image ~/Backgrounds/teatime.jpg
 
 
 ### Swayr

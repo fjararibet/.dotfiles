@@ -4,7 +4,7 @@ alias zshconf="nvim ~/.zshrc"
 alias vim="nvim"
 alias changebg="$HOME/Pictures/Backgrounds/set_background.sh"
 alias vimconf='cd ~/.config/nvim/ && nvim . && cd -'
-alias nixconf='nvim ~/.dotfiles/nixos/fragata/configuration.nix'
+alias nixconf='cd ~/dotfiles/nixos/ && nvim . && cd -'
 alias tmuxconf='nvim ~/.config/tmux/tmux.conf'
 alias comp='g++ -Wall -Wextra -pedantic -std=c++17 -Wshadow -Wformat=2 -Wfloat-equal -Wconversion -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC'
 
