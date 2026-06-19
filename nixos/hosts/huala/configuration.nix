@@ -197,14 +197,16 @@ in
     packages = with pkgs; [ 
       ubuntu-classic
       liberation_ttf
-      nerd-fonts.jetbrains-mono
+      nerd-fonts.commit-mono
     ];
 
     fontconfig = {
       defaultFonts = {
         serif = [  "Liberation Serif" ];
         sansSerif = [ "Ubuntu" ];
-        monospace = [ "JetBrainsMono Nerd Font Mono" ];
+        monospace = [ 
+          "CommitMono Nerd Font Mono"
+          ];
       };
       allowBitmaps = true;
     };
@@ -228,6 +230,7 @@ in
     wantedBy = [ "graphical-session.target" ];
 
     serviceConfig = {
+      ExecStartPre = "${pkgs.systemd}/bin/systemctl --user restart elephant.service";
       ExecStart = "${pkgs.walker}/bin/walker --gapplication-service";
       Restart = "on-failure";
     };

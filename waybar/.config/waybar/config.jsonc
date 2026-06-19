@@ -105,10 +105,11 @@
   },
   
   "pulseaudio": {
-    "format": "{icon}{volume}%",
+    // Thin space keeps the icon close without visually merging it with the number.
+    "format": "{icon} {volume}%",
     "format-muted": "",
     "format-icons": {
-      "default": ["", "", " "]
+      "default": ""
     },
     "on-click": "pavucontrol"
   },
@@ -150,4 +151,3 @@
   },
 
 }
-

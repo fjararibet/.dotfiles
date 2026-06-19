@@ -1,6 +1,6 @@
 /* --- Global Styles --- */
 * {
-  font-family: 'JetBrainsMono Nerd Font Mono', 'SF Pro Text', 'Inter', 'Segoe UI, NotoSans Nerd Font', sans-serif;
+  font-family: 'CommitMono Nerd Font', 'CommitMono Nerd Font Mono', 'SF Pro Text', 'Inter', 'Segoe UI', sans-serif;
   font-size: 13px;
   min-height: 0;
   color: #c8c093;
@@ -15,7 +15,7 @@
   background-color: #000000;
   color: #c6d0f5;
   margin: 0px;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 /* --- Left Modules (Individual, Fully Rounded Blocks - With Horizontal Spacing & Simple Hover) --- */
@@ -99,7 +99,7 @@
     /* Transition for background-color, color, outline, and box-shadow for smooth effect */
     transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, outline 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     color: #babbf1; /* A calm color, consistent with custom-uptime */
-    font-weight: 600; /* Slightly bolder for the timer, consistent with clock */
+    font-weight: 400;
 }
 
 /* Positioning and spacing for the custom-pomodoro module */
@@ -186,7 +186,7 @@
 
 #clock {
   color: #c8c093;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 #pulseaudio {
