@@ -220,17 +220,25 @@ in
   ];
 
   services.elephant.enable = true;
-  systemd.user.services.elephant.path = [ pkgs.bash ] ++ config.users.users.fjara.packages;
+  systemd.user.services.elephant = {
+    path = [ pkgs.bash pkgs.xdg-utils config.programs.steam.package config.system.path ] ++ config.users.users.fjara.packages;
+    environment.XDG_DATA_DIRS = lib.makeSearchPathOutput "out" "share" (
+      [ pkgs.elephant config.programs.steam.package config.system.path ] ++ config.users.users.fjara.packages
+    );
+  };
   systemd.user.services.walker = {
     description = "Walker";
     path = [ pkgs.elephant config.programs.steam.package config.system.path ] ++ config.users.users.fjara.packages;
+
+    environment.XDG_DATA_DIRS = lib.makeSearchPathOutput "out" "share" (
+      [ pkgs.walker pkgs.elephant config.programs.steam.package config.system.path ] ++ config.users.users.fjara.packages
+    );
 
     after = [ "graphical-session.target" "elephant.service" ];
     requires = [ "elephant.service" ];
     wantedBy = [ "graphical-session.target" ];
 
     serviceConfig = {
-      ExecStartPre = "${pkgs.systemd}/bin/systemctl --user restart elephant.service";
       ExecStart = "${pkgs.walker}/bin/walker --gapplication-service";
       Restart = "on-failure";
     };
