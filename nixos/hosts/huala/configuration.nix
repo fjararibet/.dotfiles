@@ -55,14 +55,6 @@ in
 
   i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocaleSettings = {
-    LC_ADDRESS = "es_CL.UTF-8";
-    LC_IDENTIFICATION = "es_CL.UTF-8";
-    LC_MEASUREMENT = "es_CL.UTF-8";
-    LC_MONETARY = "es_CL.UTF-8";
-    LC_NAME = "es_CL.UTF-8";
-    LC_NUMERIC = "es_CL.UTF-8";
-    LC_PAPER = "es_CL.UTF-8";
-    LC_TELEPHONE = "es_CL.UTF-8";
     LC_TIME = "es_CL.UTF-8";
   };
 
@@ -128,6 +120,7 @@ in
   };
 
   environment.sessionVariables = {
+    GTK_THEME = "Adwaita:dark";
     SSH_AUTH_SOCK = "/run/user/1000/gcr/ssh";
   };
 
@@ -135,6 +128,9 @@ in
     isNormalUser = true;
     extraGroups = [ "wheel" "audio"];
     packages = with pkgs; [
+      audacious
+      ffmpeg
+      yt-dlp
       alacritty
       obs-studio
       tree
@@ -221,6 +217,10 @@ in
 
   services.elephant.enable = true;
   systemd.user.services.elephant = {
+    after = [ "sway-session.target" ];
+    wantedBy = lib.mkForce [ "sway-session.target" ];
+    partOf = [ "sway-session.target" ];
+
     path = [ pkgs.bash pkgs.xdg-utils config.programs.steam.package config.system.path ] ++ config.users.users.fjara.packages;
     environment.XDG_DATA_DIRS = lib.makeSearchPathOutput "out" "share" (
       [ pkgs.elephant config.programs.steam.package config.system.path ] ++ config.users.users.fjara.packages
@@ -234,9 +234,10 @@ in
       [ pkgs.walker pkgs.elephant config.programs.steam.package config.system.path ] ++ config.users.users.fjara.packages
     );
 
-    after = [ "graphical-session.target" "elephant.service" ];
+    after = [ "sway-session.target" "elephant.service" ];
     requires = [ "elephant.service" ];
-    wantedBy = [ "graphical-session.target" ];
+    partOf = [ "sway-session.target" ];
+    wantedBy = [ "sway-session.target" ];
 
     serviceConfig = {
       ExecStart = "${pkgs.walker}/bin/walker --gapplication-service";
@@ -257,6 +258,11 @@ in
     ];
   };
   programs.sway.xwayland.enable = true;
+  xdg.portal = {
+    enable = true;
+    config.common.default = [ "gtk" ];
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  };
   services.displayManager.ly = {
     enable = true;
     settings = {
