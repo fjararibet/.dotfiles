@@ -128,6 +128,7 @@ in
     isNormalUser = true;
     extraGroups = [ "wheel" "audio"];
     packages = with pkgs; [
+      qbittorrent
       audacious
       ffmpeg
       yt-dlp
@@ -150,6 +151,7 @@ in
       zip
       unzip
       discord
+      vesktop
       stow
       google-cloud-sdk
       wrangler
@@ -185,6 +187,9 @@ in
       alsa-utils
       gnumake
       numactl
+      unstable.handy
+      vlc
+      wtype
       ];
     shell = pkgs.zsh;
   };
@@ -260,8 +265,9 @@ in
   programs.sway.xwayland.enable = true;
   xdg.portal = {
     enable = true;
-    config.common.default = [ "gtk" ];
+    config.common.default = [ "wlr" "gtk" ];
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    wlr.enable = true;
   };
   services.displayManager.ly = {
     enable = true;

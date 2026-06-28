@@ -1,12 +1,12 @@
 [general]
-live_config_reload = false
+live_config_reload = true
 import = ["~/.config/alacritty/kanagawa.toml"]
 
 [window]
 dynamic_padding = true
 padding.x = 10
 padding.y = 10
-opacity = 0.90
+opacity = 0.95
 # opacity = 1.00
 startup_mode = "Maximized"
 
@@ -17,4 +17,4 @@ offset.y = 2
 offset.x = 0
 
 [colors]
-primary.background = "#000000"
+# primary.background = "#000000"

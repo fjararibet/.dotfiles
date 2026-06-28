@@ -52,6 +52,7 @@ bindsym $mod+b exec firefox -P default
 bindsym $mod+w exec firefox -P work
 bindsym $mod+t exec $term
 bindsym $mod+g exec /home/fjara/.local/bin/chatgpt
+bindsym $mod+z exec handy --toggle-transcription
 
 bindsym $mod+q kill
 
