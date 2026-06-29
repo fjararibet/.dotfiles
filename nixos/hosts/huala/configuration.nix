@@ -21,6 +21,12 @@ in
   hardware.opentabletdriver.enable = true;
   boot.kernelModules = [ "uinput" ];
 
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+  };
+
 
   # Use the systemd-boot EFI boot loader.
   boot.loader = {
@@ -122,6 +128,7 @@ in
   environment.sessionVariables = {
     GTK_THEME = "Adwaita:dark";
     SSH_AUTH_SOCK = "/run/user/1000/gcr/ssh";
+    NIXOS_OZONE_WL = "1";
   };
 
   users.users.fjara = {
@@ -189,7 +196,10 @@ in
       numactl
       unstable.handy
       vlc
+      rofi
       wtype
+      hledger
+      hledger-web
       ];
     shell = pkgs.zsh;
   };
@@ -254,6 +264,7 @@ in
     wrapperFeatures.gtk = true;
     extraPackages = with pkgs; [
       adwaita-icon-theme
+      slurp
       sway-contrib.grimshot
       swayr
       wlogout
@@ -267,7 +278,13 @@ in
     enable = true;
     config.common.default = [ "wlr" "gtk" ];
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-    wlr.enable = true;
+    wlr = {
+      enable = true;
+      settings.screencast = {
+        chooser_type = "simple";
+        chooser_cmd = "${pkgs.slurp}/bin/slurp -f %o -or";
+      };
+    };
   };
   services.displayManager.ly = {
     enable = true;

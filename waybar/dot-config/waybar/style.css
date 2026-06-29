@@ -12,7 +12,7 @@
 /* --- Waybar Container --- */
 #waybar {
   /* background: transparent; */
-  background-color: #000000;
+  background-color: #1f1f28;
   color: #c6d0f5;
   margin: 0px;
   font-weight: 400;
@@ -22,7 +22,7 @@
 #workspaces,
 #custom-uptime,
 #cpu {
-  background-color: #000000;
+  background-color: #1f1f28;
   padding: 0.3rem 0.7rem;
   /* margin: 5px 0px; */
   /* border-radius: 6px; */
@@ -72,7 +72,7 @@
 
 /* --- Center Module (Individual, Fully Rounded Block - With Simple Hover) --- */
 #clock {
-  background-color: #000000;
+  background-color: #1f1f28;
   padding: 0.3rem 0.7rem;
   margin: 5px 0px;
   /* border-radius: 6px; */
@@ -88,7 +88,7 @@
 }
 
 #custom-pomodoro {
-    background-color: #000000; /* Consistent dark background */
+    background-color: #1f1f28; /* Consistent dark background */
     padding: 0.3rem 0.7rem; /* Consistent padding with other modules (e.g., cpu, uptime) */
     margin: 5px 0px; /* 5px top/bottom margin, 0px left/right (base for individual control) */
     border-radius: 6px; /* Consistent rounded corners with other individual modules */
@@ -133,7 +133,7 @@
 #custom-lock,
 #custom-power,
 #battery {
-  background-color: #000000;
+  background-color: #1f1f28;
   padding: 0.3rem 0.7rem;
   margin: 5px 0px; 
   border-radius: 0;
@@ -229,7 +229,7 @@
 
 /* --- Tooltip Styles --- */
 tooltip {
-  background-color: #000000;
+  background-color: #1f1f28;
   color: #dddddd;
   padding: 5px 12px;
   margin: 5px 0px;

@@ -23,6 +23,7 @@ include /etc/sway/config-vars.d/*
 output * bg ~/dotfiles/Backgrounds/Backgrounds/kanagawa.jpg fill
 exec gammastep -O 6500K -g 0.7 -l 0:0
 exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP XDG_SESSION_TYPE
+exec handy --start-hidden
 
 
 output 'Lenovo Group Limited LEN G24-10 U5B448B5' mode 1920x1080@143.999Hz position 0 0
