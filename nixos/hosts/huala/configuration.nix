@@ -11,6 +11,11 @@ in
     [
       ./hardware-configuration.nix
     ];
+
+  services.plex = {
+    enable = true;
+    openFirewall = true;
+  };
   nix.settings.auto-optimise-store = true;
   nixpkgs.config.allowUnfree = true;
   programs.nix-ld.enable = true;
@@ -59,9 +64,9 @@ in
     enable = true;
   };
 
-  i18n.defaultLocale = "en_US.UTF-8";
+  i18n.defaultLocale = "es_CL.UTF-8";
   i18n.extraLocaleSettings = {
-    LC_TIME = "es_CL.UTF-8";
+    LC_MESSAGES = "en_US.UTF-8";
   };
 
   # Optimization: Prevent systemd from waiting for network online 
@@ -127,9 +132,13 @@ in
 
   environment.sessionVariables = {
     GTK_THEME = "Adwaita:dark";
+    XCURSOR_THEME = "Adwaita";
+    XCURSOR_SIZE = "24";
     SSH_AUTH_SOCK = "/run/user/1000/gcr/ssh";
     NIXOS_OZONE_WL = "1";
   };
+
+  xdg.icons.fallbackCursorThemes = [ "Adwaita" ];
 
   users.users.fjara = {
     isNormalUser = true;
@@ -225,6 +234,7 @@ in
   };
   programs.firefox.enable = true;
   environment.systemPackages = with pkgs; [
+    adwaita-icon-theme
     vim
     wget
     curl

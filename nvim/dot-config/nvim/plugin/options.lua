@@ -9,19 +9,6 @@ vim.wo.relativenumber = true
 -- status line
 vim.o.laststatus = 2
 
--- Number width. NO NECK PAIN
-local min_width = 4
-local max_width = 20
-
-local flip_nuw = function()
-  if vim.wo.numberwidth == max_width then
-    vim.wo.numberwidth = min_width
-  else
-    vim.wo.numberwidth = max_width
-  end
-end
-vim.wo.numberwidth = min_width
-vim.keymap.set('n', '<leader>z', flip_nuw, { silent = true, desc = 'Flip number width' })
 -- Enable mouse mode
 vim.o.mouse = 'a'
 
@@ -49,10 +36,8 @@ vim.o.timeoutlen = 300
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
 
--- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
 
--- Prime recommendation
 vim.o.scrolloff = 8
 vim.o.guicursor = ""
 vim.o.expandtab = true

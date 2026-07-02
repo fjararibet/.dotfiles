@@ -62,8 +62,27 @@
 
   "clock": {
     "timezone": "America/Santiago",
-    "tooltip": false,
-    "format": "{:%H:%M - %A %d}",
+    "locale": "es_CL.utf8",
+    "tooltip": true,
+    "format": "{:L%H:%M - %A %d de %B}",
+    "tooltip-format": "<tt><big>{calendar}</big></tt>",
+    "calendar": {
+      "mode": "month",
+      "mode-mon-col": 3,
+      "weeks-pos": "right",
+      "on-scroll": 1,
+      "format": {
+        "months": "<span color='#c8c093'><b>{}</b></span>",
+        "weekdays": "<span color='#99d1db'><b>{}</b></span>",
+        "weeks": "<span color='#737994'>{}</span>",
+        "today": "<span color='#1f1f28' background='#c8c093'><b>{}</b></span>"
+      }
+    },
+    "actions": {
+      "on-click": "mode",
+      "on-scroll-up": "shift_up",
+      "on-scroll-down": "shift_down"
+    },
     "interval": 1
   },
 
