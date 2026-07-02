@@ -99,32 +99,13 @@ in
     };
   };
 
-  programs.zsh = {
-    enable = true;
-    ohMyZsh = {
-      enable = true;
-      plugins = [ "git" ];
-      theme = "robbyrussell";
-    };
-  };
-  programs.atuin = {
-    enable = true;
-    daemon.enable = true;
-    flags = [
-      "--disable-up-arrow"
-    ];
-    settings = {
-      daemon.enabled = true;
-      daemon.autostart = true;
-      search_mode = "daemon-fuzzy";
-      enter_accept = true;
-    };
-  };
 
-  programs.fzf = {
-    keybindings = true;
-    fuzzyCompletion = true;
-  };
+  programs.zsh.enable = true;
+
+  # programs.fzf = {
+  #   keybindings = true;
+  #   fuzzyCompletion = true;
+  # };
 
   services.cloudflared = {
     enable = true;
@@ -142,73 +123,6 @@ in
   users.users.fjara = {
     isNormalUser = true;
     extraGroups = [ "wheel" "audio"];
-    packages = with pkgs; [
-      qbittorrent
-      audacious
-      ffmpeg
-      yt-dlp
-      alacritty
-      obs-studio
-      tree
-      ansible
-      neovim
-      audacity
-      zsh 
-      go
-      nodejs_24
-      lsof
-      gammastep
-      wl-clipboard
-      uv
-      fd
-      dmenu
-      tree-sitter
-      zip
-      unzip
-      discord
-      vesktop
-      stow
-      google-cloud-sdk
-      wrangler
-      gemini-cli
-      obsidian
-      spotify
-      davinci-resolve
-      ripgrep
-      cmake
-      jq
-      clipman
-      numactl
-      htop
-      paraview
-      cloudflared
-      atuin
-      unstable.osu-lazer-bin
-      unstable.opencode
-      unstable.opencode-desktop
-      unstable.playwright
-      unstable.playwright-driver.browsers
-      unstable.playwright-mcp
-      unstable.playwright-test
-      unstable.codex
-      wget
-      curl
-      git
-      tmux
-      gcc
-      pavucontrol
-      playerctl
-      pamixer
-      alsa-utils
-      gnumake
-      numactl
-      unstable.handy
-      vlc
-      rofi
-      wtype
-      hledger
-      hledger-web
-      ];
     shell = pkgs.zsh;
   };
   fonts = {
@@ -245,17 +159,17 @@ in
     wantedBy = lib.mkForce [ "sway-session.target" ];
     partOf = [ "sway-session.target" ];
 
-    path = [ pkgs.bash pkgs.xdg-utils config.programs.steam.package config.system.path ] ++ config.users.users.fjara.packages;
+    path = [ pkgs.bash pkgs.xdg-utils config.programs.steam.package config.system.path ];
     environment.XDG_DATA_DIRS = lib.makeSearchPathOutput "out" "share" (
-      [ pkgs.elephant config.programs.steam.package config.system.path ] ++ config.users.users.fjara.packages
+      [ pkgs.elephant config.programs.steam.package config.system.path ]
     );
   };
   systemd.user.services.walker = {
     description = "Walker";
-    path = [ pkgs.elephant config.programs.steam.package config.system.path ] ++ config.users.users.fjara.packages;
+    path = [ pkgs.elephant config.programs.steam.package config.system.path ];
 
     environment.XDG_DATA_DIRS = lib.makeSearchPathOutput "out" "share" (
-      [ pkgs.walker pkgs.elephant config.programs.steam.package config.system.path ] ++ config.users.users.fjara.packages
+      [ pkgs.walker pkgs.elephant config.programs.steam.package config.system.path ]
     );
 
     after = [ "sway-session.target" "elephant.service" ];

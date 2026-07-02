@@ -20,7 +20,7 @@ set $menu nc -U /run/user/1000/walker/walker.sock
 
 include /etc/sway/config-vars.d/*
 
-output * bg ~/dotfiles/Backgrounds/Backgrounds/kanagawa.jpg fill
+output * bg ~/dotfiles/wallpapers/kanagawa.jpg fill
 exec gammastep -O 6500K -g 0.7 -l 0:0
 exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP XDG_SESSION_TYPE
 exec handy --start-hidden
