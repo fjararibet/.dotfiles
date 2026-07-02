@@ -135,7 +135,6 @@ in
     XCURSOR_THEME = "Adwaita";
     XCURSOR_SIZE = "24";
     SSH_AUTH_SOCK = "/run/user/1000/gcr/ssh";
-    NIXOS_OZONE_WL = "1";
   };
 
   xdg.icons.fallbackCursorThemes = [ "Adwaita" ];
@@ -286,15 +285,8 @@ in
   programs.sway.xwayland.enable = true;
   xdg.portal = {
     enable = true;
-    config.common.default = [ "wlr" "gtk" ];
+    config.common.default = [ "gtk" ];
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-    wlr = {
-      enable = true;
-      settings.screencast = {
-        chooser_type = "simple";
-        chooser_cmd = "${pkgs.slurp}/bin/slurp -f %o -or";
-      };
-    };
   };
   services.displayManager.ly = {
     enable = true;
