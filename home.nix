@@ -5,6 +5,9 @@ let
 in
 
 {
+  imports = [
+    inputs.walker.homeManagerModules.default
+  ];
   home.username = "fjara";
   home.homeDirectory = "/home/fjara";
   programs.home-manager.enable = true;
@@ -100,6 +103,11 @@ in
       search_mode = "daemon-fuzzy";
       enter_accept = true;
     };
+  };
+
+  programs.walker = {
+    enable = true;
+    runAsService = true;
   };
 
   xdg.configFile."alacritty".source = ./config/alacritty;

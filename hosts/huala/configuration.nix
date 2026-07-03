@@ -124,6 +124,7 @@ in
     isNormalUser = true;
     extraGroups = [ "wheel" "audio"];
     shell = pkgs.zsh;
+    packages = [ pkgs.discord ];
   };
   fonts = {
     enableDefaultPackages = true;
@@ -153,35 +154,35 @@ in
     curl
   ];
 
-  services.elephant.enable = true;
-  systemd.user.services.elephant = {
-    after = [ "sway-session.target" ];
-    wantedBy = lib.mkForce [ "sway-session.target" ];
-    partOf = [ "sway-session.target" ];
-
-    path = [ pkgs.bash pkgs.xdg-utils config.programs.steam.package config.system.path ];
-    environment.XDG_DATA_DIRS = lib.makeSearchPathOutput "out" "share" (
-      [ pkgs.elephant config.programs.steam.package config.system.path ]
-    );
-  };
-  systemd.user.services.walker = {
-    description = "Walker";
-    path = [ pkgs.elephant config.programs.steam.package config.system.path ];
-
-    environment.XDG_DATA_DIRS = lib.makeSearchPathOutput "out" "share" (
-      [ pkgs.walker pkgs.elephant config.programs.steam.package config.system.path ]
-    );
-
-    after = [ "sway-session.target" "elephant.service" ];
-    requires = [ "elephant.service" ];
-    partOf = [ "sway-session.target" ];
-    wantedBy = [ "sway-session.target" ];
-
-    serviceConfig = {
-      ExecStart = "${pkgs.walker}/bin/walker --gapplication-service";
-      Restart = "on-failure";
-    };
-  };
+  # services.elephant.enable = true;
+  # systemd.user.services.elephant = {
+  #   after = [ "sway-session.target" ];
+  #   wantedBy = lib.mkForce [ "sway-session.target" ];
+  #   partOf = [ "sway-session.target" ];
+  #
+  #   path = [ pkgs.bash pkgs.xdg-utils config.programs.steam.package config.system.path ];
+  #   environment.XDG_DATA_DIRS = lib.makeSearchPathOutput "out" "share" (
+  #     [ pkgs.elephant config.programs.steam.package config.system.path ]
+  #   );
+  # };
+  # systemd.user.services.walker = {
+  #   description = "Walker";
+  #   path = [ pkgs.elephant config.programs.steam.package config.system.path ];
+  #
+  #   environment.XDG_DATA_DIRS = lib.makeSearchPathOutput "out" "share" (
+  #     [ pkgs.walker pkgs.elephant config.programs.steam.package config.system.path ]
+  #   );
+  #
+  #   after = [ "sway-session.target" "elephant.service" ];
+  #   requires = [ "elephant.service" ];
+  #   partOf = [ "sway-session.target" ];
+  #   wantedBy = [ "sway-session.target" ];
+  #
+  #   serviceConfig = {
+  #     ExecStart = "${pkgs.walker}/bin/walker --gapplication-service";
+  #     Restart = "on-failure";
+  #   };
+  # };
   programs.sway = {
     enable = true;
     wrapperFeatures.gtk = true;
