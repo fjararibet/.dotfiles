@@ -82,7 +82,7 @@ in
 
   programs.zsh = {
     enable = true;
-    initContent = builtins.readFile ./config/zsh/dot-zshrc;
+    initContent = builtins.readFile ../.../../config/zsh/dot-zshrc;
     oh-my-zsh = {
       enable = true;
       plugins = [ "git" ];
@@ -109,15 +109,14 @@ in
     enable = true;
     runAsService = true;
   };
-
-  xdg.configFile."alacritty".source = ./config/alacritty;
-  xdg.configFile."clangd".source = ./config/clangd;
-  xdg.configFile."git".source = ./config/git;
-  xdg.configFile."sway".source = ./config/sway;
-  xdg.configFile."tmux".source = ./config/tmux;
-  xdg.configFile."walker".source = ./config/walker;
-  xdg.configFile."waybar".source = ./config/waybar;
-  xdg.configFile."wlogout".source = ./config/wlogout;
-  xdg.configFile."nvim".source = ./config/nvim;
+  xdg.configFile."alacritty".source = ../../config/alacritty;
+  xdg.configFile."clangd".source = ../../config/clangd;
+  xdg.configFile."git".source = ../../config/git;
+  xdg.configFile."sway".source = ../../config/sway;
+  xdg.configFile."tmux".source = ../../config/tmux;
+  xdg.configFile."walker".source = ../../config/walker;
+  xdg.configFile."waybar".source = ../../config/waybar;
+  xdg.configFile."wlogout".source = ../../config/wlogout;
+  xdg.configFile."nvim".source = ../../config/nvim;
 
 }

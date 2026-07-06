@@ -5,10 +5,7 @@
 # NixOS-WSL specific options are documented on the NixOS-WSL repository:
 # https://github.com/nix-community/NixOS-WSL
 
-{ config, lib, pkgs, nixpkgs-unstable, ... }:
-let
-  unstable = import nixpkgs-unstable { system = pkgs.system; config.allowUnfree = true; };
-in
+{ config, lib, pkgs, ... }:
 {
   nix.settings.auto-optimise-store = true;
   services.tailscale = {
@@ -36,40 +33,7 @@ in
   programs.nix-ld.libraries = with pkgs; [
     stdenv.cc.cc
   ];
-  programs.direnv = {
-	  package = pkgs.direnv;
-	  silent = false;
-	  loadInNixShell = true;
-	  direnvrcExtra = "";
-	  nix-direnv = {
-		  enable = true;
-		  package = pkgs.nix-direnv;
-	  };
-  };
-  programs.zsh = {
-    enable = true;
-    enableCompletion = false;
-    ohMyZsh = {
-      enable = true;
-      plugins = [ "git" ];
-      theme = "refined";
-      # theme = "robbyrussell";
-    };
-  };
-  programs.atuin = {
-    enable = true;
-    daemon.enable = true;
-    flags = [
-      "--disable-up-arrow"
-    ];
-    settings = {
-    	daemon.enabled = true;
-	daemon.autostart = true;
-	search_mode = "daemon-fuzzy";
-	enter_accept = true;
-    };
-  };
-  i18n.extraLocales = ["es_CL.UTF-8/UTF-8"];
+  programs.zsh.enable = true;
   virtualisation.docker = {
     enable = true;
   };
@@ -83,30 +47,6 @@ in
       uid = 1002;
       extraGroups = [ "wheel" "docker" ];
       shell = pkgs.zsh;
-      packages = with pkgs; [
-        wl-clipboard
-        neovim
-	uv
-	oracle-instantclient
-        nodejs_22
-        (google-cloud-sdk.withExtraComponents [ google-cloud-sdk.components.cloud-firestore-emulator ])
-        git
-        stow
-	fd
-	ripgrep
-	dotenv-cli
-	tree-sitter
-	postgresql
-	tmux
-	terraform
-	jq
-	openjdk21
-	clang
-	unstable.claude-code
-	unstable.wrangler
-	nix-direnv
-	rclone
-      ];
   };
   environment.systemPackages = with pkgs; [
     vim

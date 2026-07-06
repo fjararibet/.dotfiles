@@ -45,7 +45,7 @@
         home-manager.extraSpecialArgs = {
           inherit inputs;
         };
-        home-manager.users.fjara = import ./home.nix;
+        home-manager.users.fjara = import ./hosts/${hostname}/home.nix;
       }
       ./hosts/${hostname}/configuration.nix
     ];
