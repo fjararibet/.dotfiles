@@ -10,28 +10,19 @@ in
   imports =
     [
       ./hardware-configuration.nix
+      ../../modules/system.nix
     ];
 
   services.plex = {
     enable = true;
     openFirewall = true;
   };
-  nix.settings.auto-optimise-store = true;
-  nixpkgs.config.allowUnfree = true;
-  programs.nix-ld.enable = true;
   hardware.graphics.enable = true;
 
   # Required by OpenTabletDriver
   hardware.uinput.enable = true;
   hardware.opentabletdriver.enable = true;
   boot.kernelModules = [ "uinput" ];
-
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 30d";
-  };
-
 
   # Use the systemd-boot EFI boot loader.
   boot.loader = {
@@ -44,38 +35,10 @@ in
     grub.efiSupport = true;
   };
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   networking.hostName = "huala";
-  services.tailscale.enable = true;
-  networking.networkmanager.enable = true;
-  networking.nftables.enable = true;
-  networking.firewall = {
-    enable = false;
-    allowedTCPPorts = [ 8000 22 4096 ];
-    trustedInterfaces = [ config.services.tailscale.interfaceName ];
-    allowedUDPPorts = [ config.services.tailscale.port ];
-  };
-  # Force tailscaled to use nftables (Critical for clean nftables-only systems)
-  # This avoids the "iptables-compat" translation layer issues.
-  systemd.services.tailscaled.serviceConfig.Environment = [ 
-    "TS_DEBUG_FIREWALL_MODE=nftables" 
-  ];
   programs.steam = {
     enable = true;
   };
-
-  i18n.defaultLocale = "es_CL.UTF-8";
-  i18n.extraLocaleSettings = {
-    LC_MESSAGES = "en_US.UTF-8";
-  };
-
-  # Optimization: Prevent systemd from waiting for network online 
-  # (Optional but recommended for faster boot with VPNs)
-  systemd.network.wait-online.enable = false; 
-  boot.initrd.systemd.network.wait-online.enable = false;
-
-  # Set your time zone.
-  time.timeZone = "America/Santiago";
 
 
   virtualisation.docker = {
@@ -99,13 +62,6 @@ in
     };
   };
 
-
-  programs.zsh.enable = true;
-
-  # programs.fzf = {
-  #   keybindings = true;
-  #   fuzzyCompletion = true;
-  # };
 
   services.cloudflared = {
     enable = true;
@@ -154,35 +110,6 @@ in
     curl
   ];
 
-  # services.elephant.enable = true;
-  # systemd.user.services.elephant = {
-  #   after = [ "sway-session.target" ];
-  #   wantedBy = lib.mkForce [ "sway-session.target" ];
-  #   partOf = [ "sway-session.target" ];
-  #
-  #   path = [ pkgs.bash pkgs.xdg-utils config.programs.steam.package config.system.path ];
-  #   environment.XDG_DATA_DIRS = lib.makeSearchPathOutput "out" "share" (
-  #     [ pkgs.elephant config.programs.steam.package config.system.path ]
-  #   );
-  # };
-  # systemd.user.services.walker = {
-  #   description = "Walker";
-  #   path = [ pkgs.elephant config.programs.steam.package config.system.path ];
-  #
-  #   environment.XDG_DATA_DIRS = lib.makeSearchPathOutput "out" "share" (
-  #     [ pkgs.walker pkgs.elephant config.programs.steam.package config.system.path ]
-  #   );
-  #
-  #   after = [ "sway-session.target" "elephant.service" ];
-  #   requires = [ "elephant.service" ];
-  #   partOf = [ "sway-session.target" ];
-  #   wantedBy = [ "sway-session.target" ];
-  #
-  #   serviceConfig = {
-  #     ExecStart = "${pkgs.walker}/bin/walker --gapplication-service";
-  #     Restart = "on-failure";
-  #   };
-  # };
   programs.sway = {
     enable = true;
     wrapperFeatures.gtk = true;
