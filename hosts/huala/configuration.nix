@@ -206,7 +206,7 @@ in
   services.displayManager.ly = {
     enable = true;
     settings = {
-      logfile = "/dev/null";
+      session_log = "null";
     };
   };
 
