@@ -35,6 +35,7 @@ in
       lsof
       tree
       ansible
+      usbutils
   ] ++ 
   [
       unstable.claude-code

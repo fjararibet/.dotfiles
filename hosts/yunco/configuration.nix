@@ -45,13 +45,14 @@
   users.users.fjara = {
       isNormalUser = true;
       uid = 1002;
-      extraGroups = [ "wheel" "docker" ];
+      extraGroups = [ "wheel" "docker" "dialout" ];
       shell = pkgs.zsh;
   };
   environment.systemPackages = with pkgs; [
     vim
     wget
     curl
+    kmod
   ];
 
   wsl.enable = true;
