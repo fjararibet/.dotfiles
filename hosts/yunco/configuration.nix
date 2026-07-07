@@ -7,10 +7,10 @@
 
 { config, lib, pkgs, ... }:
 {
-  nix.settings.auto-optimise-store = true;
-  services.tailscale = {
-	  enable = true;
-  };
+  imports =
+    [
+      ../../modules/system.nix
+    ];
   services.resolved = {
 	  enable = true;
 	  settings.Resolve.DNSSEC = "false";
@@ -20,28 +20,20 @@
   systemd.services.tailscaled.after = [ "systemd-resolved.service" ];
   systemd.services.tailscaled.wants = [ "systemd-resolved.service" ];
 
-# Upstream = WSL's DNS proxy (which proxies to Windows / corporate DNS)
+  # Upstream = WSL's DNS proxy (which proxies to Windows / corporate DNS)
   networking.hostName = "yunco";
   networking.nameservers = [ "10.255.255.254" ];
   networking.firewall.enable = false;
 
+  # WSL manages networking itself
+  networking.networkmanager.enable = lib.mkForce false;
+
   # fixes opencode/claude freezes
   services.timesyncd.enable = false;
-  nixpkgs.config.allowUnfree = true;
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  programs.nix-ld.enable = true;
-  programs.nix-ld.libraries = with pkgs; [
-    stdenv.cc.cc
-  ];
-  programs.zsh.enable = true;
+
   virtualisation.docker = {
     enable = true;
   };
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [
-      "oracle-instantclient"
-      "ngrok"
-    ];
   users.users.fjara = {
       isNormalUser = true;
       uid = 1002;

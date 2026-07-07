@@ -18,7 +18,6 @@
   networking.nftables.enable = true;
   networking.firewall = {
     enable = false;
-    allowedTCPPorts = [ 8000 22 4096 ];
     trustedInterfaces = [ config.services.tailscale.interfaceName ];
     allowedUDPPorts = [ config.services.tailscale.port ];
   };
