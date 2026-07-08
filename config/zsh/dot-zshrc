@@ -17,3 +17,7 @@ bindkey -r "^[,"
 
 [ -f .venv/bin/activate ] && source .venv/bin/activate
 export LEDGER_FILE=/home/fjara/finance/personal.journal
+
+preexec() {
+  [ -n "$TMUX" ] && tmux rename-window "${1%% *}"
+}
