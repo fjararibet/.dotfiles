@@ -36,6 +36,7 @@ in
 
   programs.zsh = {
     enable = true;
+    envExtra = ''ZSH_DISABLE_COMPFIX="true"'';
     initContent = builtins.readFile ../config/zsh/dot-zshrc;
     oh-my-zsh = {
       enable = true;

@@ -36,4 +36,5 @@
   boot.initrd.systemd.network.wait-online.enable = false;
 
   programs.zsh.enable = true;
+  programs.zsh.enableGlobalCompInit = false;
 }
