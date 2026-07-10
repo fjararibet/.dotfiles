@@ -39,6 +39,12 @@ in
   programs.steam = {
     enable = true;
   };
+  programs.ssh = {
+    startAgent = true;
+    extraConfig = ''
+      AddKeysToAgent yes
+    '';
+  };
 
 
   virtualisation.docker = {
@@ -71,7 +77,6 @@ in
     GTK_THEME = "Adwaita:dark";
     XCURSOR_THEME = "Adwaita";
     XCURSOR_SIZE = "24";
-    SSH_AUTH_SOCK = "/run/user/1000/gcr/ssh";
   };
 
   xdg.icons.fallbackCursorThemes = [ "Adwaita" ];
@@ -137,9 +142,8 @@ in
     };
   };
 
-  services.gnome.gnome-keyring.enable = true;
-  security.pam.services.ly.enableGnomeKeyring = true;
-  security.pam.services.login.enableGnomeKeyring = true;
+  # security.pam.services.ly.enableGnomeKeyring = true;
+  # security.pam.services.login.enableGnomeKeyring = true;
 
   services.openssh = {
     enable = true;
