@@ -19,7 +19,7 @@ set $browser firefox
 set $menu nc -U /run/user/1000/walker/walker.sock
 
 
-output * bg ~/dotfiles/wallpapers/kanagawa.jpg fill
+output * bg ~/dotfiles/wallpapers/city_night.jpg fill
 exec gammastep -O 6500K -g 0.7 -l 0:0
 
 
@@ -179,7 +179,7 @@ bar swaybar_command waybar
 
 default_border pixel 4
 default_floating_border none
-client.focused $cyan $cyan $cyan $cyan $cyan
+client.focused $white $white $white $white $white
 
 # Gaps
 gaps inner 5
