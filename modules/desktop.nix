@@ -35,13 +35,15 @@
     enableDefaultPackages = true;
     packages = with pkgs; [ 
       commit-mono
+      ubuntu-classic
+      ubuntu-sans
       nerd-fonts.symbols-only
     ];
 
     fontconfig = {
       defaultFonts = {
-        serif = [  "CommitMono" ];
-        sansSerif = [ "CommitMono" ];
+        serif = [  "Ubuntu" ];
+        sansSerif = [ "Ubuntu Sans" ];
         monospace = [ 
           "CommitMono"
           ];

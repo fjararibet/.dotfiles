@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 let
   unstable = import inputs.nixpkgs-unstable { system = pkgs.stdenv.hostPlatform.system; config.allowUnfree = true; };
@@ -108,6 +108,10 @@ in
   programs.walker = {
     enable = true;
     runAsService = true;
+  };
+  systemd.user.services = {
+    elephant.Install.WantedBy = lib.mkForce [ "sway-session.target" ];
+    walker.Install.WantedBy = lib.mkForce [ "sway-session.target" ];
   };
   xdg.configFile."alacritty".source = ../../config/alacritty;
   xdg.configFile."clangd".source = ../../config/clangd;
