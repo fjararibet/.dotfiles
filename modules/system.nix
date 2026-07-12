@@ -46,10 +46,10 @@
     };
   };
 
-  programs.ssh = {
-    startAgent = true;
-    extraConfig = ''
-      AddKeysToAgent yes
-    '';
-  };
+  # programs.ssh = {
+  #   startAgent = true;
+  #   extraConfig = ''
+  #     AddKeysToAgent yes
+  #   '';
+  # };
 }

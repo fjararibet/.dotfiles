@@ -89,4 +89,14 @@
       session_log = "null";
     };
   };
+  services.gnome.gnome-keyring.enable = true;
+  security.pam.services.ly.enableGnomeKeyring = true;
+
+  # GCR provides the SSH agent used for Git SSH signing, but Sway does not
+  # inherit the socket path from the systemd user manager.
+  environment.extraInit = lib.mkAfter ''
+    if [ -z "$SSH_AUTH_SOCK" ] && [ -n "$XDG_RUNTIME_DIR" ]; then
+      export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/gcr/ssh"
+    fi
+  '';
 }
