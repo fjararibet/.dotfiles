@@ -83,9 +83,6 @@ in
   programs.zsh = {
     enable = true;
     initContent = builtins.readFile ../../config/zsh/dot-zshrc;
-    initExtra = ''
-      export SSH_AUTH_SOCK="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/ssh-agent"
-    '';
     oh-my-zsh = {
       enable = true;
       plugins = [ "git" ];

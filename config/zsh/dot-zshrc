@@ -1,23 +1,16 @@
 export PATH=$HOME/.local/bin:$PATH
+export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/ssh-agent"
 
-alias zshconf="nvim ~/.zshrc"
 alias vim="nvim"
-alias changebg="$HOME/Pictures/Backgrounds/set_background.sh"
-alias vimconf='cd ~/.config/nvim/ && nvim . && cd -'
-alias nixconf='cd ~/dotfiles/nixos/ && nvim . && cd -'
-alias tmuxconf='nvim ~/.config/tmux/tmux.conf'
 alias comp='g++ -Wall -Wextra -pedantic -std=c++17 -Wshadow -Wformat=2 -Wfloat-equal -Wconversion -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC'
 
-export EDITOR="nvim"
-
-# these were used to traverse the history
-# but I use them for tmux
+# these were used to traverse the history but I use them for tmux
 bindkey -r "^[."
 bindkey -r "^[,"
 
-[ -f .venv/bin/activate ] && source .venv/bin/activate
 export LEDGER_FILE=/home/fjara/finance/personal.journal
 
 preexec() {
+  # rename window to command
   [ -n "$TMUX" ] && tmux rename-window "${1%% *}"
 }

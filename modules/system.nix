@@ -37,4 +37,19 @@
 
   programs.zsh.enable = true;
   programs.zsh.enableGlobalCompInit = false;
+
+  services.openssh = {
+    enable = true;
+    settings = {
+      PermitRootLogin = "no";
+      PasswordAuthentication = true;
+    };
+  };
+
+  programs.ssh = {
+    startAgent = true;
+    extraConfig = ''
+      AddKeysToAgent yes
+    '';
+  };
 }
