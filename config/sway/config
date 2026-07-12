@@ -18,14 +18,15 @@ set $term alacritty
 set $browser firefox
 set $menu nc -U /run/user/1000/walker/walker.sock
 
-include /etc/sway/config-vars.d/*
 
 output * bg ~/dotfiles/wallpapers/kanagawa.jpg fill
 exec gammastep -O 6500K -g 0.7 -l 0:0
-exec sh -c 'dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP XDG_SESSION_TYPE; systemctl --user start walker.service'
 
 
-output 'Lenovo Group Limited LEN G24-10 U5B448B5' mode 1920x1080@143.999Hz position 0 0
+output HDMI-A-1 { 
+    mode 1920x1080@143.999Hz 
+    position 0 0
+}
 
 input type:touchpad {
     dwt enabled
@@ -51,11 +52,7 @@ input type:keyboard {
 bindsym $mod+b exec firefox -P default
 bindsym $mod+w exec firefox -P work
 bindsym $mod+t exec $term
-bindsym $mod+g exec /home/fjara/.local/bin/chatgpt
-bindsym $mod+z exec handy --toggle-transcription
-
 bindsym $mod+q kill
-
 bindsym $mod+space exec $menu
 bindsym $mod+p exec walker --provider clipboard
 
@@ -146,6 +143,7 @@ bindsym Alt+space exec swayr switch-window
     # You can send windows there and get them back later.
 
     # Move the currently focused window to the scratchpad
+
     bindsym $mod+Shift+minus move scratchpad
 
     # Show the next scratchpad window or hide the focused scratchpad window.
@@ -159,51 +157,29 @@ mode "resize" {
     # right will grow the containers width
     # up will shrink the containers height
     # down will grow the containers height
-    bindsym $left resize shrink width 10px
-    bindsym $down resize grow height 10px
-    bindsym $up resize shrink height 10px
-    bindsym $right resize grow width 10px
+    bindsym $left resize shrink width 30px
+    bindsym $down resize grow height 30px
+    bindsym $up resize shrink height 30px
+    bindsym $right resize grow width 30px
 
     # Ditto, with arrow keys
-    bindsym Left resize shrink width 10px
-    bindsym Down resize grow height 10px
-    bindsym Up resize shrink height 10px
-    bindsym Right resize grow width 10px
+    bindsym Left resize shrink width 30px
+    bindsym Down resize grow height 30px
+    bindsym Up resize shrink height 30px
+    bindsym Right resize grow width 30px
 
     # Return to default mode
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
 bindsym $mod+r mode "resize"
-
-#
-# Status Bar:
-#
-# Read `man 5 sway-bar` for more information about this section.
-
 bindsym Print exec grimshot copy area
 bar swaybar_command waybar
-# bar {
-#     position bottom
-#
-#     # When the status_command prints a new line to stdout, swaybar updates.
-#     # The default just shows the current date and time.
-#     status_command while date +'%a %d %H:%M %p'; do sleep 1; done
-#
-#     colors {
-#         statusline $white
-#         background $black
-#         focused_workspace $green $green $black
-#         inactive_workspace $blue $blue $white
-#     }
-# }
 
 
-
-# Borders
-default_border pixel 2
+default_border pixel 4
 default_floating_border none
-client.focused $white $white $white $white $white
+client.focused $cyan $cyan $cyan $cyan $cyan
 
 # Gaps
 gaps inner 5
@@ -222,9 +198,6 @@ bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
 
 
-exec wl-paste -t text --watch clipman store --no-persist
-
-
 # Startup
 workspace 1
 exec firefox -P default
@@ -233,7 +206,5 @@ workspace 2
 exec $term
 
 workspace 4
-
-seat seat0 xcursor_theme Adwaita 24
 
 include /etc/sway/config.d/*
