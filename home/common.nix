@@ -28,6 +28,7 @@ in
       lsof
       tree
       usbutils
+      ngrok
   ] ++ 
   [
       unstable.claude-code
