@@ -16,7 +16,10 @@
       url = "github:abenz1267/walker";
       inputs.elephant.follows = "elephant";
     };
-
+    ttyp = {
+      url = "github:fjararibet/ttyp";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs@{ self, nixpkgs, home-manager, ... }:

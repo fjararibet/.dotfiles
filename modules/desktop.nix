@@ -35,18 +35,15 @@
     enableDefaultPackages = true;
     packages = with pkgs; [ 
       commit-mono
-      ubuntu-classic
-      ubuntu-sans
+      liberation_ttf
       nerd-fonts.symbols-only
     ];
 
     fontconfig = {
       defaultFonts = {
-        serif = [  "Ubuntu" ];
-        sansSerif = [ "Ubuntu Sans" ];
-        monospace = [ 
-          "CommitMono"
-          ];
+        serif = [  "Liberation Serif " ];
+        sansSerif = [ "Liberation Sans" ];
+        monospace = [ "CommitMono" ];
       };
     };
     fontDir.enable = true;
@@ -64,7 +61,6 @@
       wlogout
       waybar
       walker
-      netcat-openbsd
     ];
   };
   programs.sway.xwayland.enable = true;

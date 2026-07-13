@@ -14,6 +14,7 @@ in
   home.stateVersion = "26.05";
 
   home.packages = with pkgs; [
+    inputs.ttyp.packages.${pkgs.stdenv.hostPlatform.system}.default
     qbittorrent
     audacious
     ffmpeg
