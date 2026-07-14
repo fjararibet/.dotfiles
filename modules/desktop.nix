@@ -29,6 +29,12 @@
     EDITOR = "nvim";
   };
 
+  # Ensure user services, including Discord launched by Walker, identify the
+  # session as Wayland and enable PipeWire-based screen sharing.
+  systemd.user.extraConfig = ''
+    DefaultEnvironment="XDG_SESSION_TYPE=wayland" "XDG_SESSION_DESKTOP=sway"
+  '';
+
   xdg.icons.fallbackCursorThemes = [ "Adwaita" ];
 
   fonts = {
