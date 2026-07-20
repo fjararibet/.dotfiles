@@ -31,6 +31,7 @@ in
       ngrok
   ] ++ 
   [
+      unstable.google-cloud-sdk
       unstable.claude-code
       unstable.wrangler
   ];
@@ -62,6 +63,7 @@ in
     };
   };
 
+  home.file."instantclient".source = pkgs.oracle-instantclient;
   xdg.configFile."git".source = ../config/git;
   xdg.configFile."tmux".source = ../config/tmux;
   xdg.configFile."nvim".source = ../config/nvim;
