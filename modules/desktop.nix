@@ -1,5 +1,15 @@
-{ config, lib, pkgs, ... }: 
-{
+{ config, lib, pkgs, inputs, ... }:
+let
+  swayPkgs = inputs.nixpkgs-sway-working.legacyPackages.${pkgs.stdenv.hostPlatform.system};
+in {
+  # Sway 1.11 retains the gamma-control protocol used by gammastep.
+  nixpkgs.overlays = [
+    (_final: _prev: {
+      sway = swayPkgs.sway;
+      sway-unwrapped = swayPkgs.sway-unwrapped;
+    })
+  ];
+
   hardware.graphics.enable = true;
 
   # Required by OpenTabletDriver
