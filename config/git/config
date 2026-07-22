@@ -15,7 +15,7 @@ gpgsign = true
 [core]
 editor = vim
 autocrlf = input
-pager = less -FRX
+pager = delta
 
 [pull]
 ff = only
@@ -32,3 +32,14 @@ conflictstyle = zdiff3
 
 [fetch]
 prune = true
+
+
+[interactive]
+diffFilter = delta --color-only
+
+[delta]
+side-by-side = false
+navigate = true
+dark = true
+true-color = never
+

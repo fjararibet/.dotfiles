@@ -16,24 +16,18 @@ in
       neovim
       wl-clipboard
       uv
-      oracle-instantclient
       git
       fd
       ripgrep
       tree-sitter
       tmux
       jq
-      openjdk21
       clang
       lsof
       tree
-      usbutils
-      ngrok
   ] ++ 
   [
-      unstable.google-cloud-sdk
       unstable.claude-code
-      unstable.wrangler
   ];
 
   programs.zsh = {
@@ -63,7 +57,6 @@ in
     };
   };
 
-  home.file."instantclient".source = pkgs.oracle-instantclient;
   xdg.configFile."git".source = ../config/git;
   xdg.configFile."tmux".source = ../config/tmux;
   xdg.configFile."nvim".source = ../config/nvim;
