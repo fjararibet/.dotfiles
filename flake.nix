@@ -27,6 +27,24 @@
     let
     lib = nixpkgs.lib;
 
+  mkHomeConfig = {
+    system ? "x86_64-linux",
+    modules ? [ ],
+  }:
+  home-manager.lib.homeManagerConfiguration {
+    pkgs = import nixpkgs {
+      inherit system;
+      config.allowUnfree = true;
+    };
+
+    extraSpecialArgs = {
+      inherit inputs;
+      nixpkgs-unstable = inputs.nixpkgs-unstable;
+    };
+
+    modules = modules;
+  };
+
   mkHost = {
     hostname,
     system ? "x86_64-linux",
@@ -64,6 +82,21 @@
       };
       huala = mkHost {
         hostname = "huala";
+      };
+    };
+
+    homeManagerModules.default = ./home/common.nix;
+    homeModules.default = ./home/common.nix;
+
+    homeConfigurations = {
+      fjara = mkHomeConfig {
+        modules = [ ./home/common.nix ];
+      };
+      yunco = mkHomeConfig {
+        modules = [ ./hosts/yunco/home.nix ];
+      };
+      huala = mkHomeConfig {
+        modules = [ ./hosts/huala/home.nix ];
       };
     };
   };
