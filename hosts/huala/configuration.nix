@@ -46,7 +46,7 @@ in
 
   users.users.fjara = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "audio"];
+    extraGroups = [ "wheel" "audio" "dialout" ];
     shell = pkgs.zsh;
     packages = [];
   };

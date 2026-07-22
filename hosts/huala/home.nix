@@ -78,6 +78,7 @@ in
     unstable.playwright-mcp
     unstable.playwright-test
     unstable.codex
+    unstable.claude-code
     unstable.handy
   ];
 
