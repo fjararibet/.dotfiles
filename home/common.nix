@@ -57,6 +57,10 @@ in
     };
   };
 
+  home.sessionVariables = {
+    EDITOR="nvim";
+  };
+
   xdg.configFile."git".source = ../config/git;
   xdg.configFile."tmux".source = ../config/tmux;
   xdg.configFile."nvim".source = ../config/nvim;
