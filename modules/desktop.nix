@@ -76,7 +76,6 @@ in {
       swayr
       wlogout
       waybar
-      walker
     ];
   };
   programs.sway.xwayland.enable = true;
