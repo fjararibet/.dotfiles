@@ -11,6 +11,7 @@ in
   ];
 
   home.packages = [
+    pkgs.zapzap
     unstable.osu-lazer-bin
   ];
 }
