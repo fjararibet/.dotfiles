@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  inputs,
-  ...
-}:
+{ pkgs, ... }:
 
 {
   home.username = "fjara";
@@ -13,14 +8,15 @@
   home.packages = with pkgs; [
     uv
     jq
-    nil
-    zip
     fd
     git
+    nil
+    zip
     tmux
+    tree
+    tree
     lsof
-    tree
-    tree
+    ttyp
     htop
     clang
     unzip
@@ -30,9 +26,8 @@
     tree-sitter
     wl-clipboard
     unstable.codex
-    unstable.claude-code
     unstable.opencode
-    ttyp
+    unstable.claude-code
   ];
   programs.zsh = {
     enable = true;
