@@ -2,22 +2,53 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
-local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
-if not vim.uv.fs_stat(lazypath) then
-  vim.fn.system {
-    'git',
-    'clone',
-    '--filter=blob:none',
-    'https://github.com/folke/lazy.nvim.git',
-    '--branch=stable',
-    lazypath,
-  }
+local plugins = require 'config.nix-plugins'
+
+-- Lazy loads plugin definitions, while Nix provides their immutable sources.
+vim.opt.rtp:prepend(plugins['folke/lazy.nvim'])
+
+local function is_plugin(spec)
+  return type(spec) == 'table' and type(spec[1]) == 'string'
 end
 
--- Add lazy to the `runtimepath`, this allows us to `require` it.
-vim.opt.rtp:prepend(lazypath)
+local function use_nix_store(spec)
+  if type(spec) == 'string' then
+    spec = { spec }
+  end
 
-require('lazy').setup({ import = 'config.plugins' }, {
+  if is_plugin(spec) then
+    local repo = spec[1]
+    spec.dir = assert(plugins[repo], ('Nix has no source for %s'):format(repo))
+    spec.dependencies = vim.tbl_map(use_nix_store, spec.dependencies or {})
+    return spec
+  end
+
+  return vim.tbl_map(use_nix_store, spec)
+end
+
+local specs = {}
+for _, name in ipairs {
+  'colorschemes',
+  'cmp',
+  'conform',
+  'git',
+  'init',
+  'lsp',
+  'lualine',
+  'oil',
+  'telescope',
+  'treesitter',
+  'undotree',
+} do
+  local spec = use_nix_store(require('config.plugins.' .. name))
+  if is_plugin(spec) then
+    table.insert(specs, spec)
+  else
+    vim.list_extend(specs, spec)
+  end
+end
+
+require('lazy').setup(specs, {
   change_detection = {
     notify = false,
   },

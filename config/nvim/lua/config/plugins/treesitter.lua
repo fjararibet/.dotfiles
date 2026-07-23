@@ -3,41 +3,13 @@ return {
     'nvim-treesitter/nvim-treesitter',
     branch = 'main',
     lazy = false,
-    build = ':TSUpdate',
     dependencies = {
       { 'nvim-treesitter/nvim-treesitter-textobjects', branch = 'main' },
     },
     config = function()
       local ts = require('nvim-treesitter')
 
-      -- Parsers to keep installed. On the `main` branch parsers are installed
-      -- explicitly (there is no `auto_install`); they live under
-      -- `stdpath('data')/site/parser` and persist across restarts.
-      local ensure = {
-        'c',
-        'cpp',
-        'go',
-        'lua',
-        'python',
-        'rust',
-        'tsx',
-        'typescript',
-        'vimdoc',
-        'vim',
-        'css',
-        'html',
-        'markdown',
-        'markdown_inline',
-      }
-
-      -- Install any missing parsers (async download + compile).
-      local installed = ts.get_installed()
-      local missing = vim.tbl_filter(function(lang)
-        return not vim.tbl_contains(installed, lang)
-      end, ensure)
-      if #missing > 0 then
-        ts.install(missing)
-      end
+      -- Nix provides all parsers in the plugin runtime path.
 
       -- The `main` branch no longer auto-enables highlighting; start it
       -- per-buffer on FileType. Skip dockerfile (matches the old config) and
