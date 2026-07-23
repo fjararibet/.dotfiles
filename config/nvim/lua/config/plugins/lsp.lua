@@ -58,6 +58,7 @@ return {
       local servers = {
         ty = {},
         clangd = {},
+        nil_ls = {},
       }
 
       for server, config in pairs(servers) do

@@ -23,81 +23,105 @@
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, ... }:
+  outputs =
+    inputs@{
+      self,
+      nixpkgs,
+      nixpkgs-unstable,
+      home-manager,
+      ...
+    }:
     let
-    lib = nixpkgs.lib;
+      lib = nixpkgs.lib;
 
-  mkHomeConfig = {
-    system ? "x86_64-linux",
-    modules ? [ ],
-  }:
-  home-manager.lib.homeManagerConfiguration {
-    pkgs = import nixpkgs {
-      inherit system;
-      config.allowUnfree = true;
-    };
+   unstableOverlay = final: _prev: {
+     unstable = import nixpkgs-unstable {
+       inherit (final) config;
+       inherit (final.stdenv.hostPlatform) system;
+     };
+   };
 
-    extraSpecialArgs = {
-      inherit inputs;
-      nixpkgs-unstable = inputs.nixpkgs-unstable;
-    };
+   ttypOverlay = inputs.ttyp.overlays.default;
 
-    modules = modules;
-  };
+      mkHomeConfig =
+        {
+          system ? "x86_64-linux",
+          modules ? [ ],
+        }:
+        home-manager.lib.homeManagerConfiguration {
+          pkgs = import nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+       overlays = [ unstableOverlay ttypOverlay ];
+          };
 
-  mkHost = {
-    hostname,
-    system ? "x86_64-linux",
-    modules ? [ ],
-    specialArgs ? { },
-  }:
-  lib.nixosSystem {
-    inherit system;
+          extraSpecialArgs = {
+            inherit inputs;
+            nixpkgs-unstable = inputs.nixpkgs-unstable;
+          };
 
-    specialArgs = {
-      inherit inputs;
-      nixpkgs-unstable = inputs.nixpkgs-unstable;
-    } // specialArgs;
-
-    modules = modules ++ [
-      home-manager.nixosModules.home-manager
-      {
-        home-manager.useGlobalPkgs = true;
-        home-manager.useUserPackages = true;
-        home-manager.extraSpecialArgs = {
-          inherit inputs;
+          modules = modules;
         };
-        home-manager.users.fjara = import ./hosts/${hostname}/home.nix;
-      }
-      ./hosts/${hostname}/configuration.nix
-    ];
-  };
-  in {
-    nixosConfigurations = {
-      yunco = mkHost {
-        hostname = "yunco";
-        modules = [
-          inputs.nixos-wsl.nixosModules.default
-        ];
+
+      mkHost =
+        {
+          hostname,
+          system ? "x86_64-linux",
+          modules ? [ ],
+          specialArgs ? { },
+        }:
+        lib.nixosSystem {
+          inherit system;
+
+          specialArgs = {
+            inherit inputs;
+            nixpkgs-unstable = inputs.nixpkgs-unstable;
+          }
+          // specialArgs;
+
+          modules = modules ++ [
+            {
+        nixpkgs.overlays = [ unstableOverlay ttypOverlay ];
+            }
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.extraSpecialArgs = {
+                inherit inputs;
+              };
+              home-manager.users.fjara = import ./hosts/${hostname}/home.nix;
+            }
+            ./hosts/${hostname}/configuration.nix
+          ];
+        };
+    in
+    {
+      nixosConfigurations = {
+        yunco = mkHost {
+          hostname = "yunco";
+          modules = [
+            inputs.nixos-wsl.nixosModules.default
+          ];
+        };
+        huala = mkHost {
+          hostname = "huala";
+        };
       };
-      huala = mkHost {
-        hostname = "huala";
+
+      homeManagerModules.default = ./home/common.nix;
+      homeModules.default = ./home/common.nix;
+
+      homeConfigurations = {
+        fjara = mkHomeConfig {
+          modules = [ ./home/common.nix ];
+        };
+        yunco = mkHomeConfig {
+          modules = [ ./hosts/yunco/home.nix ];
+        };
+        huala = mkHomeConfig {
+          modules = [ ./hosts/huala/home.nix ];
+        };
       };
     };
-
-    homeManagerModules.default = ./home/common.nix;
-    homeModules.default = ./home/common.nix;
-
-    homeConfigurations = {
-      fjara = mkHomeConfig {
-        modules = [ ./home/common.nix ];
-      };
-      yunco = mkHomeConfig {
-        modules = [ ./hosts/yunco/home.nix ];
-      };
-      huala = mkHomeConfig {
-        modules = [ ./hosts/huala/home.nix ];
-      };
-    };
-  };
 }

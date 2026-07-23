@@ -1,8 +1,4 @@
-{ config, lib, pkgs, inputs, ... }:
-
-let
-  unstable = import inputs.nixpkgs-unstable { system = pkgs.stdenv.hostPlatform.system; config.allowUnfree = true; };
-in
+{ pkgs, ... }:
 
 {
   imports = [
@@ -10,8 +6,8 @@ in
     ../../home/desktop.nix
   ];
 
-  home.packages = [
-    pkgs.zapzap
+  home.packages = with pkgs; [
+    zapzap
     unstable.osu-lazer-bin
   ];
 }

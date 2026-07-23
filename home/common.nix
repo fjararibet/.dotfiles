@@ -1,45 +1,39 @@
-{ config, pkgs, inputs, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 
-let
-  unstablePkgs = import inputs.nixpkgs-unstable {
-    system = pkgs.stdenv.hostPlatform.system;
-    config.allowUnfree = true;
-  };
-
-  stablePackages = with pkgs; [
-    inputs.ttyp.packages.${pkgs.stdenv.hostPlatform.system}.default
-    nil
-    delta
-    neovim
-    wl-clipboard
-    uv
-    git
-    fd
-    ripgrep
-    tree
-    tree-sitter
-    tmux
-    jq
-    clang
-    lsof
-    tree
-    zip
-    unzip
-  ];
-
-  unstablePackages = with unstablePkgs; [
-    claude-code
-    codex
-    opencode
-  ];
-in
 {
   home.username = "fjara";
   home.homeDirectory = "/home/fjara";
   programs.home-manager.enable = true;
   home.stateVersion = "26.05";
-  home.packages = stablePackages ++ unstablePackages;
-
+  home.packages = with pkgs; [
+    uv
+    jq
+    nil
+    zip
+    fd
+    git
+    tmux
+    lsof
+    tree
+    tree
+    htop
+    clang
+    unzip
+    delta
+    neovim
+    ripgrep
+    tree-sitter
+    wl-clipboard
+    unstable.codex
+    unstable.claude-code
+    unstable.opencode
+    ttyp
+  ];
   programs.zsh = {
     enable = true;
     envExtra = ''
@@ -73,7 +67,7 @@ in
   };
 
   home.sessionVariables = {
-    EDITOR="nvim";
+    EDITOR = "nvim";
   };
 
   xdg.configFile."clangd".source = ../config/clangd;

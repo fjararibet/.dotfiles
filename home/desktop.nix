@@ -1,8 +1,5 @@
-{ config, lib, pkgs, inputs, ... }:
+{ lib, pkgs, inputs, ... }:
 
-let
-  unstable = import inputs.nixpkgs-unstable { system = pkgs.stdenv.hostPlatform.system; config.allowUnfree = true; };
-in
 
 {
   imports = [
@@ -21,7 +18,6 @@ in
     obsidian
     spotify
     davinci-resolve
-    htop
     paraview
     pavucontrol
     playerctl

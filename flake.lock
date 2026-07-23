@@ -259,11 +259,11 @@
         "uv2nix": "uv2nix"
       },
       "locked": {
-        "lastModified": 1783917698,
-        "narHash": "sha256-h06SQQ6pEXJXnQ54KGI/TnSIAoFSyBA1WcEYp5J2zOY=",
+        "lastModified": 1784782083,
+        "narHash": "sha256-QuB+jMCOskEviP4k2OVvjti4zPmwn/IXBiMQfb+/JV4=",
         "owner": "fjararibet",
         "repo": "ttyp",
-        "rev": "3b31fb60fc5f4ef5bc088885cadd03598579652a",
+        "rev": "5050c3e064b7babdb64cae41c1216e9c70dd887b",
         "type": "github"
       },
       "original": {
