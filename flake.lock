@@ -93,6 +93,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-neovim": {
+      "locked": {
+        "lastModified": 1784432872,
+        "narHash": "sha256-n3gKTBIV4ZA5VQpUakffBe3KGu4+mhPoA34rrqS0GkA=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "fd1462031fdee08f65fd0b4c6b64e22239a77870",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "fd1462031fdee08f65fd0b4c6b64e22239a77870",
+        "type": "github"
+      }
+    },
     "nixpkgs-sway-working": {
       "locked": {
         "lastModified": 1779664186,
@@ -230,6 +246,7 @@
         "home-manager": "home-manager",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs_2",
+        "nixpkgs-neovim": "nixpkgs-neovim",
         "nixpkgs-sway-working": "nixpkgs-sway-working",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nvim-html-css": "nvim-html-css",

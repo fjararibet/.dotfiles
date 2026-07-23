@@ -1,13 +1,18 @@
 { inputs, lib, pkgs, paths, ... }:
 
 let
-  nvimTreesitter = pkgs.vimPlugins.nvim-treesitter.withAllGrammars;
-  nvimTreesitterWithGrammars = pkgs.symlinkJoin {
+  nvimPkgs = import inputs.nixpkgs-neovim {
+    inherit (pkgs.stdenv.hostPlatform) system;
+    config.allowUnfree = true;
+  };
+
+  nvimTreesitter = nvimPkgs.vimPlugins.nvim-treesitter.withAllGrammars;
+  nvimTreesitterWithGrammars = nvimPkgs.symlinkJoin {
     name = "nvim-treesitter-with-all-grammars";
     paths = [ nvimTreesitter ] ++ nvimTreesitter.dependencies;
   };
 
-  nvimPlugins = with pkgs.vimPlugins; {
+  nvimPlugins = with nvimPkgs.vimPlugins; {
     "folke/lazy.nvim" = lazy-nvim;
     "tpope/vim-sleuth" = vim-sleuth;
     "folke/which-key.nvim" = which-key-nvim;
@@ -18,7 +23,7 @@ let
     "hrsh7th/cmp-path" = cmp-path;
     "hrsh7th/cmp-buffer" = cmp-buffer;
     "hrsh7th/cmp-nvim-lsp" = cmp-nvim-lsp;
-    "Jezda1337/nvim-html-css" = pkgs.vimUtils.buildVimPlugin {
+    "Jezda1337/nvim-html-css" = nvimPkgs.vimUtils.buildVimPlugin {
       pname = "nvim-html-css";
       version = "510223bdd5533ed49cad5d8a13ec8b40ab16dcda";
       src = inputs.nvim-html-css;
@@ -40,7 +45,7 @@ let
     "nvim-treesitter/nvim-treesitter-textobjects" = nvim-treesitter-textobjects;
   };
 
-  nvimConfig = pkgs.runCommand "nvim-config" { } ''
+  nvimConfig = nvimPkgs.runCommand "nvim-config" { } ''
     cp -r ${paths.config + "/nvim"} "$out"
     chmod -R u+w "$out"
     mkdir -p "$out/lua/config"
@@ -50,6 +55,6 @@ let
   '';
 in
 {
-  home.packages = [ pkgs.neovim ];
+  home.packages = [ nvimPkgs.neovim ];
   xdg.configFile.nvim.source = nvimConfig;
 }
