@@ -1,7 +1,7 @@
-{ pkgs, ... }:
+{ pkgs, paths, ... }:
 
 {
-  imports = [ ../../home/common.nix ];
+  imports = [ (paths.home + "/common.nix") ];
   home.packages = with pkgs; [
     google-cloud-sdk
   ];

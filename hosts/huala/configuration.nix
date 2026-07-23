@@ -2,7 +2,7 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, inputs, ... }:
+{ config, lib, pkgs, inputs, paths, ... }:
 let
   unstable = import inputs.nixpkgs-unstable { system = pkgs.stdenv.hostPlatform.system; config.allowUnfree = true; };
 in
@@ -10,8 +10,8 @@ in
   imports =
     [
       ./hardware-configuration.nix
-      ../../modules/system.nix
-      ../../modules/desktop.nix
+      (paths.modules + "/system.nix")
+      (paths.modules + "/desktop.nix")
     ];
 
   services.plex = {

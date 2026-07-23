@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, paths, ... }:
 
 {
   home.username = "fjara";
@@ -34,7 +34,7 @@
     envExtra = ''
       ZSH_DISABLE_COMPFIX="true"
     '';
-    initContent = builtins.readFile ../config/zsh/dot-zshrc;
+    initContent = builtins.readFile (paths.config + "/zsh/dot-zshrc");
 
     oh-my-zsh = {
       enable = true;
@@ -65,8 +65,8 @@
     EDITOR = "nvim";
   };
 
-  xdg.configFile."clangd".source = ../config/clangd;
-  xdg.configFile."tmux".source = ../config/tmux;
-  xdg.configFile."nvim".source = ../config/nvim;
-  xdg.configFile."git".source = ../config/git;
+  xdg.configFile.clangd.source = paths.config + "/clangd";
+  xdg.configFile.tmux.source = paths.config + "/tmux";
+  xdg.configFile.nvim.source = paths.config + "/nvim";
+  xdg.configFile.git.source = paths.config + "/git";
 }

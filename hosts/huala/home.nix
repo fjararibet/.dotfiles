@@ -1,9 +1,9 @@
-{ pkgs, ... }:
+{ pkgs, paths, ... }:
 
 {
   imports = [
-    ../../home/common.nix
-    ../../home/desktop.nix
+    (paths.home + "/common.nix")
+    (paths.home + "/desktop.nix")
   ];
 
   home.packages = with pkgs; [

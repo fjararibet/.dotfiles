@@ -34,6 +34,12 @@
     let
       lib = nixpkgs.lib;
 
+      paths = {
+        config = ./config;
+        home = ./home;
+        modules = ./modules;
+      };
+
    unstableOverlay = final: _prev: {
      unstable = import nixpkgs-unstable {
        inherit (final) config;
@@ -56,7 +62,7 @@
           };
 
           extraSpecialArgs = {
-            inherit inputs;
+            inherit inputs paths;
             nixpkgs-unstable = inputs.nixpkgs-unstable;
           };
 
@@ -74,7 +80,7 @@
           inherit system;
 
           specialArgs = {
-            inherit inputs;
+            inherit inputs paths;
             nixpkgs-unstable = inputs.nixpkgs-unstable;
           }
           // specialArgs;
@@ -88,7 +94,8 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.extraSpecialArgs = {
-                inherit inputs;
+                inherit inputs paths;
+                nixpkgs-unstable = inputs.nixpkgs-unstable;
               };
               home-manager.users.fjara = import ./hosts/${hostname}/home.nix;
             }

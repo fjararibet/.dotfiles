@@ -5,11 +5,11 @@
 # NixOS-WSL specific options are documented on the NixOS-WSL repository:
 # https://github.com/nix-community/NixOS-WSL
 
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, paths, ... }:
 {
   imports =
     [
-      ../../modules/system.nix
+      (paths.modules + "/system.nix")
     ];
   services.resolved = {
 	  enable = true;

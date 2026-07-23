@@ -1,4 +1,4 @@
-{ lib, pkgs, inputs, ... }:
+{ lib, pkgs, inputs, paths, ... }:
 
 
 {
@@ -34,9 +34,9 @@
     elephant.Install.WantedBy = lib.mkForce [ "sway-session.target" ];
     walker.Install.WantedBy = lib.mkForce [ "sway-session.target" ];
   };
-  xdg.configFile."alacritty".source = ../config/alacritty;
-  xdg.configFile."sway".source = ../config/sway;
-  xdg.configFile."walker".source = ../config/walker;
-  xdg.configFile."waybar".source = ../config/waybar;
-  xdg.configFile."wlogout".source = ../config/wlogout;
+  xdg.configFile.alacritty.source = paths.config + "/alacritty";
+  xdg.configFile.sway.source = paths.config + "/sway";
+  xdg.configFile.walker.source = paths.config + "/walker";
+  xdg.configFile.waybar.source = paths.config + "/waybar";
+  xdg.configFile.wlogout.source = paths.config + "/wlogout";
 }
