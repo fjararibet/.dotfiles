@@ -1,5 +1,4 @@
 export PATH=$HOME/.local/bin:$PATH
-# export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/ssh-agent"
 
 alias vim="nvim"
 alias comp='g++ -Wall -Wextra -pedantic -std=c++17 -Wshadow -Wformat=2 -Wfloat-equal -Wconversion -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC'
@@ -9,8 +8,3 @@ bindkey -r "^[."
 bindkey -r "^[,"
 
 export LEDGER_FILE=/home/fjara/finance/personal.journal
-
-preexec() {
-  # rename window to command
-  [ -n "$TMUX" ] && tmux rename-window "${1%% *}"
-}

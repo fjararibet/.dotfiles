@@ -1,5 +1,14 @@
 { pkgs, paths, ... }:
 
+let
+  ohMyZsh = pkgs.fetchFromGitHub {
+    owner = "ohmyzsh";
+    repo = "ohmyzsh";
+    rev = "52d93f18d61f11db69b4591d7fc7bd5578954d30";
+    hash = "sha256-fGFPVHbJFtXvuiR0yOc9Qt1TUuIfNAYezGQtESt9REA=";
+  };
+in
+
 {
   imports = [ (paths.home + "/neovim.nix") ];
 
@@ -35,13 +44,11 @@
     envExtra = ''
       ZSH_DISABLE_COMPFIX="true"
     '';
-    initContent = builtins.readFile (paths.config + "/zsh/dot-zshrc");
-
-    oh-my-zsh = {
-      enable = true;
-      plugins = [ "git" ];
-      theme = "refined";
-    };
+    initContent = ''
+      source ${ohMyZsh}/plugins/git/git.plugin.zsh
+      ${builtins.readFile (paths.config + "/zsh/refined.zsh-theme")}
+      ${builtins.readFile (paths.config + "/zsh/dot-zshrc.zsh")}
+    '';
   };
 
   programs.atuin = {
