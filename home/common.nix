@@ -1,14 +1,5 @@
 { pkgs, paths, ... }:
 
-let
-  ohMyZsh = pkgs.fetchFromGitHub {
-    owner = "ohmyzsh";
-    repo = "ohmyzsh";
-    rev = "52d93f18d61f11db69b4591d7fc7bd5578954d30";
-    hash = "sha256-fGFPVHbJFtXvuiR0yOc9Qt1TUuIfNAYezGQtESt9REA=";
-  };
-in
-
 {
   imports = [ (paths.home + "/neovim.nix") ];
 
@@ -41,11 +32,13 @@ in
   ];
   programs.zsh = {
     enable = true;
+    completionInit = "autoload -U compinit && compinit -C";
     envExtra = ''
       ZSH_DISABLE_COMPFIX="true"
     '';
     initContent = ''
-      source ${ohMyZsh}/plugins/git/git.plugin.zsh
+      source ${pkgs.oh-my-zsh}/share/oh-my-zsh/plugins/git/git.plugin.zsh
+      source ${pkgs.oh-my-zsh}/share/oh-my-zsh/lib/async_prompt.zsh
       ${builtins.readFile (paths.config + "/zsh/refined.zsh-theme")}
       ${builtins.readFile (paths.config + "/zsh/dot-zshrc.zsh")}
     '';
