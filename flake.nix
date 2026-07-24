@@ -45,14 +45,14 @@
         modules = ./modules;
       };
 
-   unstableOverlay = final: _prev: {
-     unstable = import nixpkgs-unstable {
-       inherit (final) config;
-       inherit (final.stdenv.hostPlatform) system;
-     };
-   };
+      unstableOverlay = final: _prev: {
+        unstable = import nixpkgs-unstable {
+          inherit (final) config;
+          inherit (final.stdenv.hostPlatform) system;
+        };
+      };
 
-   ttypOverlay = inputs.ttyp.overlays.default;
+      ttypOverlay = inputs.ttyp.overlays.default;
 
       mkHomeConfig =
         {
@@ -63,12 +63,14 @@
           pkgs = import nixpkgs {
             inherit system;
             config.allowUnfree = true;
-       overlays = [ unstableOverlay ttypOverlay ];
+            overlays = [
+              unstableOverlay
+              ttypOverlay
+            ];
           };
 
           extraSpecialArgs = {
             inherit inputs paths;
-            nixpkgs-unstable = inputs.nixpkgs-unstable;
           };
 
           modules = modules;
@@ -86,13 +88,15 @@
 
           specialArgs = {
             inherit inputs paths;
-            nixpkgs-unstable = inputs.nixpkgs-unstable;
           }
           // specialArgs;
 
           modules = modules ++ [
             {
-        nixpkgs.overlays = [ unstableOverlay ttypOverlay ];
+              nixpkgs.overlays = [
+                unstableOverlay
+                ttypOverlay
+              ];
             }
             home-manager.nixosModules.home-manager
             {
@@ -100,7 +104,6 @@
               home-manager.useUserPackages = true;
               home-manager.extraSpecialArgs = {
                 inherit inputs paths;
-                nixpkgs-unstable = inputs.nixpkgs-unstable;
               };
               home-manager.users.fjara = import ./hosts/${hostname}/home.nix;
             }
