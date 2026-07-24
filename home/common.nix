@@ -32,16 +32,16 @@
   ];
   programs.zsh = {
     enable = true;
-    completionInit = "autoload -U compinit && compinit -C";
     envExtra = ''
       ZSH_DISABLE_COMPFIX="true"
     '';
-    initContent = ''
-      source ${pkgs.oh-my-zsh}/share/oh-my-zsh/plugins/git/git.plugin.zsh
-      source ${pkgs.oh-my-zsh}/share/oh-my-zsh/lib/async_prompt.zsh
-      ${builtins.readFile (paths.config + "/zsh/refined.zsh-theme")}
-      ${builtins.readFile (paths.config + "/zsh/dot-zshrc.zsh")}
-    '';
+    initContent = builtins.readFile (paths.config + "/zsh/dot-zshrc.zsh");
+    oh-my-zsh = {
+      enable = true;
+      plugins = [ "git" ];
+      theme = "theme";
+      custom = toString (paths.config + "/zsh");
+    };
   };
 
   programs.atuin = {
